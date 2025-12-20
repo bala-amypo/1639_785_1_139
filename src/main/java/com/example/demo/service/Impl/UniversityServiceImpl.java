@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.example.demo.service.UserService;                
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UniversityServiceImpl implements UniversityService{
 
-    @Autowired UserRepository used;
+    @Autowired UniversityRepository repo;
     @Override
-    public User postData1(User use){
-        return used.save(use);  
+    public University postData1(University univ){
+        return repo.save(univ);  
     }
     @Override
     public List<User>getAllData1(){
