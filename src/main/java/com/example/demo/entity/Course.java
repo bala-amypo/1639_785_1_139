@@ -18,10 +18,14 @@ public class University{
     @Column(name="name",unique=true)
     private Long id;
     @OneToOne
-    @JoinColumn(name="course_id",nullable=false)
-    private Course course;
-    private String accreditationLevel;
-    private Set<String> country;
-    private Boolean active=true;
+    @JoinColumn(name="university_id",nullable=false)
+    private University university;
+    private String courseCode;
+    private String courseName;
+    private String description;
+    private String department;
+    private Integer creditHours;
+    private 
+
 
 }
