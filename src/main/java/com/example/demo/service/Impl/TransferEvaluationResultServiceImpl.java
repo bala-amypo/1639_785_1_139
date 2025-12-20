@@ -13,10 +13,10 @@ import com.example.demo.repository.CourseContentTopicRepository;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.TransferEvaluationResultRepository;
 import com.example.demo.repository.TransferRuleRepository;
-import com.example.demo.service.TransferEvaluationService;
+import com.example.demo.service.TransferEvaluationResultService;
 
 @Service
-public class TransferEvaluationServiceImpl implements TransferEvaluationService {
+public class TransferEvaluationResultServiceImpl implements TransferEvaluationResultService {
 
     @Autowired
     CourseRepository courseRepository;
