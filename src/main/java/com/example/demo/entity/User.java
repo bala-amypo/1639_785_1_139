@@ -5,5 +5,6 @@ public class users{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String email;
-    private
+    private String password;
+    private 
 }
