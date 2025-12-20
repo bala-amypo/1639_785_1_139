@@ -26,7 +26,8 @@ public class University{
     private Double overlapPercentage;
     private Integer creditHourDifference;
     private Boolean isEligibleForTransfer;
-    private TimeStamp evaluatedAt;
+    private LocalDateTime evaluatedAt;
+    @NotBlank(message="Evaluation reason is required")
     private String notes;
 
 
