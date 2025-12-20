@@ -5,6 +5,6 @@ import com.example.demo.entity.CourseContentTopic;
 
 
 @Repository
-public interface CourseContentTopicRepository extends JpaRepository<CouseContentTopic,Long>{
+public interface CourseContentTopicRepository extends JpaRepository<CourseContentTopic,Long>{
 
 }
