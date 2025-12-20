@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.model.University;
+import com.example.demo.model.CourseContentTopic;
 import java.util.List;
 
-public interface  UniversityService{
-    University createTopic(Course course);
-    University updateTopic(Long id,CourseContentTopic course);
-    University getTopicById(Long id);
+public interface  CourseContentTopicService{
+    CourseContentTopic createTopic(Course course);
+    CourseContentTopic updateTopic(Long id,CourseContentTopic course);
+    CourseContentTopic getTopicById(Long id);
 }
