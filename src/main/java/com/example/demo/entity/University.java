@@ -1,12 +1,15 @@
 package com.example.demo.entity;
 import java.util.*;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import lambok.Data;
-import lambok.AllArgsConstructor;
-import lambok.NoArgsConstructor;
+
 
 @Entity
 @Data
