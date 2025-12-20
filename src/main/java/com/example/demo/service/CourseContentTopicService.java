@@ -5,8 +5,6 @@ import java.util.List;
 
 public interface  UniversityService{
     University createTopic(Course course);
-    University updateTopic(Long id,Course course);
-    University getById(Long id);
-    List<University> getAllUniversities();
-    void deactivateUniversity(Long id);
+    University updateTopic(Long id,CourseContentTopic course);
+    University getTopicById(Long id);
 }
