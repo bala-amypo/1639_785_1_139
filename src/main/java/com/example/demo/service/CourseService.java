@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.service;
+import com.example.demo.model.course;
 import java.util.List;
 
 public interface  CourseService{
