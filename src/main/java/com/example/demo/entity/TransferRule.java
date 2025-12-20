@@ -17,7 +17,9 @@ public class University{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="name",unique=true)
     private Long id;
-    private ;
+    @OneToOne
+    @JoinColumn(name="sourceUniversity_id",nullable=false)
+    private University sourceUniversity;
     private ;
     private ;
     private ;
