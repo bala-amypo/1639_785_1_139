@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.TransferEvaluation;
+import com.example.demo.entity.TransferEvaluation;
 import java.util.List;
 
 public interface  TransferEvaluationService{
