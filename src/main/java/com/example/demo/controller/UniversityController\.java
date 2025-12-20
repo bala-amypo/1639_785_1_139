@@ -16,26 +16,26 @@ public class UniversityController {
     UniversityService universityService;
 
     // POST /
-    @PostMapping("/")
+    @PostMapping("/Post")
     public University createUniversity(@RequestBody University university) {
         return universityService.createUniversity(university);
     }
 
     // PUT /{id}
-    @PutMapping("/{id}")
+    @PutMapping("/Put/{id}")
     public University updateUniversity(@PathVariable Long id,
                                        @RequestBody University university) {
         return universityService.updateUniversity(id, university);
     }
 
     // GET /{id}
-    @GetMapping("/{id}")
+    @GetMapping("/Get/{id}")
     public University getUniversityById(@PathVariable Long id) {
         return universityService.getUniversityById(id);
     }
 
     // GET /
-    @GetMapping("/")
+    @GetMapping("/Get")
     public List<University> getAllUniversities() {
         return universityService.getAllUniversities();
     }
