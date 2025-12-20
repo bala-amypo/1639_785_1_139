@@ -5,6 +5,6 @@ import com.example.demo.entity.TransferRule;
 
 
 @Repository
-public interface TransferRuleRepository extends JpaRepository<User,Long>{
+public interface TransferRuleRepository extends JpaRepository<TransferRule,Long>{
 
 }

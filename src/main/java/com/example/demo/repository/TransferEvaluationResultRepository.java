@@ -5,6 +5,6 @@ import com.example.demo.entity.TransferEvaluationResult;
 
 
 @Repository
-public interface TransferEvaluationResultRepository extends JpaRepository<Transfer,Long>{
+public interface TransferEvaluationResultRepository extends JpaRepository<TransferEvaluationResult,Long>{
 
 }
