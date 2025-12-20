@@ -4,7 +4,7 @@ import com.example.demo.model.Garage;
 import java.util.List;
 
 public interface  UniversityService{
-    U (University );
+     (University );
     University (Long id, Garage garage);
     Garage (Long id);
     List<Garage> ();
