@@ -26,13 +26,6 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService 
     }
 
     @Override
-    public List<CourseContentTopic> getTopicsForCourse(Long courseId) {
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("not found"));
-        return topicRepository.findByCourse(course);
-    }
-
-    @Override
     public CourseContentTopic getTopicById(Long id) {
         return topicRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("not found"));
