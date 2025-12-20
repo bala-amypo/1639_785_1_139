@@ -1,12 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.;
+import com.example.demo.TransferRule;
 import java.util.List;
 
-public interface  UniversityService{
-    University createUniversity(University univ);
-    University updateUniversity(Long id,University univ);
-    University getUniversityById(Long id);
-    List<University> getAllUniversities();
-    void deactivateUniversity(Long id);
+public interface TransferRuleService{
+    University createRule(University univ);
+    University updateRule(Long id,University univ);
+    University getRuleById(Long id);
+    void deactivateRule(Long id);
 }
