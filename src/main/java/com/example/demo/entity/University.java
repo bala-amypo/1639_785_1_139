@@ -12,7 +12,7 @@ import lambok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User{
+public class University{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="name",unique=true)
@@ -20,6 +20,6 @@ public class User{
     private String name;
     private String accreditationLevel;
     private Set<String> country;
-    private LocalDateTime createdAt;
+    private Boolean active=true;
 
 }
