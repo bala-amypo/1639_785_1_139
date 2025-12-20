@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.Course;
-import com.example.demo.model.CourseContentTopic;
-import com.example.demo.model.TransferEvaluationResult;
-import com.example.demo.model.TransferRule;
+import com.example.demo.entity.Course;
+import com.example.demo.entity.CourseContentTopic;
+import com.example.demo.entity.TransferEvaluationResult;
+import com.example.demo.entity.TransferRule;
 import com.example.demo.repository.CourseContentTopicRepository;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.TransferEvaluationResultRepository;
