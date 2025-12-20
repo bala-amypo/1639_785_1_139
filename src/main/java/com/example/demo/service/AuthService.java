@@ -1,10 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.model.;
+import com.example.demo.model.AuthService;
 import java.util.List;
 
-public interface  UniversityService{
-    University createTopic(Course course);
-    University updateTopic(Long id,CourseContentTopic course);
-    University getTopicById(Long id);
+public interface  AuthService{
+    User register();
+    User login();
 }
