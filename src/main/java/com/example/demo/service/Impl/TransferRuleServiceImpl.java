@@ -39,17 +39,6 @@ public class TransferRuleServiceImpl implements TransferRuleService {
         return ruleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("not found"));
     }
-
-    @Override
-    public List<TransferRule> getRulesForUniversities(Long sourceId, Long targetId) {
-        University source = universityRepository.findById(sourceId)
-                .orElseThrow(() -> new RuntimeException("not found"));
-        University target = universityRepository.findById(targetId)
-                .orElseThrow(() -> new RuntimeException("not found"));
-
-        return ruleRepository.findBySourceUniversityAndTargetUniversity(source, target);
-    }
-
     @Override
     public void deactivateRule(Long id) {
         TransferRule rule = ruleRepository.findById(id)
