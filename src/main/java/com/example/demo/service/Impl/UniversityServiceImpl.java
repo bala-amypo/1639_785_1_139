@@ -1,40 +1,51 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;   
-import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
-import org.springframework.web.bind.annotation.PathVariable;
-import com.example.demo.service.UserService;                
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.University;
+import com.example.demo.repository.UniversityRepository;
+import com.example.demo.service.UniversityService;
 
 @Service
-public class UniversityServiceImpl implements UniversityService{
+public class UniversityServiceImpl implements UniversityService {
 
-    @Autowired UniversityRepository repo;
+    @Autowired
+    UniversityRepository universityRepository;
+
     @Override
-    public University postData1(University univ){
-        return repo.save(univ);  
+    public University createUniversity(University univ) {
+        return universityRepository.save(univ);
     }
+
     @Override
-    public List<User>getAllData1(){
-        return used.findAll();
+    public University updateUniversity(Long id, University univ) {
+        if (universityRepository.existsById(id)) {
+            univ.setId(id);
+            return universityRepository.save(univ);
+        }
+        throw new RuntimeException("not found");
     }
+
     @Override
-    public String DeleteData1(Long id){
-        used.deleteById(id);
-        return "Deleted successfully";
+    public University getUniversityById(Long id) {
+        return universityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
     }
+
     @Override
-    public User getData1(Long id){
-    return used.findById(id).orElse(null);
+    public List<University> getAllUniversities() {
+        return universityRepository.findAll();
     }
+
     @Override
-    public User updateData1(Long id,User entity){
-        if(used.existsById(id)){
-            entity.setId(id);
-            return used.save(entity);
-        } 
-        return null;
+    public void deactivateUniversity(Long id) {
+        University university = universityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+
+        university.setActive(false);
+        universityRepository.save(university);
     }
 }
