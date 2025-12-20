@@ -21,5 +21,4 @@ public class University{
     private String accreditationLevel;
     private Set<String> country;
     private Boolean active=true;
-
 }
