@@ -28,6 +28,4 @@ public class Course{
     private String department;
     private Integer creditHours;
     private Boolean active =true;
-
-
 }
