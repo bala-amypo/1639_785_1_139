@@ -1,10 +1,15 @@
 package com.example.demo.entity;
+import java.
 
-public class users{
+
+@Entity
+public class Users{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String password;
-    private 
+    private Set<String> roles;
+    private LocalDateTime createdAt;
+
 }
