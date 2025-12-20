@@ -5,6 +5,6 @@ import com.example.demo.entity.User;
 
 
 @Repository
-public interface CourseContentTopicRepository extends JpaRepository<CouseContentTopic,Long>{
+public interface TransferRuleRepository extends JpaRepository<User,Long>{
 
 }
