@@ -6,9 +6,12 @@ import jakarta.persistence.GeneratedType;
 import jakarta.persistence.GenerationType;
 import lambok.Data;
 import lambok.AllArgsConstructor;
-
+import lambok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Users{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
