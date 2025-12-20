@@ -41,14 +41,6 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> getCoursesByUniversity(Long universityId) {
-        University university = universityRepository.findById(universityId)
-                .orElseThrow(() -> new RuntimeException("not found"));
-
-        return courseRepository.findByUniversity(university);
-    }
-
-    @Override
     public void deactivateCourse(Long id) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("not found"));
