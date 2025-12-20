@@ -15,6 +15,7 @@ import lambok.NoArgsConstructor;
 public class User{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="email",unique=true)
     private Long id;
     private String email;
     private String password;
