@@ -23,11 +23,11 @@ public class University{
     @OneToOne
     @JoinColumn(name="targetCourse_id",nullable=false)
     private Course targetCourse;
-    private Double ;
-    private String description;
-    private String department;
-    private Integer creditHours;
-    private Boolean active =true;
+    private Double overlapPercentage;
+    private Integer creditHourDifference;
+    private Boolean isEligibleForTransfer;
+    private TimeStamp evaluatedAt;
+    private String notes;
 
 
 }
