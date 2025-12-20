@@ -20,8 +20,10 @@ public class University{
     @OneToOne
     @JoinColumn(name="sourceUniversity_id",nullable=false)
     private University sourceUniversity;
-    private ;
-    private ;
-    private ;
-
+    @OneToOne
+    @JoinColumn(name="targetUniversity_id",nullable=false)
+    private University targetUniversity;
+    private Double minimumOverlapPercentage;
+    private Integer creditHourTolerance;
+    private Boolean active=true;
 }
