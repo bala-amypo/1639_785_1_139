@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 import java.util.*;
 
-import jakarta.persistence.Column;
+// import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import jakarta.persistence.GenerationType;
 public class University{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="name",unique=true)
+    // @Column(name="name",unique=true)
     private Long id;
     private String name;
     private String accreditationLevel;

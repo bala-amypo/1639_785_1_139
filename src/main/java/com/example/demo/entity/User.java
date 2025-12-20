@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 import java.time.LocalDateTime;
 import java.util.*;
-import jakarta.persistence.Column;
+// import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class User{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="email",unique=true)
+    // @Column(name="email",unique=true)
     private Long id;
     private String email;
     private String password;
