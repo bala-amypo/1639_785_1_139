@@ -20,6 +20,8 @@ public class University{
     @OneToOne
     @JoinColumn(name="course_id",nullable=false)
     private Course course;
+    @NotBlank(message="Topic name")
     private String topicName;
+    @Size(min=0,max=100,message="0-100")
     private Double weightPercentage;
 }
