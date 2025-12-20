@@ -17,9 +17,9 @@ public class University{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="name",unique=true)
     private Long id;
-    private String name;
-    private String accreditationLevel;
-    private Set<String> country;
-    private Boolean active=true;
+    private ;
+    private ;
+    private ;
+    private ;
 
 }
