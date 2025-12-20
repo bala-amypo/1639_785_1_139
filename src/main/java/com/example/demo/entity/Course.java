@@ -25,7 +25,7 @@ public class University{
     private String description;
     private String department;
     private Integer creditHours;
-    private 
+    private Boolean active =true;
 
 
 }
