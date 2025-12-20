@@ -18,8 +18,8 @@ public class User{
     @Column(name="name",unique=true)
     private Long id;
     private String name;
-    private String password;
-    private Set<String> roles;
+    private String accreditationLevel;
+    private Set<String> country;
     private LocalDateTime createdAt;
 
 }
