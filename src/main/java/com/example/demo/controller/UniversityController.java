@@ -19,8 +19,8 @@ import jakarta.validation.Valid;
 public class UniversityController{
     @Autowired  UniversityService ser;
     @PostMapping("/register")
-    public University sendData(@RequestBody University stu){
-        return ser.createUniversity(stu);
+    public University sendData(@RequestBody University univ){
+        return ser.createUniversity(univ);
     }
     @GetMapping("/get")
     public List<University> getval(){
@@ -31,7 +31,7 @@ public class UniversityController{
         return ser.getUniversityById(id);
     }
     @PutMapping("/put/{id}")
-    public University putval(@PathVariable Long id,@RequestBody University entity){
-        return ser.updateData1(id,entity);
+    public University putval(@PathVariable Long id,@RequestBody University univ){
+        return ser.updateUniversity(id,univ);
     }
 }
