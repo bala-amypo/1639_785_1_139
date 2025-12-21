@@ -10,36 +10,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
+import com.example.demo.entity.Course;
+import com.example.demo.service.CourseService;
 import jakarta.validation.Valid;
 
 @RequestMapping("/User")
 @RestController
-public class UserController{
-    @Autowired  UserService ser;
+public class CourseController{
+    @Autowired  CourseService ser;
     @PostMapping("/register")
-    public User sendData(@RequestBody User stu){
-        return ser.postData1(stu);
+    public CourseContentTopic sendData(@RequestBody CourseContentTopic stu){
+        return ser.postData2(stu);
     }
     @PostMapping("/login")
-    public User senddata(@RequestBody User log){
-        return ser.postdata(log);
+    public CourseContentTopic senddata(@RequestBody CourseContentTopic log){
+        return ser.postdata2(log);
     }
     @GetMapping("/get")
-    public List<User> getval(){
-        return ser.getAllData1();
+    public List<CourseContentTopic> getval(){
+        return ser.getAllData2();
     }
     @DeleteMapping("/delete/{id}")
     public String del(@PathVariable Long id){
-        return ser.DeleteData1(id);
+        return ser.DeleteData2(id);
     }
     @GetMapping("/find/{id}")
-    public User find(@PathVariable Long id){
-        return ser.getData1(id);
+    public CourseContentTopic find(@PathVariable Long id){
+        return ser.getData2(id);
     }
     @PutMapping("/put/{id}")
-    public User putval(@PathVariable Long id,@RequestBody User entity){
-        return ser.updateData1(id,entity);
+    public CourseContentTopic putval(@PathVariable Long id,@RequestBody CourseContentTopic entity){
+        return ser.updateData2(id,entity);
     }
 }

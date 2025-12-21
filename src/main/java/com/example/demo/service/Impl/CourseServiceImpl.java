@@ -1,51 +1,40 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Service;   
 import com.example.demo.entity.Course;
-import com.example.demo.entity.University;
 import com.example.demo.repository.CourseRepository;
-import com.example.demo.repository.UniversityRepository;
-import com.example.demo.service.CourseService;
+// import org.springframework.web.bind.annotation.PathVariable;
+import com.example.demo.service.CourseService;                
 
 @Service
-public class CourseServiceImpl implements CourseService {
+public class CourseServiceImpl implements CourseService{
 
-    @Autowired
-    CourseRepository courseRepository;
-
-    @Autowired
-    UniversityRepository universityRepository;
-
+    @Autowired CourseRepository used;
     @Override
-    public Course createCourse(Course course) {
-        return courseRepository.save(course);
+    public Course postData3(Course use){
+        return used.save(use);  
     }
-
     @Override
-    public Course updateCourse(Long id, Course course) {
-        if (courseRepository.existsById(id)) {
-            course.setId(id);
-            return courseRepository.save(course);
-        }
-        throw new RuntimeException("not found");
+    public List<Course>getAllData3(){
+        return used.findAll();
     }
-
     @Override
-    public Course getCourseById(Long id) {
-        return courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
+    public String DeleteData3(Long id){
+        used.deleteById(id);
+        return "Deleted successfully";
     }
-
     @Override
-    public void deactivateCourse(Long id) {
-        Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
-
-        course.setActive(false);
-        courseRepository.save(course);
+    public Course getData3(Long id){
+    return used.findById(id).orElse(null);
+    }
+    @Override
+    public Course updateData3(Long id,Course entity){
+        if(used.existsById(id)){
+            entity.setId(id);
+            return used.save(entity);
+        } 
+        return null;
     }
 }

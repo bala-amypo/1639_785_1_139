@@ -9,5 +9,5 @@ public interface CourseService{
     List<Course>getAllData3();
     String  DeleteData3(Long id);
     Course getData3(Long id);         
-    Course updateData2(Long id,CourseContentTopic entity);                                                        
+    Course updateData3(Long id,Course entity);                                                        
 }

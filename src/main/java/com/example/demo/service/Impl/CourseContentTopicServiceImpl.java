@@ -3,7 +3,7 @@ package com.example.demo.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;   
-import com.example.demo.entity.CourseContent;
+import com.example.demo.entity.CourseContentTopic;
 import com.example.demo.repository.CourseContentTopicRepository;
 // import org.springframework.web.bind.annotation.PathVariable;
 import com.example.demo.service.CourseContentTopicService;                
