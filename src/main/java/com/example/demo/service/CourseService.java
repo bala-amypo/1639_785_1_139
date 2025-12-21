@@ -4,9 +4,9 @@ import java.util.List;
 import com.example.demo.entity.Course;
 
 public interface CourseService{
-    Course postData3(Course use);
+    Course createCourse(Course course);
+    Course updateCourse(Long id,Course course);
+    Course getCourseById(Long id);
     List<Course>getAllData3();
-    String  DeleteData3(Long id);
-    Course getData3(Long id);         
-    Course updateData3(Long id,Course entity);                                                        
+    void deactivateCourse(Long id);                                                            
 }
