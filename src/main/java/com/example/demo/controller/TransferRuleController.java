@@ -26,10 +26,16 @@ public class TransferRuleController{
     public List<TransferRule> getval(){
         return ser.getAllData5();
     }
-    @GetMapping("/find/{id}")
-    public TransferRule find(@PathVariable Long id){
-        return ser.getRuleById(id);
-    }
+    // @GetMapping("/find/{id}")
+    // public TransferRule find(@PathVariable Long id){
+    //     return ser.getRuleById(id);
+    // }
+    @GetMapping("/{id}")
+    public ResponseEntity<TransferRule> find(@PathVariable Long id) {
+    TransferRule rule = transferRuleService.getRuleById(id);
+    return ResponseEntity.ok(rule); 
+}
+
     @PutMapping("/put/{id}")
     public TransferRule putval(@PathVariable Long id,@RequestBody TransferRule rule){
         return ser.updateRule(id,rule);
