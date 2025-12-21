@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
 import java.util.List;
-import com.example.demo.entity.Transfer;
+import com.example.demo.entity.TransferEvaluationResult;
 
-public interface CourseService{
-    Course postData3(Course use);
-    List<Course>getAllData3();
+public interface TransferEvaluationResultService{
+    TransferEvaluationResult postData4(TransferEvaluationResult use);
+    List<TransferEvaluationResult>getAllData4();
     String  DeleteData3(Long id);
-    Course getData3(Long id);         
-    Course updateData3(Long id,Course entity);                                                        
+    TransferEvaluationResult getData4(Long id);         
+    TransferEvaluationResult updateData4(Long id,TransferEvaluationResult entity);                                                        
 }
