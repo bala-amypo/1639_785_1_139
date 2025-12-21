@@ -14,61 +14,28 @@ import com.example.demo.entity.TransferRule;
 import com.example.demo.service.TransferRuleService;
 import jakarta.validation.Valid;
 
-// @RequestMapping("/TransferRule")
-// @RestController
-// public class TransferRuleController{
-//     @Autowired  TransferRuleService ser;
-//     @PostMapping("/post")
-//     public TransferRule sendData(@RequestBody TransferRule rule){
-//         return ser.createRule(rule);
-//     }
-//     @GetMapping("/get")
-//     public List<TransferRule> getval(){
-//         return ser.getAllData5();
-//     }
-//     @GetMapping("/find/{id}")
-//     public TransferRule find(@PathVariable Long id){
-//         return ser.getRuleById(id);
-//     }
-//     @PutMapping("/put/{id}")
-//     public TransferRule putval(@PathVariable Long id,@RequestBody TransferRule rule){
-//         return ser.updateRule(id,rule);
-//     }
-//     @DeleteMapping("/delete/{id}")
-//     public String del(@PathVariable Long id){
-//         return ser.DeleteData5(id);
-//     }
-// }
+@RequestMapping("/TransferRule")
 @RestController
-@RequestMapping("/transfer-rule")
-public class TransferRuleController {
-
-    @Autowired
-    private TransferRuleService ser;
-
+public class TransferRuleController{
+    @Autowired  TransferRuleService ser;
     @PostMapping("/post")
-    public TransferRule sendData(@RequestBody TransferRule rule) {
+    public TransferRule sendData(@RequestBody TransferRule rule){
         return ser.createRule(rule);
     }
-
     @GetMapping("/get")
-    public List<TransferRule> getval() {
+    public List<TransferRule> getval(){
         return ser.getAllData5();
     }
-
     @GetMapping("/find/{id}")
-    public TransferRule find(@PathVariable Long id) {
+    public TransferRule find(@PathVariable Long id){
         return ser.getRuleById(id);
     }
-
     @PutMapping("/put/{id}")
-    public TransferRule putval(@PathVariable Long id,
-                               @RequestBody TransferRule rule) {
-        return ser.updateRule(id, rule);
+    public TransferRule putval(@PathVariable Long id,@RequestBody TransferRule rule){
+        return ser.updateRule(id,rule);
     }
-
     @DeleteMapping("/delete/{id}")
-    public String del(@PathVariable Long id) {
+    public String del(@PathVariable Long id){
         return ser.DeleteData5(id);
     }
 }
