@@ -41,15 +41,12 @@
 // }
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Entity
+@Table(name = "transfer_evaluation_result")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -58,20 +55,30 @@ public class TransferEvaluationResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @OneToOne
-    @JoinColumn(name = "source_course_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "source_course_id", nullable = false, unique = true)
     private Course sourceCourse;
 
     @OneToOne
-    @JoinColumn(name = "target_course_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "target_course_id", nullable = false, unique = true)
     private Course targetCourse;
 
+    @Column(name = "overlap_percentage")
     private Double overlapPercentage;
+
+    @Column(name = "credit_hour_difference")
     private Integer creditHourDifference;
+
+    @Column(name = "is_eligible_for_transfer")
     private Boolean isEligibleForTransfer;
+
+    @Column(name = "evaluated_at", updatable = false)
     private LocalDateTime evaluatedAt;
 
-    @NotBlank(message = "Evaluation reason is required")
+    @Column(length = 500)
     private String notes;
+    @PrePersist
+    protected void onCreate() {
+        this.evaluatedAt = LocalDateTime.now();
+    }
 }
