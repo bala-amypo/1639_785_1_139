@@ -60,17 +60,16 @@ public class TransferEvaluationResult {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "source_course_id", nullable = false)
+    @JoinColumn(name = "source_course_id", referencedColumnName = "id", nullable = false)
     private Course sourceCourse;
 
     @OneToOne
-    @JoinColumn(name = "target_course_id", nullable = false)
+    @JoinColumn(name = "target_course_id", referencedColumnName = "id", nullable = false)
     private Course targetCourse;
 
     private Double overlapPercentage;
     private Integer creditHourDifference;
     private Boolean isEligibleForTransfer;
-
     private LocalDateTime evaluatedAt;
 
     @NotBlank(message = "Evaluation reason is required")
