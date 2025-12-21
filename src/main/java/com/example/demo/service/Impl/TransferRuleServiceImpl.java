@@ -36,12 +36,9 @@ public class TransferRuleServiceImpl implements TransferRuleService {
         return ruleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("not found"));
     }
-    // @Override
-    // public void deactivateRule(Long id) {
-    //     TransferRule rule = TransferRuleRepository.findById(id)
-    //             .orElseThrow(() -> new RuntimeException("not found"));
-
-    //     rule.setActive(false);
-    //     TransferRuleRepository.save(rule);
-    // }
+    @Override
+    public String DeleteData5(Long id){
+        used.deleteById(id);
+        return "Deleted successfully";
+    }
 }

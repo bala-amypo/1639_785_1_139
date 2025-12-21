@@ -8,5 +8,5 @@ public interface TransferRuleService{
     TransferRule updateRule(Long id,TransferRule rule);
     TransferRule getRuleById(Long id);
     List<TransferRule>getAllData5();
-    void deactivateRule(Long id);
+    String  DeleteData5(Long id);    
 }

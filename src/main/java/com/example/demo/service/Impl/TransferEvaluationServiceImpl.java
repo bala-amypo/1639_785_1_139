@@ -20,11 +20,11 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService{
     public List<TransferEvaluationResult>getAllData4(){
         return used.findAll();
     }
-    @Override
     public String DeleteData4(Long id){
         used.deleteById(id);
         return "Deleted successfully";
-    }
+    }@Override
+    
     @Override
     public TransferEvaluationResult getEvaluationById(Long id){
     return used.findById(id).orElse(null);

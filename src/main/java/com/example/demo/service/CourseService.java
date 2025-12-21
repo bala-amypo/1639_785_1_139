@@ -8,5 +8,5 @@ public interface CourseService{
     Course updateCourse(Long id,Course course);
     Course getCourseById(Long id);
     List<Course>getAllData3();
-    void deactivateCourse(Long id);                                                            
+    String  DeleteData3(Long id);                                      
 }
