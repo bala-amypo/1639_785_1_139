@@ -13,7 +13,7 @@ public class CourseServiceImpl implements CourseService{
 
     @Autowired CourseRepository used;
     @Override
-    public Course postData3(Course use){
+    public Course createCourse(Course course){
         return used.save(use);  
     }
     @Override
@@ -21,19 +21,14 @@ public class CourseServiceImpl implements CourseService{
         return used.findAll();
     }
     @Override
-    public String DeleteData3(Long id){
-        used.deleteById(id);
-        return "Deleted successfully";
-    }
-    @Override
-    public Course getData3(Long id){
+    public Course getCourseById(Long id){
     return used.findById(id).orElse(null);
     }
     @Override
-    public Course updateData3(Long id,Course entity){
+    public Course updateCourse(Long id,Course course){
         if(used.existsById(id)){
             entity.setId(id);
-            return used.save(entity);
+            return used.save(course);
         } 
         return null;
     }

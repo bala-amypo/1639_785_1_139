@@ -21,11 +21,6 @@ public class UniversityServiceImpl implements UniversityService{
         return used.findAll();
     }
     @Override
-    public String DeleteData1(Long id){
-        used.deleteById(id);
-        return "Deleted successfully";
-    }
-    @Override
     public University getUniversityById(Long id){
     return used.findById(id).orElse(null);
     }
@@ -37,6 +32,7 @@ public class UniversityServiceImpl implements UniversityService{
         } 
         return null;
     }
+    @Override
     @PutMapping("/{id}/deactivate")
     public ResponseEntity<String> deactivateUniversity(@PathVariable Long id) {
         universityService.deactivateUniversity(id);
