@@ -34,11 +34,6 @@ public class UniversityController{
     public University putval(@PathVariable Long id,@RequestBody University univ){
         return ser.updateUniversity(id,univ);
     }
-    @PutMapping("/{id}/deactivate")
-    public University deactivateUniversity(@PathVariable Long id) {
-        ser.deactivateUniversity(id);
-        return ser.getUniversityById(id);
-    }
     @DeleteMapping("/delete/{id}")
     public String del(@PathVariable Long id){
         return ser.DeleteData1(id);
