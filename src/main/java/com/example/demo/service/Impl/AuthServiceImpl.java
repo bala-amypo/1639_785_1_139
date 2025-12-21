@@ -60,33 +60,33 @@ import com.example.demo.service.AuthService;
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepo;
 
     @Override
     public User register(User user) {
-        return userRepository.save(user);
+        return userRepo.save(user);
     }
 
     @Override
     public User login(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password)
+        return userRepo.findByEmailAndPassword(email, password)
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
     }
 
     @Override
     public User getData6(Long id) {
-        return userRepository.findById(id)
+        return userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
     @Override
     public List<User> getAllData6() {
-        return userRepository.findAll();
+        return userRepo.findAll();
     }
 
     @Override
     public User updateData6(Long id, User use) {
-        User existingUser = userRepository.findById(id)
+        User existingUser = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
         existingUser.setName(use.getName());
@@ -99,9 +99,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String DeleteData6(Long id) {
-        User existingUser = userRepository.findById(id)
+        User existingUser = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-        userRepository.delete(existingUser);
+        userRepo.delete(existingUser);
         return "User deleted successfully with id: " + id;
     }
 }
