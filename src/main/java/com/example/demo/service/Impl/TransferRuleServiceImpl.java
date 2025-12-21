@@ -62,8 +62,7 @@ import com.example.demo.service.TransferRuleService;
 @Service
 public class TransferRuleServiceImpl implements TransferRuleService {
 
-    @Autowired
-    private TransferRuleRepository repo;
+    @Autowired TransferRuleRepository repo;
 
     @Override
     public TransferRule createRule(TransferRule rule) {
