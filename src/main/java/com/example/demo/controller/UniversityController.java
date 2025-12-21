@@ -24,7 +24,7 @@ public class UniversityController{
     }
     @GetMapping("/get")
     public List<University> getval(){
-        return ser.getAllUniversity();
+        return ser.getAllUniversities();
     }
     @GetMapping("/find/{id}")
     public University find(@PathVariable Long id){
