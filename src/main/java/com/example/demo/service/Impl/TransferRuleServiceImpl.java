@@ -38,7 +38,7 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     }
     @Override
     public void deactivateRule(Long id) {
-        TransferRule rule = ruleRepository.findById(id)
+        TransferRule rule = TransferRuleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("not found"));
 
         rule.setActive(false);

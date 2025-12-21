@@ -34,10 +34,10 @@ public class UniversityServiceImpl implements UniversityService{
     }
     @Override
     public void deactivateUniversity(Long id) {
-        University univ = universityRepository.findById(id)
+        University university = UniversityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("not found"));
 
         university.setActive(false);
-        universityRepository.save(univ);
+        UniversityRepository.save(univ);
     }
 }
