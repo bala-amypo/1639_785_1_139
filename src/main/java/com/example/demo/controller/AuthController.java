@@ -1,41 +1,54 @@
 package com.example.demo.controller;
 
-import java.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
-import jakarta.validation.Valid;
+import java.util.List;
 
-@RequestMapping("/User")
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.entity.User;
+import com.example.demo.service.AuthService;
+
+
+
 @RestController
-public class AuthController{
-    @Autowired  UserService ser;
+@RequestMapping("/auth")
+public class AuthController {
+    @Autowired
+
+    // Register
     @PostMapping("/register")
-    public University sendData(@RequestBody University univ){
-        return ser.createUniversity(univ);
+    public User register(@RequestBody User user) {
+        return authService.register(user);
     }
-    @GetMapping("/get")
-    public List<University> getval(){
-        return ser.getAllUniversities();
+
+    // Login
+    @PostMapping("/login")
+    public User login(@RequestParam String email,
+                      @RequestParam String password) {
+        return authService.login(email, password);
     }
-    @GetMapping("/find/{id}")
-    public University find(@PathVariable Long id){
-        return ser.getUniversityById(id);
+
+    // Get by ID
+    @GetMapping("/{id}")
+    public User getById(@PathVariable Long id) {
+        return authService.getData6(id);
     }
-    @PutMapping("/put/{id}")
-    public University putval(@PathVariable Long id,@RequestBody University univ){
-        return ser.updateUniversity(id,univ);
+
+    // Get all
+    @GetMapping
+    public List<User> getAll() {
+        return authService.getAllData6();
     }
-    @DeleteMapping("/delete/{id}")
-    public String del(@PathVariable Long id){
-        return ser.DeleteData1(id);
+
+    // Update
+    @PutMapping("/{id}")
+    public User update(@PathVariable Long id,
+                       @RequestBody User user) {
+        return authService.updateData6(id, user);
+    }
+
+    // Delete
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id) {
+        return authService.DeleteData6(id);
     }
 }
