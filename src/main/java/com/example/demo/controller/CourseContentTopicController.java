@@ -14,7 +14,7 @@ import com.example.demo.entity.CourseContentTopic;
 import com.example.demo.service.CourseContentTopicService;
 import jakarta.validation.Valid;
 
-@RequestMapping("/User")
+@RequestMapping("/CourseContentTopic")
 @RestController
 public class CourseContentTopicController{
     @Autowired  CourseContentTopicService ser;

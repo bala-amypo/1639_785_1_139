@@ -14,32 +14,32 @@ import com.example.demo.entity.Course;
 import com.example.demo.service.CourseService;
 import jakarta.validation.Valid;
 
-@RequestMapping("/User")
+@RequestMapping("/Course")
 @RestController
 public class CourseController{
     @Autowired  CourseService ser;
     @PostMapping("/register")
-    public CourseContentTopic sendData(@RequestBody CourseContentTopic stu){
-        return ser.postData2(stu);
+    public Course sendData(@RequestBody Course stu){
+        return ser.postData3(stu);
     }
     @PostMapping("/login")
-    public CourseContentTopic senddata(@RequestBody CourseContentTopic log){
-        return ser.postdata2(log);
+    public Course senddata(@RequestBody Course log){
+        return ser.postdata3(log);
     }
     @GetMapping("/get")
-    public List<CourseContentTopic> getval(){
-        return ser.getAllData2();
+    public List<Course> getval(){
+        return ser.getAllData3();
     }
     @DeleteMapping("/delete/{id}")
     public String del(@PathVariable Long id){
-        return ser.DeleteData2(id);
+        return ser.DeleteData3(id);
     }
     @GetMapping("/find/{id}")
-    public CourseContentTopic find(@PathVariable Long id){
-        return ser.getData2(id);
+    public Course find(@PathVariable Long id){
+        return ser.getData3(id);
     }
     @PutMapping("/put/{id}")
-    public CourseContentTopic putval(@PathVariable Long id,@RequestBody CourseContentTopic entity){
-        return ser.updateData2(id,entity);
+    public Course putval(@PathVariable Long id,@RequestBody Course entity){
+        return ser.updateData3(id,entity);
     }
 }
