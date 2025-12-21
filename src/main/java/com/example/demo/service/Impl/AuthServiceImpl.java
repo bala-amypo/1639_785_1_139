@@ -59,8 +59,7 @@ import com.example.demo.service.AuthService;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    @Autowired
-    private UserRepository userRepo;
+    @Autowired UserRepository userRepo;
 
     @Override
     public User register(User user) {
