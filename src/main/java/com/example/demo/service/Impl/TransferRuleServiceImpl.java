@@ -51,10 +51,8 @@
 // }
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 import com.example.demo.entity.TransferRule;
 import com.example.demo.repository.TransferRuleRepository;
 import com.example.demo.service.TransferRuleService;
@@ -62,44 +60,25 @@ import com.example.demo.service.TransferRuleService;
 @Service
 public class TransferRuleServiceImpl implements TransferRuleService {
 
-    @Autowired TransferRuleRepository repo;
+    private final TransferRuleRepository transferRuleRepository;
 
-    @Override
-    public TransferRule createRule(TransferRule rule) {
-        return repo.save(rule);
+    public TransferRuleServiceImpl(TransferRuleRepository transferRuleRepository) {
+        this.transferRuleRepository = transferRuleRepository;
     }
 
     @Override
-    public TransferRule updateRule(Long id, TransferRule rule) {
-        TransferRule existing = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("TransferRule not found with id: " + id));
-
-        existing.setSourceCourse(rule.getSourceCourse());
-        existing.setTargetCourse(rule.getTargetCourse());
-        existing.setMinOverlapPercentage(rule.getMinOverlapPercentage());
-        existing.setMaxCreditHourDifference(rule.getMaxCreditHourDifference());
-        existing.setActive(rule.getActive());
-        existing.setNotes(rule.getNotes());
-
-        return repo.save(existing);
+    public TransferRule createRule(TransferRule rule) {
+        return transferRuleRepository.save(rule);
     }
 
     @Override
     public TransferRule getRuleById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("TransferRule not found with id: " + id));
+        return transferRuleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rule not found"));
     }
 
     @Override
-    public List<TransferRule> getAllData5() {
-        return repo.findAll();
-    }
-
-    @Override
-    public String DeleteData5(Long id) {
-        TransferRule existing = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("TransferRule not found with id: " + id));
-        repo.deleteById(id);
-        return "Deleted Successfully!";
+    public List<TransferRule> getAllRules() {
+        return transferRuleRepository.findAll();
     }
 }

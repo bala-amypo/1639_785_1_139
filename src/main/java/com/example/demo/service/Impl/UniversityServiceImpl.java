@@ -41,20 +41,20 @@
 // }
 package com.example.demo.service.impl;
 
+import org.springframework.stereotype.Service;
+import java.util.List;
 import com.example.demo.entity.University;
 import com.example.demo.repository.UniversityRepository;
 import com.example.demo.service.UniversityService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
 
-    @Autowired
-    private UniversityRepository universityRepository;
+    private final UniversityRepository universityRepository;
+
+    public UniversityServiceImpl(UniversityRepository universityRepository) {
+        this.universityRepository = universityRepository;
+    }
 
     @Override
     public University createUniversity(University univ) {
@@ -63,21 +63,17 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public University updateUniversity(Long id, University univ) {
-        Optional<University> existing = universityRepository.findById(id);
-        if (existing.isPresent()) {
-            University university = existing.get();
-            university.setName(univ.getName()); // example field
-            university.setLocation(univ.getLocation()); // example field
-            // set other fields as needed
-            return universityRepository.save(university);
-        } else {
-            return null; // or throw exception
-        }
+        University existing = universityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("University not found"));
+        existing.setName(univ.getName());
+        existing.setLocation(univ.getLocation());
+        return universityRepository.save(existing);
     }
 
     @Override
     public University getUniversityById(Long id) {
-        return universityRepository.findById(id).orElse(null);
+        return universityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("University not found"));
     }
 
     @Override
@@ -86,12 +82,10 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public String DeleteData1(Long id) {
-        if (universityRepository.existsById(id)) {
-            universityRepository.deleteById(id);
-            return "University deleted successfully";
-        } else {
-            return "University not found";
-        }
+    public String deleteData(Long id) {
+        universityRepository.deleteById(id);
+        return "Deleted Successfully";
     }
 }
+
+
