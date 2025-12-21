@@ -13,11 +13,11 @@ public class UniversityServiceImpl implements UniversityService{
 
     @Autowired UniversityRepository used;
     @Override
-    public University postData1(University use){
+    public University createUniversity(University use){
         return used.save(use);  
     }
     @Override
-    public List<University>getAllData1(){
+    public List<University>getAllUniversities(){
         return used.findAll();
     }
     @Override
@@ -26,15 +26,20 @@ public class UniversityServiceImpl implements UniversityService{
         return "Deleted successfully";
     }
     @Override
-    public University getData1(Long id){
+    public University getUniversityById(Long id){
     return used.findById(id).orElse(null);
     }
     @Override
-    public University updateData1(Long id,University entity){
+    public University updateUniversity(Long id,University entity){
         if(used.existsById(id)){
             entity.setId(id);
             return used.save(entity);
         } 
         return null;
+    }
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<String> deactivateUniversity(@PathVariable Long id) {
+        universityService.deactivateUniversity(id);
+        return ResponseEntity.ok("University deactivated successfully");
     }
 }
