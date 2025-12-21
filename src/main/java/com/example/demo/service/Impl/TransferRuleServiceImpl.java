@@ -38,7 +38,7 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     // }
     @Override
     public TransferRule getRuleById(Long id) {
-    return transferRuleRepository.findById(id)
+    return TransferRuleRepository.findById(id)
             .orElseThrow(() ->
                 new ResponseStatusException(NOT_FOUND, "TransferRule not found with id " + id)
             );
