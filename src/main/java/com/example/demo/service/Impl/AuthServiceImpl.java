@@ -28,19 +28,19 @@ public class AuthServiceImpl implements AuthService {
         return userRepository.findAll();
     }
     @Override
-    public University getUniversityById(Long id){
+    public User getData6(Long id){
     return userRepository.findById(id).orElseThrow(()-> new RuntimeException("not found"));
     }
     @Override
-    public University updateUniversity(Long id,University univ){
+    public User updateData6(Long id,User use){
         if(userRepository.existsById(id)){
-            univ.setId(id);
-            return userRepository.save(univ);
+            use.setId(id);
+            return userRepository.save(use);
         } 
         return null;
     }
     @Override
-    public String DeleteData1(Long id){
+    public String DeleteData6(Long id){
         userRepository.deleteById(id);
         return "Deleted successfully";
     }
