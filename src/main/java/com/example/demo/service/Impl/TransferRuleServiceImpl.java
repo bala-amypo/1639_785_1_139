@@ -41,4 +41,8 @@ public class TransferRuleServiceImpl implements TransferRuleService {
         used.deleteById(id);
         return "Deleted successfully";
     }
+    @Override
+    public List<TransferRule>getAllData5(){
+        return used.findAll();
+    }
 }

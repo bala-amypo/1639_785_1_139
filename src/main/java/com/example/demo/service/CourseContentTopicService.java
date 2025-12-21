@@ -4,7 +4,7 @@ import java.util.List;
 import com.example.demo.entity.CourseContentTopic;
 
 public interface CourseContentTopicService{
-    CourseContentTopic createTopic(CourseContentTopic Topic);
+    CourseContentTopic createTopic(CourseContentTopic topic);
     CourseContentTopic getTopicById(Long id); 
     List<CourseContentTopic>getAllData2();
     CourseContentTopic updateTopic(Long id,CourseContentTopic topic);
