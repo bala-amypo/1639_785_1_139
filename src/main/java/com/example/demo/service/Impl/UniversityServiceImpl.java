@@ -13,8 +13,8 @@ public class UniversityServiceImpl implements UniversityService{
 
     @Autowired UniversityRepository used;
     @Override
-    public University createUniversity(University use){
-        return used.save(use);  
+    public University createUniversity(University univ){
+        return used.save(univ);  
     }
     @Override
     public List<University>getAllUniversities(){
@@ -22,10 +22,10 @@ public class UniversityServiceImpl implements UniversityService{
     }
     @Override
     public University getUniversityById(Long id){
-    return used.findById(id).orElse(null);
+    return used.findById(id).orElseThrow(()-> new RuntimeException("not found"));
     }
     @Override
-    public University updateUniversity(Long id,University entity){
+    public University updateUniversity(Long id,University univ){
         if(used.existsById(id)){
             entity.setId(id);
             return used.save(entity);
