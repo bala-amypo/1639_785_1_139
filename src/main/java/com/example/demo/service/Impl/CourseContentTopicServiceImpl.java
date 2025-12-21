@@ -13,8 +13,8 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService{
 
     @Autowired CourseContentTopicRepository used;
     @Override
-    public CourseContentTopic postData2(CourseContentTopic use){
-        return used.save(use);  
+    public CourseContentTopic createTopic(CourseContentTopic topic){
+        return used.save(topic);  
     }
     @Override
     public List<CourseContentTopic>getAllData2(){
@@ -26,14 +26,14 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService{
         return "Deleted successfully";
     }
     @Override
-    public CourseContentTopic getData2(Long id){
+    public CourseContentTopic getTopicById(Long id){
     return used.findById(id).orElse(null);
     }
     @Override
-    public CourseContentTopic updateData2(Long id,CourseContentTopic entity){
+    public CourseContentTopic updateTopic(Long id,CourseContentTopic topic){
         if(used.existsById(id)){
-            entity.setId(id);
-            return used.save(entity);
+            topic.setId(id);
+            return used.save(topic);
         } 
         return null;
     }

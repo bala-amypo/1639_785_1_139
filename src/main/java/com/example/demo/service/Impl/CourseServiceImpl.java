@@ -38,6 +38,6 @@ public class CourseServiceImpl implements CourseService{
                 .orElseThrow(() -> new RuntimeException("not found"));
                 
         course.setActive(false);
-        courseRepository.save(univ);
+        courseRepository.save(course);
     }
 }
