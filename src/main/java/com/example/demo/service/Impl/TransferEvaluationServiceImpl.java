@@ -17,7 +17,7 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService{
         return used.save(use);  
     }
     @Override
-    public List<TransferEvaluationResult>getAllData4(){
+    public List<TransferEvaluation>getAllData4(){
         return used.findAll();
     }
     @Override
@@ -26,11 +26,11 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService{
         return "Deleted successfully";
     }
     @Override
-    public TransferEvaluationResult getData4(Long id){
+    public TransferEvaluation getEvaluationById(Long id){
     return used.findById(id).orElse(null);
     }
     @Override
-    public TransferEvaluationResult updateData4(Long id,TransferEvaluationResult entity){
+    public TransferEvaluation updateData4(Long id,TransferEvaluationResult entity){
         if(used.existsById(id)){
             entity.setId(id);
             return used.save(entity);
