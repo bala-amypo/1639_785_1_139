@@ -5,7 +5,6 @@ import com.example.demo.entity.Course;
 
 public interface CourseService{
     Course postData3(Course use);
-    Course postdata3(Course log);
     List<Course>getAllData3();
     String  DeleteData3(Long id);
     Course getData3(Long id);         
