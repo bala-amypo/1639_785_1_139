@@ -19,23 +19,24 @@ import jakarta.validation.Valid;
 public class CourseController{
     @Autowired  CourseService ser;
     @PostMapping("/post")
-    public Course sendData(@RequestBody Course stu){
-        return ser.postData3(stu);
+    public Course sendData(@RequestBody Course course){
+        return ser.createCourse(course);
     }
     @GetMapping("/get")
     public List<Course> getval(){
         return ser.getAllData3();
     }
-    @DeleteMapping("/delete/{id}")
-    public String del(@PathVariable Long id){
-        return ser.DeleteData3(id);
-    }
     @GetMapping("/find/{id}")
     public Course find(@PathVariable Long id){
-        return ser.getData3(id);
+        return ser.getCourseById(id);
     }
     @PutMapping("/put/{id}")
-    public Course putval(@PathVariable Long id,@RequestBody Course entity){
-        return ser.updateData3(id,entity);
+    public Course putval(@PathVariable Long id,@RequestBody Course course){
+        return ser.updateCourse(id,course);
+    }
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<String> deactivateCourse(@PathVariable Long id) {
+        universityService.deactivateUniversity(id);
+        return ResponseEntity.ok("University deactivated successfully");
     }
 }
