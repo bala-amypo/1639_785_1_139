@@ -29,6 +29,6 @@ public class Course{
     private Integer creditHours;
     private Boolean active =true;
 }
-@ManyToOne
-@JoinColumn(name = "course_id")
-private Course course;
+// @ManyToOne
+// @JoinColumn(name = "course_id")
+// private Course course;
