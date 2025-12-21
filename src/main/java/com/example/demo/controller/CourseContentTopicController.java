@@ -20,26 +20,26 @@ public class CourseContentTopicController{
     @Autowired  CourseContentTopicService ser;
     @PostMapping("/register")
     public CourseContentTopic sendData(@RequestBody CourseContentTopic stu){
-        return ser.postData1(stu);
+        return ser.postData2(stu);
     }
     @PostMapping("/login")
     public CourseContentTopic senddata(@RequestBody CourseContentTopic log){
-        return ser.postdata(log);
+        return ser.postdata2(log);
     }
     @GetMapping("/get")
-    public List<User> getval(){
-        return ser.getAllData1();
+    public List<CourseContentTopic> getval(){
+        return ser.getAllData2();
     }
     @DeleteMapping("/delete/{id}")
     public String del(@PathVariable Long id){
-        return ser.DeleteData1(id);
+        return ser.DeleteData2(id);
     }
     @GetMapping("/find/{id}")
-    public User find(@PathVariable Long id){
-        return ser.getData1(id);
+    public CourseContentTopic find(@PathVariable Long id){
+        return ser.getData2(id);
     }
     @PutMapping("/put/{id}")
-    public User putval(@PathVariable Long id,@RequestBody User entity){
-        return ser.updateData1(id,entity);
+    public CourseContentTopic putval(@PathVariable Long id,@RequestBody CourseContentTopic entity){
+        return ser.updateData2(id,entity);
     }
 }
