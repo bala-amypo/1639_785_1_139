@@ -8,12 +8,5 @@ public interface TransferRuleService{
     TransferRule updateRule(Long id,TransferRule rule);
     TransferRule getRuleById(Long id);
     List<TransferRule>getAllData5();
-    TransferRule deleteRule5(Long id);
-}
-public interface UniversityService{
-    University createUniversity(University univ);
-    University updateUniversity(Long id,University univ);
-    University getUniversityById(Long id);
-    List<University>getAllData1();
-    void deactiveUniversity(Long id); 
+    void deactivateRule(Long id);
 }
