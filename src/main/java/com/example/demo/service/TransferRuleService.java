@@ -7,5 +7,13 @@ public interface TransferRuleService{
     TransferRule createRule(TransferRule rule);
     TransferRule updateRule(Long id,TransferRule rule);
     TransferRule getRuleById(Long id);
-    void deactivateRule(Long id);
+    List<TransferRule>getAllData5();
+    TransferRule deactivateRule(Long id);
+}
+public interface UniversityService{
+    University createUniversity(University univ);
+    University updateUniversity(Long id,University univ);
+    University getUniversityById(Long id);
+    List<University>getAllData1();
+    void deactiveUniversity(Long id); 
 }
