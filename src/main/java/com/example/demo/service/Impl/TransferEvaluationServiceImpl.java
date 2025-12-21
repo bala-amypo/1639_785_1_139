@@ -11,13 +11,13 @@ import com.example.demo.service.TransferEvaluationService;
 @Service
 public class TransferEvaluationServiceImpl implements TransferEvaluationService{
 
-    @Autowired TransferEvaluationRepository used;
+    @Autowired TransferEvaluationResultRepository used;
     @Override
-    public TransferEvaluation postData4(TransferEvaluation use){
+    public TransferEvaluationResult postData4(TransferEvaluationResult use){
         return used.save(use);  
     }
     @Override
-    public List<TransferEvaluation>getAllData4(){
+    public List<TransferEvaluationResult>getAllData4(){
         return used.findAll();
     }
     @Override
@@ -26,11 +26,11 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService{
         return "Deleted successfully";
     }
     @Override
-    public TransferEvaluation getEvaluationById(Long id){
+    public TransferEvaluationResult getEvaluationById(Long id){
     return used.findById(id).orElse(null);
     }
     @Override
-    public TransferEvaluation updateData4(Long id,TransferEvaluationResult entity){
+    public TransferEvaluationResult updateData4(Long id,TransferEvaluationResult entity){
         if(used.existsById(id)){
             entity.setId(id);
             return used.save(entity);
