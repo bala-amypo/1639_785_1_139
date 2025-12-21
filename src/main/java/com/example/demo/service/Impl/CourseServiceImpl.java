@@ -14,7 +14,7 @@ public class CourseServiceImpl implements CourseService{
     @Autowired CourseRepository used;
     @Override
     public Course createCourse(Course course){
-        return used.save(use);  
+        return used.save(course);  
     }
     @Override
     public List<Course>getAllData3(){
@@ -27,9 +27,17 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public Course updateCourse(Long id,Course course){
         if(used.existsById(id)){
-            entity.setId(id);
+            course.setId(id);
             return used.save(course);
         } 
         return null;
+    }
+    @Override
+    public void deactivateCourse(Long id) {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+                
+        course.setActive(false);
+        courseRepository.save(univ);
     }
 }
