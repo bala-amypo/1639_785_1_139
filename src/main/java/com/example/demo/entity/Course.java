@@ -20,7 +20,7 @@ public class Course{
     @Column(name="name",unique=true)
     private Long id;
     @OneToOne
-    @JoinColumn(name="university_id",nullable=false)
+    @JoinColumn(name="university_id")
     private University university;
     private String courseCode;
     private String courseName;
@@ -29,3 +29,6 @@ public class Course{
     private Integer creditHours;
     private Boolean active =true;
 }
+@ManyToOne
+@JoinColumn(name = "course_id")
+private Course course;
