@@ -1,13 +1,13 @@
 package com.example.demo.service;
 
 import java.util.List;
-import com.example.demo.model.User;
+import com.example.demo.entity.CourseContentTopic;
 
-public interface CourseContentService{
-    CourseContent postData2(CourseContent use);
-    CourseContent postdata2(CourseContent log);
-    List<CourseContent>getAllData2();
+public interface CourseContentTopicService{
+    CourseContentTopic postData2(CourseContentTopic use);
+    CourseContentTopic postdata2(CourseContentTopic log);
+    List<CourseContentTopic>getAllData2();
     String  DeleteData2(Long id);
-    CourseContent getData2(Long id);         
-    CourseContent updateData2(Long id,CourseContent entity);                                                        
+    CourseContentTopic getData2(Long id);         
+    CourseContentTopic updateData2(Long id,CourseContentTopic entity);                                                        
 }

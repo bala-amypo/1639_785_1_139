@@ -1,49 +1,45 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import com.example.demo.;
+import com.example.demo.service.UserService;
+import jakarta.validation.Valid;
 
-import com.example.demo.entity.University;
-import com.example.demo.service.UniversityService;
-
+@RequestMapping("/User")
 @RestController
-@RequestMapping("/api/universities")
-public class UniversityController {
-
-    @Autowired
-    UniversityService universityService;
-
-    // POST /
-    @PostMapping("/Post")
-    public University createUniversity(@RequestBody University university) {
-        return universityService.createUniversity(university);
+public class UserController{
+    @Autowired  UserService ser;
+    @PostMapping("/register")
+    public User sendData(@RequestBody User stu){
+        return ser.postData1(stu);
     }
-
-    // PUT /{id}
-    @PutMapping("/Put/{id}")
-    public University updateUniversity(@PathVariable Long id,
-                                       @RequestBody University university) {
-        return universityService.updateUniversity(id, university);
+    @PostMapping("/login")
+    public User senddata(@RequestBody User log){
+        return ser.postdata(log);
     }
-
-    // GET /{id}
-    @GetMapping("/Get/{id}")
-    public University getUniversityById(@PathVariable Long id) {
-        return universityService.getUniversityById(id);
+    @GetMapping("/get")
+    public List<User> getval(){
+        return ser.getAllData1();
     }
-
-    // GET /
-    @GetMapping("/Get")
-    public List<University> getAllUniversities() {
-        return universityService.getAllUniversities();
+    @DeleteMapping("/delete/{id}")
+    public String del(@PathVariable Long id){
+        return ser.DeleteData1(id);
     }
-
-    // PUT /{id}/deactivate
-    @PutMapping("/{id}/deactivate")
-    public String deactivateUniversity(@PathVariable Long id) {
-        universityService.deactivateUniversity(id);
-        return "University deactivated";
+    @GetMapping("/find/{id}")
+    public User find(@PathVariable Long id){
+        return ser.getData1(id);
+    }
+    @PutMapping("/put/{id}")
+    public User putval(@PathVariable Long id,@RequestBody User entity){
+        return ser.updateData1(id,entity);
     }
 }
