@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.TransferEvaluationResult;
 import com.example.demo.repository.TransferEvaluationResultRepository;
 // import org.springframework.web.bind.annotation.PathVariable;
-import com.example.demo.service.TransferEvaluationResultService;                
+import com.example.demo.service.TransferEvaluationService;                
 
 @Service
-public class TransferEvaluationResultServiceImpl implements TransferEvaluationResultService{
+public class TransferEvaluationServiceImpl implements TransferEvaluationService{
 
-    @Autowired TransferEvaluationResultRepository used;
+    @Autowired TransferEvaluationRepository used;
     @Override
-    public TransferEvaluationResult postData4(TransferEvaluationResult use){
+    public TransferEvaluation postData4(TransferEvaluation use){
         return used.save(use);  
     }
     @Override
