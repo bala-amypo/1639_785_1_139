@@ -1,13 +1,13 @@
 package com.example.demo.service;
 
 import java.util.List;
-import com.example.demo.model.User;
+import com.example.demo.entity.University;
 
-public interface CourseContentService{
-    User postData2(User use);
-    User postdata2(User log);
-    List<User>getAllData2();
-    String  DeleteData2(Long id);
-    User getData2(Long id);         
-    User updateData2(Long id,User entity);                                                        
+public interface UniversityService{
+    University postData1(University use);
+    University postdata1(University log);
+    List<University>getAllData1();
+    String  DeleteData1(Long id);
+    University getData1(Long id);         
+    University updateData1(Long id,University entity);                                                        
 }

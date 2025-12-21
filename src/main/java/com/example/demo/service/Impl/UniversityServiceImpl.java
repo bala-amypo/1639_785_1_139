@@ -11,26 +11,26 @@ import com.example.demo.service.UniversityService;
 @Service
 public class UniversityServiceImpl implements UniversityService{
 
-    @Autowired UNiversityRepository used;
+    @Autowired UniversityRepository used;
     @Override
-    public CourseContentTopic postData2(CourseContentTopic use){
+    public University postData1(University use){
         return used.save(use);  
     }
     @Override
-    public List<CourseContentTopic>getAllData2(){
+    public List<University>getAllData1(){
         return used.findAll();
     }
     @Override
-    public String DeleteData2(Long id){
+    public String DeleteData1(Long id){
         used.deleteById(id);
         return "Deleted successfully";
     }
     @Override
-    public CourseContentTopic getData2(Long id){
+    public University getData1(Long id){
     return used.findById(id).orElse(null);
     }
     @Override
-    public CourseContentTopic updateData2(Long id,CourseContentTopic entity){
+    public University updateData1(Long id,University entity){
         if(used.existsById(id)){
             entity.setId(id);
             return used.save(entity);
