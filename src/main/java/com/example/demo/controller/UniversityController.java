@@ -10,24 +10,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.example.demo.;
-import com.example.demo.service.UserService;
+import com.example.demo.entity.University;
+import com.example.demo.service.UniversityService;
 import jakarta.validation.Valid;
 
-@RequestMapping("/User")
+@RequestMapping("/University")
 @RestController
-public class UserController{
-    @Autowired  UserService ser;
+public class UniversityController{
+    @Autowired  UniversityService ser;
     @PostMapping("/register")
-    public User sendData(@RequestBody User stu){
+    public University sendData(@RequestBody University stu){
         return ser.postData1(stu);
     }
     @PostMapping("/login")
-    public User senddata(@RequestBody User log){
+    public University senddata(@RequestBody University log){
         return ser.postdata(log);
     }
     @GetMapping("/get")
-    public List<User> getval(){
+    public List<University> getval(){
         return ser.getAllData1();
     }
     @DeleteMapping("/delete/{id}")
@@ -35,11 +35,11 @@ public class UserController{
         return ser.DeleteData1(id);
     }
     @GetMapping("/find/{id}")
-    public User find(@PathVariable Long id){
+    public University find(@PathVariable Long id){
         return ser.getData1(id);
     }
     @PutMapping("/put/{id}")
-    public User putval(@PathVariable Long id,@RequestBody User entity){
+    public University putval(@PathVariable Long id,@RequestBody University entity){
         return ser.updateData1(id,entity);
     }
 }
