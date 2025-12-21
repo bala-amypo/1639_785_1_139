@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
 
 @RequestMapping("/TransferRule")
 @RestController
-public class TransferEvaluationResultController{
+public class TransferRuleController{
     @Autowired  TransferRuleService ser;
     @PostMapping("/post")
     public TransferRule sendData(@RequestBody TransferRule rule){
@@ -24,14 +24,14 @@ public class TransferEvaluationResultController{
     }
     @GetMapping("/get")
     public List<TransferRule> getval(){
-        return ser.getAllData4();
+        return ser.getAllData5();
     }
     @GetMapping("/find/{id}")
-    public TransferEvaluationResult find(@PathVariable Long id){
-        return ser.getEvaluationById(id);
+    public TransferRule find(@PathVariable Long id){
+        return ser.getRuleById(id);
     }
     @PutMapping("/put/{id}")
-    public TransferEvaluationResult putval(@PathVariable Long id,@RequestBody TransferEvaluationResult entity){
-        return ser.updateData4(id,entity);
+    public TransferRule putval(@PathVariable Long id,@RequestBody TransferRule rule){
+        return ser.updateRule(id,rule);
     }
 }
