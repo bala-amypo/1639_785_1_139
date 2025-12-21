@@ -47,49 +47,65 @@
 // }
 package com.example.demo.controller;
 
-import java.util.List;
-
+import com.example.demo.entity.User;
+import com.example.demo.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.entity.User;
-import com.example.demo.service.AuthService;
+import java.util.List;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/users")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        return ResponseEntity.ok(authService.register(user));
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        User created = authService.register(user);
+        return ResponseEntity.ok(created);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) {
-        return ResponseEntity.ok(authService.login(email, password));
+    public ResponseEntity<User> loginUser(@RequestParam String email, @RequestParam String password) {
+        User user = authService.login(email, password);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(401).build(); // unauthorized
+        }
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(authService.getData6(id));
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = authService.getData6(id);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<User>> getAll() {
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(authService.getAllData6());
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
-        return ResponseEntity.ok(authService.updateData6(id, user));
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User use) {
+        User updated = authService.updateData6(id, use);
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(authService.DeleteData6(id));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        String message = authService.DeleteData6(id);
+        return ResponseEntity.ok(message);
     }
 }

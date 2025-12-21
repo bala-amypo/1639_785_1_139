@@ -39,3 +39,57 @@
 //         return ser.DeleteData1(id);
 //     }
 // }
+package com.example.demo.controller;
+
+import com.example.demo.entity.University;
+import com.example.demo.service.UniversityService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/universities")
+public class UniversityController {
+
+    @Autowired
+    private UniversityService universityService;
+
+    @PostMapping
+    public ResponseEntity<University> createUniversity(@RequestBody University univ) {
+        University created = universityService.createUniversity(univ);
+        return ResponseEntity.ok(created);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<University> updateUniversity(@PathVariable Long id, @RequestBody University univ) {
+        University updated = universityService.updateUniversity(id, univ);
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<University> getUniversityById(@PathVariable Long id) {
+        University university = universityService.getUniversityById(id);
+        if (university != null) {
+            return ResponseEntity.ok(university);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<University>> getAllUniversities() {
+        return ResponseEntity.ok(universityService.getAllUniversities());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUniversity(@PathVariable Long id) {
+        String message = universityService.DeleteData1(id);
+        return ResponseEntity.ok(message);
+    }
+}
