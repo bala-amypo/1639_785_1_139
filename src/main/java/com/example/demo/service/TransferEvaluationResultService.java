@@ -6,7 +6,7 @@ import com.example.demo.entity.TransferEvaluationResult;
 public interface TransferEvaluationResultService{
     TransferEvaluationResult postData4(TransferEvaluationResult use);
     List<TransferEvaluationResult>getAllData4();
-    String  DeleteData3(Long id);
+    String  DeleteData4(Long id);
     TransferEvaluationResult getData4(Long id);         
     TransferEvaluationResult updateData4(Long id,TransferEvaluationResult entity);                                                        
 }
