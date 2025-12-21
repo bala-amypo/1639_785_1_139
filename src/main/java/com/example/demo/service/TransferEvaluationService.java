@@ -7,6 +7,6 @@ public interface TransferEvaluationService{
     TransferEvaluation postData4(TransferEvaluation use);
     List<TransferEvaluation>getAllData4();
     String  DeleteData4(Long id);
-    TransferEvaluation getData4(Long id);         
+    TransferEvaluation getEvaluationById(Long id);         
     TransferEvaluation updateData4(Long id,TransferEvaluation entity);                                                        
 }
