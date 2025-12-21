@@ -24,7 +24,7 @@ public class UniversityController{
     }
     @PostMapping("/login")
     public University senddata(@RequestBody University log){
-        return ser.postdata(log);
+        return ser.postdata1(log);
     }
     @GetMapping("/get")
     public List<University> getval(){
