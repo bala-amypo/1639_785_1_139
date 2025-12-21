@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.example.demo.entity.TransferEvaluationResult;
-import com.example.demo.service.TransferEvaluationResultService;
+import com.example.demo.service.TransferEvaluationService;
 import jakarta.validation.Valid;
 
 @RequestMapping("/TransferEvaluationResult")
 @RestController
 public class TransferEvaluationResultController{
-    @Autowired  TransferEvaluationResultService ser;
+    @Autowired  TransferEvaluationService ser;
     @PostMapping("/post")
     public TransferEvaluationResult sendData(@RequestBody TransferEvaluationResult stu){
         return ser.postData4(stu);
@@ -32,7 +32,7 @@ public class TransferEvaluationResultController{
     }
     @GetMapping("/find/{id}")
     public TransferEvaluationResult find(@PathVariable Long id){
-        return ser.getData4(id);
+        return ser.getEvaluationById(id);
     }
     @PutMapping("/put/{id}")
     public TransferEvaluationResult putval(@PathVariable Long id,@RequestBody TransferEvaluationResult entity){
