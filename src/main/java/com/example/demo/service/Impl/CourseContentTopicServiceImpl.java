@@ -15,6 +15,15 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService{
     @Override
     public CourseContentTopic createTopic(CourseContentTopic topic){
         return used.save(topic);  
+    }turn used.findById(id).orElse(null);
+    }
+    @Override
+    public CourseContentTopic updateTopic(Long id,CourseContentTopic topic){
+        if(used.existsById(id)){
+            topic.setId(id);
+            return used.save(topic);
+        } 
+        return null;
     }
     @Override
     public List<CourseContentTopic>getAllData2(){
@@ -27,14 +36,5 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService{
     }
     @Override
     public CourseContentTopic getTopicById(Long id){
-    return used.findById(id).orElse(null);
-    }
-    @Override
-    public CourseContentTopic updateTopic(Long id,CourseContentTopic topic){
-        if(used.existsById(id)){
-            topic.setId(id);
-            return used.save(topic);
-        } 
-        return null;
-    }
+    re
 }
