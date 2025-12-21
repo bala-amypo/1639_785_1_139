@@ -18,21 +18,17 @@ import jakarta.validation.Valid;
 @RestController
 public class UniversityController{
     @Autowired  UniversityService ser;
-    @PostMapping("/post")
+    @PostMapping("/register")
     public University sendData(@RequestBody University stu){
-        return ser.postData1(stu);
+        return ser.createUniversity(stu);
     }
     @GetMapping("/get")
     public List<University> getval(){
-        return ser.getAllData1();
-    }
-    @DeleteMapping("/delete/{id}")
-    public String del(@PathVariable Long id){
-        return ser.DeleteData1(id);
+        return ser.getAllUniversity();
     }
     @GetMapping("/find/{id}")
     public University find(@PathVariable Long id){
-        return ser.getData1(id);
+        return ser.getUniversityById(id);
     }
     @PutMapping("/put/{id}")
     public University putval(@PathVariable Long id,@RequestBody University entity){
