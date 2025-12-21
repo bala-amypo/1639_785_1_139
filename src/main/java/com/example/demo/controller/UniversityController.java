@@ -18,13 +18,9 @@ import jakarta.validation.Valid;
 @RestController
 public class UniversityController{
     @Autowired  UniversityService ser;
-    @PostMapping("/register")
+    @PostMapping("/post")
     public University sendData(@RequestBody University stu){
         return ser.postData1(stu);
-    }
-    @PostMapping("/login")
-    public University senddata(@RequestBody University log){
-        return ser.postdata1(log);
     }
     @GetMapping("/get")
     public List<University> getval(){

@@ -18,13 +18,9 @@ import jakarta.validation.Valid;
 @RestController
 public class CourseContentTopicController{
     @Autowired  CourseContentTopicService ser;
-    @PostMapping("/register")
+    @PostMapping("/post")
     public CourseContentTopic sendData(@RequestBody CourseContentTopic stu){
         return ser.postData2(stu);
-    }
-    @PostMapping("/login")
-    public CourseContentTopic senddata(@RequestBody CourseContentTopic log){
-        return ser.postdata2(log);
     }
     @GetMapping("/get")
     public List<CourseContentTopic> getval(){
