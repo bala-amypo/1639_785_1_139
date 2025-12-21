@@ -4,10 +4,10 @@ import java.util.List;
 import com.example.demo.model.User;
 
 public interface CourseContentService{
-    User postData1(User use);
-    User postdata(User log);
-    List<User>getAllData1();
-    String  DeleteData1(Long id);
-    User getData1(Long id);         
-    User updateData1(Long id,User entity);                                                        
+    CourseContent postData2(CourseContent use);
+    User postdata2(User log);
+    List<User>getAllData2();
+    String  DeleteData2(Long id);
+    User getData2(Long id);         
+    User updateData2(Long id,User entity);                                                        
 }
