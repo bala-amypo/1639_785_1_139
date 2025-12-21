@@ -70,10 +70,11 @@ public class TransferRuleServiceImpl implements TransferRuleService {
 
     @Override
     public TransferRule updateRule(Long id, TransferRule rule) {
-        TransferRule existingRule = ruleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("TransferRule not found with id: " + id));
 
-        // update fields
+        TransferRule existingRule = ruleRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("TransferRule not found with id: " + id));
+
         existingRule.setSourceUniversity(rule.getSourceUniversity());
         existingRule.setTargetUniversity(rule.getTargetUniversity());
         existingRule.setMinimumOverlapPercentage(rule.getMinimumOverlapPercentage());
@@ -86,7 +87,8 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     @Override
     public TransferRule getRuleById(Long id) {
         return ruleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("TransferRule not found with id: " + id));
+                .orElseThrow(() ->
+                        new RuntimeException("TransferRule not found with id: " + id));
     }
 
     @Override
