@@ -11,31 +11,31 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.example.demo.entity.TransferEvaluationResult;
-import com.example.demo.service.Service;
+import com.example.demo.service.TransferEvaluationResultService;
 import jakarta.validation.Valid;
 
-@RequestMapping("/Course")
+@RequestMapping("/TransferEvaluationResult")
 @RestController
-public class CourseController{
-    @Autowired  CourseService ser;
+public class TransferEvaluationResultController{
+    @Autowired  TransferEvaluationResultService ser;
     @PostMapping("/post")
-    public Course sendData(@RequestBody Course stu){
-        return ser.postData3(stu);
+    public TransferEvaluationResult sendData(@RequestBody TransferEvaluationResult stu){
+        return ser.postData4(stu);
     }
     @GetMapping("/get")
-    public List<Course> getval(){
-        return ser.getAllData3();
+    public List<TransferEvaluationResult> getval(){
+        return ser.getAllData4();
     }
     @DeleteMapping("/delete/{id}")
     public String del(@PathVariable Long id){
-        return ser.DeleteData3(id);
+        return ser.DeleteData4(id);
     }
     @GetMapping("/find/{id}")
-    public Course find(@PathVariable Long id){
-        return ser.getData3(id);
+    public TransferEvaluationResult find(@PathVariable Long id){
+        return ser.getData4(id);
     }
     @PutMapping("/put/{id}")
-    public Course putval(@PathVariable Long id,@RequestBody Course entity){
-        return ser.updateData3(id,entity);
+    public TransferEvaluationResult putval(@PathVariable Long id,@RequestBody TransferEvaluationResult entity){
+        return ser.updateData4(id,entity);
     }
 }
