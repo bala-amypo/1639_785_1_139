@@ -36,7 +36,7 @@ public class CourseController{
     }
     @PutMapping("/{id}/deactivate")
     public ResponseEntity<String> deactivateCourse(@PathVariable Long id) {
-        universityService.deactivateUniversity(id);
-        return ResponseEntity.ok("University deactivated successfully");
+        courseService.deactivateCourse(id);
+        return ResponseEntity.ok("Course deactivated successfully");
     }
 }

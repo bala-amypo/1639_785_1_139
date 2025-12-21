@@ -19,8 +19,8 @@ import jakarta.validation.Valid;
 public class CourseContentTopicController{
     @Autowired  CourseContentTopicService ser;
     @PostMapping("/post")
-    public CourseContentTopic sendData(@RequestBody CourseContentTopic stu){
-        return ser.postData2(stu);
+    public CourseContentTopic sendData(@RequestBody CourseContentTopic topic){
+        return ser.createTopic(topic);
     }
     @GetMapping("/get")
     public List<CourseContentTopic> getval(){
@@ -32,10 +32,10 @@ public class CourseContentTopicController{
     }
     @GetMapping("/find/{id}")
     public CourseContentTopic find(@PathVariable Long id){
-        return ser.getData2(id);
+        return ser.getTopicById(id);
     }
     @PutMapping("/put/{id}")
-    public CourseContentTopic putval(@PathVariable Long id,@RequestBody CourseContentTopic entity){
-        return ser.updateData2(id,entity);
+    public CourseContentTopic putval(@PathVariable Long id,@RequestBody CourseContentTopic topic){
+        return ser.updateTopic(id,topic);
     }
 }
