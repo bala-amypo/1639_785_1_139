@@ -27,15 +27,17 @@ public class UniversityServiceImpl implements UniversityService{
     @Override
     public University updateUniversity(Long id,University univ){
         if(used.existsById(id)){
-            entity.setId(id);
-            return used.save(entity);
+            univ.setId(id);
+            return used.save(univ);
         } 
         return null;
     }
     @Override
-    @PutMapping("/{id}/deactivate")
-    public ResponseEntity<String> deactivateUniversity(@PathVariable Long id) {
-        universityService.deactivateUniversity(id);
-        return ResponseEntity.ok("University deactivated successfully");
+    public void deactivateUniversity(Long id) {
+        University univ = universityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+
+        university.setActive(false);
+        universityRepository.save(univ);
     }
 }
