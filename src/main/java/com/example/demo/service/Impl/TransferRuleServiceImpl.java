@@ -38,11 +38,11 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     }
     @Override
     public String DeleteData5(Long id){
-        used.deleteById(id);
+        ruleRepository.deleteById(id);
         return "Deleted successfully";
     }
     @Override
     public List<TransferRule>getAllData5(){
-        return used.findAll();
+        return ruleRepository.findAll();
     }
 }
