@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.server.ResponseStatusException;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import com.example.demo.entity.TransferRule;
 import com.example.demo.entity.University;
 import com.example.demo.repository.TransferRuleRepository;
@@ -39,8 +40,7 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     @Override
     public TransferRule getRuleById(Long id) {
     return TransferRuleRepository.findById(id)
-            .orElseThrow(() ->
-                new ResponseStatusException(NOT_FOUND, "TransferRule not found with id " + id)
+            .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "TransferRule not found with id " + id)
             );
 }
     @Override
