@@ -33,11 +33,11 @@ public class UniversityServiceImpl implements UniversityService{
         return null;
     }
     @Override
-    public void deactivateUniversity(Long id) {
-        University university = UniversityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
+    // public void deactivateUniversity(Long id) {
+    //     University university = UniversityRepository.findById(id)
+    //             .orElseThrow(() -> new RuntimeException("not found"));
 
-        university.setActive(false);
-        UniversityRepository.save(univ);
-    }
+    //     university.setActive(false);
+    //     UniversityRepository.save(univ);
+    // }
 }
