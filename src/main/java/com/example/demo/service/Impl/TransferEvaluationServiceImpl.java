@@ -43,7 +43,7 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService{
 public TransferRule getRuleById(Long id) {
     return transferRuleRepository.findById(id)
             .orElseThrow(() ->
-                new ResponseStatusException(NOT_FOUND, "TransferRule not found with id " + id)
+                new ResponseStatusException(NOT_FOUND, " not found with id " + id)
             );
 }
 
