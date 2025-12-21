@@ -35,8 +35,8 @@ public class UniversityController{
         return ser.updateUniversity(id,univ);
     }
     @PutMapping("/{id}/deactivate")
-    public ResponseEntity<String> deactivateUniversity(@PathVariable Long id) {
+    public University deactivateUniversity(@PathVariable Long id) {
         ser.deactivateUniversity(id);
-        return "University deactivated successfully";
+        return ser.getUniversityById(id);
     }
 }
