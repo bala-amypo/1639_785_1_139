@@ -34,10 +34,10 @@ public class CourseServiceImpl implements CourseService{
     }
     @Override
     public void deactivateCourse(Long id) {
-        Course course = courseRepository.findById(id)
+        Course course = CourseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("not found"));
                 
         course.setActive(false);
-        courseRepository.save(course);
+        CourseRepository.save(course);
     }
 }

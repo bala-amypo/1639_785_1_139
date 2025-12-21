@@ -8,5 +8,5 @@ public interface UniversityService{
     University updateUniversity(Long id,University univ);
     University getUniversityById(Long id);
     List<University>getAllUniversities();
-    void deactiveUniversity(Long id); 
+    void deactivateUniversity(Long id); 
 }
