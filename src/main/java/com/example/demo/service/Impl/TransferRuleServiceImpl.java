@@ -17,9 +17,6 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     @Autowired
     TransferRuleRepository ruleRepository;
 
-    @Autowired
-    UniversityRepository universityRepository;
-
     @Override
     public TransferRule createRule(TransferRule rule) {
         return ruleRepository.save(rule);
