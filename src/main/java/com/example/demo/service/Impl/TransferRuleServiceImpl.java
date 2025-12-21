@@ -31,11 +31,18 @@ public class TransferRuleServiceImpl implements TransferRuleService {
         throw new RuntimeException("not found");
     }
 
+    // @Override
+    // public TransferRule getRuleById(Long id) {
+    //     return ruleRepository.findById(id)
+    //             .orElseThrow(() -> new RuntimeException("not found"));
+    // }
     @Override
     public TransferRule getRuleById(Long id) {
-        return ruleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
-    }
+    return transferRuleRepository.findById(id)
+            .orElseThrow(() ->
+                new ResponseStatusException(NOT_FOUND, "TransferRule not found with id " + id)
+            );
+}
     @Override
     public String DeleteData5(Long id){
         ruleRepository.deleteById(id);

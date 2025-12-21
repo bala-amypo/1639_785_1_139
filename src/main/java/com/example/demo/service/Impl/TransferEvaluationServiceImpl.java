@@ -31,20 +31,14 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService{
     public TransferEvaluationResult getEvaluationById(Long id){
     return used.findById(id).orElse(null);
     }
-    // @Override
-    // public TransferEvaluationResult updateData4(Long id,TransferEvaluationResult entity){
-    //     if(used.existsById(id)){
-    //         entity.setId(id);
-    //         return used.save(entity);
-    //     } 
-    //     return null;
-    // }
-@Override
-public TransferRule getRuleById(Long id) {
-    return transferRuleRepository.findById(id)
-            .orElseThrow(() ->
-                new ResponseStatusException(NOT_FOUND, " not found with id " + id)
-            );
-}
+    @Override
+    public TransferEvaluationResult updateData4(Long id,TransferEvaluationResult entity){
+        if(used.existsById(id)){
+            entity.setId(id);
+            return used.save(entity);
+        } 
+        return null;
+    }
+
 
 }
