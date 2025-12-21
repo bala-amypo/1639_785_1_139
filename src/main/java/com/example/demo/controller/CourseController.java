@@ -39,4 +39,8 @@ public class CourseController{
         ser.deactivateCourse(id);
         return ser.getCourseById(id);
     }
+    @DeleteMapping("/delete/{id}")
+    public String del(@PathVariable Long id){
+        return ser.DeleteData3(id);
+    }
 }

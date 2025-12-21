@@ -34,4 +34,8 @@ public class TransferRuleController{
     public TransferRule putval(@PathVariable Long id,@RequestBody TransferRule rule){
         return ser.updateRule(id,rule);
     }
+    @DeleteMapping("/delete/{id}")
+    public String del(@PathVariable Long id){
+        return ser.DeleteData5(id);
+    }
 }

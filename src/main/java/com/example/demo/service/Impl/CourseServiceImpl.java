@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService{
         return null;
     }
     @Override
-    public String DeleteData4(Long id){
+    public String DeleteData3(Long id){
         used.deleteById(id);
         return "Deleted successfully";
     }
