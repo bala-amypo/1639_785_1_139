@@ -3,34 +3,34 @@ package com.example.demo.service.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;   
-import com.example.demo.entity.Course;
+import com.example.demo.entity.TransferEvaluationResult;
 import com.example.demo.repository.TransferEvaluationResultRepository;
 // import org.springframework.web.bind.annotation.PathVariable;
 import com.example.demo.service.TransferEvaluationResultService;                
 
 @Service
-public class CoServiceImpl implements CourseService{
+public class TransferEvaluationResultServiceImpl implements TransferEvaluationResultService{
 
-    @Autowired CourseRepository used;
+    @Autowired TransferEvaluationResultRepository used;
     @Override
-    public Course postData3(Course use){
+    public TransferEvaluationResult postData4(TransferEvaluationResult use){
         return used.save(use);  
     }
     @Override
-    public List<Course>getAllData3(){
+    public List<TransferEvaluationResult>getAllData4(){
         return used.findAll();
     }
     @Override
-    public String DeleteData3(Long id){
+    public String DeleteData4(Long id){
         used.deleteById(id);
         return "Deleted successfully";
     }
     @Override
-    public Course getData3(Long id){
+    public TransferEvaluationResult getData4(Long id){
     return used.findById(id).orElse(null);
     }
     @Override
-    public Course updateData3(Long id,Course entity){
+    public TransferEvaluationResult updateData4(Long id,TransferEvaluationResult entity){
         if(used.existsById(id)){
             entity.setId(id);
             return used.save(entity);
