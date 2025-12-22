@@ -20,20 +20,7 @@ public class TransferRuleServiceImpl implements TransferRuleService {
 
     @Override
     public TransferRule createRule(TransferRule rule) {
-    
-        if (rule.getUniversity() != null && rule.getUniversity().getId() != null) {
-
-            Long univId = rule.getUniversity().getId();
-
-            universityRepository.findById(univId)
-                    .ifPresent(rule::setUniversity);
-
-        } else {
-            rule.setUniversity(null);
-        }
-
-        return transferRuleRepository.save(rule); 
-    }
+        return ruleRepository.save(rule);
     }
 
     @Override
