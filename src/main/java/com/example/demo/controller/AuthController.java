@@ -12,7 +12,6 @@ import com.example.demo.service.AuthService;
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired AuthService authService;
-
     @PostMapping("/register")
     public User register(@RequestBody User user) {
         return authService.register(user);
