@@ -19,8 +19,21 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     TransferRuleRepository ruleRepository;
 
     @Override
+    // public TransferRule createRule(TransferRule rule) {
+    //     return ruleRepository.save(rule);
+    // }
     public TransferRule createRule(TransferRule rule) {
-        return ruleRepository.save(rule);
+
+        Long univId = rule.getUniversity().getId();
+
+        University university = universityRepository.findById(univId).orElse(null);
+
+        if (university == null) {
+            return null; // no exception
+        }
+
+        rule.setUniversity(university);
+        return transferRuleRepository.save(rule);
     }
 
     @Override
