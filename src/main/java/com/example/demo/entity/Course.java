@@ -17,7 +17,7 @@ import jakarta.persistence.GenerationType;
 public class Course{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id",unique=true)
+    @Column(name="column_id",unique=true)
     private Long id;
     @OneToOne
     @JoinColumn(name="university_id",nullable=false)
