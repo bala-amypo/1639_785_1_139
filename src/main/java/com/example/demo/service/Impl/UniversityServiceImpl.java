@@ -22,7 +22,7 @@ public class UniversityServiceImpl implements UniversityService{
     }
     @Override
     public University getUniversityById(Long id){
-    return used.findById(id).orElse(null);
+    return used.findById(id).orElseThrow(()->new ResourceNotFoundException("exists"));
     }
     @Override
     public University updateUniversity(Long id,University univ){
