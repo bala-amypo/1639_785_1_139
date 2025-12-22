@@ -20,7 +20,7 @@ public class Course{
     @Column(name="id",unique=true)
     private Long id;
     @OneToOne
-    @JoinColumn(name="university_id",referencedColumnName="id")
+    @JoinColumn(name="university_id",nullable=false)
     private University university;
     private String courseCode;
     private String courseName;
