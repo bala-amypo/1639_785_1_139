@@ -26,8 +26,8 @@ public class TransferRule{
     @OneToOne
     @JoinColumn(name="sourceUniversity_id",nullable=false)
     private University sourceUniversity;
-    // @OneToOne
-    // @JoinColumn(name="targetUniversity_id",nullable=false)
+    @OneToOne
+    @JoinColumn(name="targetUniversity_id",nullable=false)
     private University targetUniversity;
     private Double minimumOverlapPercentage;
     private Integer creditHourTolerance;
