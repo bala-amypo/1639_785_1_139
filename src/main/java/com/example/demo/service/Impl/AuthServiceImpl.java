@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
     }
     @Override
     public User getData6(Long id){
-    return userRepository.findById(id).orElseThrow(()-> new RuntimeException("not found"));
+    return userRepository.findById(id).orElse(null);
     }
     @Override
     public User updateData6(Long id,User use){
