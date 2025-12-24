@@ -12,30 +12,30 @@ import com.example.demo.service.UniversityService;
 @Service
 public class UniversityServiceImpl implements UniversityService{
 
-    @Autowired UniversityRepository used;
+    @Autowired UniversityRepository repository;
     @Override
     public University createUniversity(University univ){
-        return used.save(univ);  
+        return repository.save(univ);  
     }
     @Override
     public List<University>getAllUniversities(){
-        return used.findAll();
+        return repository.findAll();
     }
     @Override
     public University getUniversityById(Long id){
-    return used.findById(id).orElseThrow(()->new ResourceNotFoundException("exists"));
+    return repository.findById(id).orElseThrow(()->new ResourceNotFoundException("exists"));
     }
     @Override
     public University updateUniversity(Long id,University univ){
-        if(used.existsById(id)){
+        if(repository.existsById(id)){
             univ.setId(id);
-            return used.save(univ);
+            return repository.save(univ);
         } 
         return null;
     }
     @Override
     public String DeleteData1(Long id){
-        used.deleteById(id);
+        repository.deleteById(id);
         return "Deleted successfully";
     }
    
