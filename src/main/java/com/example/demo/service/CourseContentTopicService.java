@@ -1,14 +1,31 @@
+// // package com.example.demo.service;
+
+// // import java.util.List;
+// // import com.example.demo.entity.CourseContentTopic;
+
+// // public interface CourseContentTopicService{
+// //     CourseContentTopic createTopic(CourseContentTopic topic);
+// //     CourseContentTopic getTopicById(Long id); 
+// //     List<CourseContentTopic>getAllData2();
+// //     CourseContentTopic updateTopic(Long id,CourseContentTopic topic);
+// //     String  DeleteData2(Long id);                                                                
+// // }
 // package com.example.demo.service;
 
 // import java.util.List;
 // import com.example.demo.entity.CourseContentTopic;
 
-// public interface CourseContentTopicService{
+// public interface CourseContentTopicService {
+
 //     CourseContentTopic createTopic(CourseContentTopic topic);
-//     CourseContentTopic getTopicById(Long id); 
-//     List<CourseContentTopic>getAllData2();
-//     CourseContentTopic updateTopic(Long id,CourseContentTopic topic);
-//     String  DeleteData2(Long id);                                                                
+
+//     List<CourseContentTopic> getAllData2();
+
+//     CourseContentTopic getTopicById(Long id);
+
+//     CourseContentTopic updateTopic(Long id, CourseContentTopic topic);
+
+//     String DeleteData2(Long id);
 // }
 package com.example.demo.service;
 
@@ -17,13 +34,11 @@ import com.example.demo.entity.CourseContentTopic;
 
 public interface CourseContentTopicService {
 
-    CourseContentTopic createTopic(CourseContentTopic topic);
+    CourseContentTopic create(Long courseId, CourseContentTopic topic);
 
-    List<CourseContentTopic> getAllData2();
+    List<CourseContentTopic> getByCourse(Long courseId);
 
-    CourseContentTopic getTopicById(Long id);
+    CourseContentTopic update(Long id, CourseContentTopic topic);
 
-    CourseContentTopic updateTopic(Long id, CourseContentTopic topic);
-
-    String DeleteData2(Long id);
+    void delete(Long id);
 }
