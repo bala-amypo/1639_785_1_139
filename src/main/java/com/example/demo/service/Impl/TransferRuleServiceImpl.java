@@ -118,7 +118,7 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     private TransferRuleRepository repo;
 
     @Override
-    public TransferRule postData5(TransferRule rule) {
+    public TransferRule createRule(TransferRule rule) {
         return repo.save(rule);
     }
 
@@ -128,15 +128,15 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     }
 
     @Override
-    public TransferRule getById(Long id) {
+    public TransferRule getRuleById(Long id) {
         return repo.findById(id).orElse(null);
     }
 
     @Override
-    public TransferRule updateData5(Long id, TransferRule rule) {
+    public TransferRule updateRule(Long id, TransferRule rule) {
         TransferRule existing = repo.findById(id).orElse(null);
         if (existing != null) {
-            existing.setRuleName(rule.getRuleName());
+            existing.setDescription(rule.getDescription()); // ✅ valid field
             return repo.save(existing);
         }
         return null;
@@ -145,6 +145,6 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     @Override
     public String DeleteData5(Long id) {
         repo.deleteById(id);
-        return "Transfer Rule deleted successfully";
+        return "Transfer rule deleted successfully";
     }
 }

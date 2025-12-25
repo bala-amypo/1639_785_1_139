@@ -97,7 +97,7 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService 
     private CourseContentTopicRepository repo;
 
     @Override
-    public CourseContentTopic postData2(CourseContentTopic topic) {
+    public CourseContentTopic createTopic(CourseContentTopic topic) {
         return repo.save(topic);
     }
 
@@ -107,12 +107,12 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService 
     }
 
     @Override
-    public CourseContentTopic getById(Long id) {
+    public CourseContentTopic getTopicById(Long id) {
         return repo.findById(id).orElse(null);
     }
 
     @Override
-    public CourseContentTopic updateData2(Long id, CourseContentTopic topic) {
+    public CourseContentTopic updateTopic(Long id, CourseContentTopic topic) {
         CourseContentTopic existing = repo.findById(id).orElse(null);
         if (existing != null) {
             existing.setTopicName(topic.getTopicName());
@@ -124,6 +124,6 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService 
     @Override
     public String DeleteData2(Long id) {
         repo.deleteById(id);
-        return "Topic deleted successfully";
+        return "Course content topic deleted successfully";
     }
 }

@@ -134,7 +134,7 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService 
     }
 
     @Override
-    public TransferEvaluationResult getById(Long id) {
+    public TransferEvaluationResult getEvaluationById(Long id) {
         return repo.findById(id).orElse(null);
     }
 
@@ -142,7 +142,7 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService 
     public TransferEvaluationResult updateData4(Long id, TransferEvaluationResult result) {
         TransferEvaluationResult existing = repo.findById(id).orElse(null);
         if (existing != null) {
-            existing.setStatus(result.getStatus());
+            existing.setResult(result.getResult()); // ✅ valid field
             return repo.save(existing);
         }
         return null;
@@ -151,6 +151,6 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService 
     @Override
     public String DeleteData4(Long id) {
         repo.deleteById(id);
-        return "Transfer Evaluation deleted successfully";
+        return "Transfer evaluation deleted successfully";
     }
 }
