@@ -111,40 +111,21 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.List;
+import lombok.*;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Course {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String name;          // Use getName() in services
+    private String description;   // Use getDescription() in services
 
     @ManyToOne
     @JoinColumn(name = "university_id")
     private University university;
-
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    private List<CourseContentTopic> topics;
-
-    @OneToMany(mappedBy = "sourceCourse", cascade = CascadeType.ALL)
-    private List<TransferEvaluationResult> evaluationResults;
-
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public University getUniversity() { return university; }
-    public void setUniversity(University university) { this.university = university; }
-
-    public List<CourseContentTopic> getTopics() { return topics; }
-    public void setTopics(List<CourseContentTopic> topics) { this.topics = topics; }
-
-    public List<TransferEvaluationResult> getEvaluationResults() { return evaluationResults; }
-    public void setEvaluationResults(List<TransferEvaluationResult> evaluationResults) { this.evaluationResults = evaluationResults; }
 }
