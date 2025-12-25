@@ -4,106 +4,99 @@
 
 // import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.stereotype.Service;
-// import org.springframework.web.server.ResponseStatusException;
-// import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 // import com.example.demo.entity.TransferRule;
-// import com.example.demo.entity.University;
+// import com.example.demo.exception.ResourceNotFoundException;
 // import com.example.demo.repository.TransferRuleRepository;
-// import com.example.demo.repository.UniversityRepository;
 // import com.example.demo.service.TransferRuleService;
 
 // @Service
 // public class TransferRuleServiceImpl implements TransferRuleService {
 
 //     @Autowired
-//     TransferRuleRepository repo;
+//     private TransferRuleRepository repo;
 
 //     @Override
-//     public TransferRule createRule(TransferRule rule) {
-//         if(repo.save(rule)){
-            
-//         }
+//     public TransferRule createRule(TransferRule rule){
+//         return repo.save(rule);
 //     }
+    
 //     @Override
 //     public TransferRule updateRule(Long id, TransferRule rule) {
-//         if (repo.existsById(id)) {
-//             rule.setId(id);
-//             return repo.save(rule);
-//         }
-//         throw new RuntimeException("not found");
+//         TransferRule existingRule = repo.findById(id)
+//                 .orElseThrow(() -> 
+//                     new ResourceNotFoundException("TransferRule not found with id " + id)
+//                 );
+
+//         rule.setId(existingRule.getId());
+//         return repo.save(rule);
 //     }
 
-   
 //     @Override
 //     public TransferRule getRuleById(Long id) {
-//     return repo.findById(id)
-//             .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "TransferRule not found with id " + id)
-//             );
-// }
+//         return repo.findById(id)
+//                 .orElseThrow(() -> 
+//                     new ResourceNotFoundException("TransferRule not found with id " + id)
+//                 );
+//     }
+
 //     @Override
-//     public String DeleteData5(Long id){
+//     public String DeleteData5(Long id) {
+//         if (!repo.existsById(id)) {
+//             throw new ResourceNotFoundException(
+//                     "TransferRule not found with id " + id);
+//         }
 //         repo.deleteById(id);
 //         return "Deleted successfully";
 //     }
+
 //     @Override
-//     public List<TransferRule>getAllData5(){
+//     public List<TransferRule> getAllData5() {
 //         return repo.findAll();
 //     }
 // }
 package com.example.demo.service.impl;
 
-import java.util.List;
+import java.util.*;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+public class TransferRuleServiceImpl {
 
-import com.example.demo.entity.TransferRule;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.TransferRuleRepository;
-import com.example.demo.service.TransferRuleService;
-
-@Service
-public class TransferRuleServiceImpl implements TransferRuleService {
-
-    @Autowired
     private TransferRuleRepository repo;
+    private UniversityRepository univRepo;
 
-    @Override
-    public TransferRule createRule(TransferRule rule){
-        return repo.save(rule);
-    }
-    
-    @Override
-    public TransferRule updateRule(Long id, TransferRule rule) {
-        TransferRule existingRule = repo.findById(id)
-                .orElseThrow(() -> 
-                    new ResourceNotFoundException("TransferRule not found with id " + id)
-                );
+    public TransferRule createRule(TransferRule r) {
+        if (r.getMinimumOverlapPercentage() < 0 || r.getMinimumOverlapPercentage() > 100)
+            throw new IllegalArgumentException("Overlap must be 0-100");
 
-        rule.setId(existingRule.getId());
-        return repo.save(rule);
+        if (r.getCreditHourTolerance() != null && r.getCreditHourTolerance() < 0)
+            throw new IllegalArgumentException("Tolerance >= 0");
+
+        univRepo.findById(r.getSourceUniversity().getId()).orElseThrow();
+        univRepo.findById(r.getTargetUniversity().getId()).orElseThrow();
+
+        return repo.save(r);
     }
 
-    @Override
+    public void deactivateRule(Long id) {
+        TransferRule r = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rule not found"));
+        r.setActive(false);
+        repo.save(r);
+    }
+
+    public List<TransferRule> getRulesForUniversities(Long s, Long t) {
+        return repo.findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(s, t);
+    }
+
     public TransferRule getRuleById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> 
-                    new ResourceNotFoundException("TransferRule not found with id " + id)
-                );
+                .orElseThrow(() -> new RuntimeException("Rule not found"));
     }
 
-    @Override
-    public String DeleteData5(Long id) {
-        if (!repo.existsById(id)) {
-            throw new ResourceNotFoundException(
-                    "TransferRule not found with id " + id);
-        }
-        repo.deleteById(id);
-        return "Deleted successfully";
-    }
-
-    @Override
-    public List<TransferRule> getAllData5() {
-        return repo.findAll();
+    public TransferRule updateRule(Long id, TransferRule r) {
+        repo.findById(id).orElseThrow(() -> new RuntimeException("Rule not found"));
+        return repo.save(r);
     }
 }

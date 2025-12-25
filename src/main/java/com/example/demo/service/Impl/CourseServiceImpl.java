@@ -39,3 +39,49 @@
 //     }
 // }
 
+package com.example.demo.service.impl;
+
+import java.util.*;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
+
+public class CourseServiceImpl {
+
+    private CourseRepository repo;
+    private UniversityRepository univRepo;
+
+    public Course createCourse(Course c) {
+        if (c.getCreditHours() <= 0)
+            throw new IllegalArgumentException("Credit hours must be > 0");
+
+        Long uid = c.getUniversity().getId();
+        univRepo.findById(uid).orElseThrow(() -> new RuntimeException("University not found"));
+
+        repo.findByUniversityIdAndCourseCode(uid, c.getCourseCode())
+                .ifPresent(x -> { throw new IllegalArgumentException("Duplicate course"); });
+
+        return repo.save(c);
+    }
+
+    public void deactivateCourse(Long id) {
+        Course c = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        c.setActive(false);
+        repo.save(c);
+    }
+
+    public Course updateCourse(Long id, Course c) {
+        Course existing = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        return repo.save(existing);
+    }
+
+    public Course getCourseById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+    }
+
+    public List<Course> getCoursesByUniversity(Long univId) {
+        return repo.findByUniversityIdAndActiveTrue(univId);
+    }
+}
