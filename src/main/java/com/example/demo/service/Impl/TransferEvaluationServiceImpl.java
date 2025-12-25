@@ -1,108 +1,156 @@
+// // package com.example.demo.service.impl;
+
+// // import java.util.List;
+
+// // import org.springframework.beans.factory.annotation.Autowired;
+// // import org.springframework.stereotype.Service;   
+// // import com.example.demo.entity.TransferEvaluationResult;
+// // import com.example.demo.repository.TransferEvaluationResultRepository;
+// // // import org.springframework.web.bind.annotation.PathVariable;
+// // import com.example.demo.service.TransferEvaluationService;                
+
+// // @Service
+// // public class TransferEvaluationServiceImpl implements TransferEvaluationService{
+
+// //     @Autowired TransferEvaluationResultRepository used;
+// //     @Override
+// //     public TransferEvaluationResult postData4(TransferEvaluationResult use){
+// //         return used.save(use);  
+// //     }
+// //     @Override
+// //     public List<TransferEvaluationResult>getAllData4(){
+// //         return used.findAll();
+// //     }
+// //     @Override
+// //     public String DeleteData4(Long id){
+// //         used.deleteById(id);
+// //         return "Deleted successfully";
+// //     }
+// //     @Override
+// //     public TransferEvaluationResult getEvaluationById(Long id){
+// //     return used.findById(id).orElse(null);
+// //     }
+// //     @Override
+// //     public TransferEvaluationResult updateData4(Long id,TransferEvaluationResult entity){
+// //         if(used.existsById(id)){
+// //             entity.setId(id);
+// //             return used.save(entity);
+// //         } 
+// //         return null;
+// //     }
+
+
+// // }
 // package com.example.demo.service.impl;
 
-// import java.util.List;
+// import java.util.*;
+// import com.example.demo.entity.*;
+// import com.example.demo.repository.*;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Service;   
-// import com.example.demo.entity.TransferEvaluationResult;
-// import com.example.demo.repository.TransferEvaluationResultRepository;
-// // import org.springframework.web.bind.annotation.PathVariable;
-// import com.example.demo.service.TransferEvaluationService;                
+// public class TransferEvaluationServiceImpl {
 
-// @Service
-// public class TransferEvaluationServiceImpl implements TransferEvaluationService{
+//     private CourseRepository courseRepo;
+//     private CourseContentTopicRepository topicRepo;
+//     private TransferRuleRepository ruleRepo;
+//     private TransferEvaluationResultRepository resultRepo;
 
-//     @Autowired TransferEvaluationResultRepository used;
-//     @Override
-//     public TransferEvaluationResult postData4(TransferEvaluationResult use){
-//         return used.save(use);  
-//     }
-//     @Override
-//     public List<TransferEvaluationResult>getAllData4(){
-//         return used.findAll();
-//     }
-//     @Override
-//     public String DeleteData4(Long id){
-//         used.deleteById(id);
-//         return "Deleted successfully";
-//     }
-//     @Override
-//     public TransferEvaluationResult getEvaluationById(Long id){
-//     return used.findById(id).orElse(null);
-//     }
-//     @Override
-//     public TransferEvaluationResult updateData4(Long id,TransferEvaluationResult entity){
-//         if(used.existsById(id)){
-//             entity.setId(id);
-//             return used.save(entity);
-//         } 
-//         return null;
+//     public TransferEvaluationResult evaluateTransfer(Long srcId, Long tgtId) {
+
+//         Course src = courseRepo.findById(srcId).orElseThrow();
+//         Course tgt = courseRepo.findById(tgtId).orElseThrow();
+
+//         if (!src.isActive() || !tgt.isActive())
+//             throw new IllegalArgumentException("Course must be active");
+
+//         List<CourseContentTopic> sTopics = topicRepo.findByCourseId(srcId);
+//         List<CourseContentTopic> tTopics = topicRepo.findByCourseId(tgtId);
+
+//         double overlap = 0;
+//         for (CourseContentTopic s : sTopics) {
+//             for (CourseContentTopic t : tTopics) {
+//                 if (s.getTopicName().equalsIgnoreCase(t.getTopicName())) {
+//                     overlap += Math.min(
+//                         Optional.ofNullable(s.getWeightPercentage()).orElse(0.0),
+//                         Optional.ofNullable(t.getWeightPercentage()).orElse(0.0)
+//                     );
+//                 }
+//             }
+//         }
+
+//         TransferEvaluationResult res = new TransferEvaluationResult();
+//         res.setOverlapPercentage(overlap);
+
+//         List<TransferRule> rules =
+//                 ruleRepo.findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(
+//                         src.getUniversity().getId(),
+//                         tgt.getUniversity().getId());
+
+//         boolean eligible = rules.stream().anyMatch(r ->
+//                 overlap >= r.getMinimumOverlapPercentage() &&
+//                 Math.abs(src.getCreditHours() - tgt.getCreditHours())
+//                         <= Optional.ofNullable(r.getCreditHourTolerance()).orElse(0)
+//         );
+
+//         res.setIsEligibleForTransfer(eligible);
+//         res.setNotes(eligible ? "Eligible" : "No active rule satisfied");
+
+//         return resultRepo.save(res);
 //     }
 
+//     public TransferEvaluationResult getEvaluationById(Long id) {
+//         return resultRepo.findById(id)
+//                 .orElseThrow(() -> new RuntimeException("Evaluation not found"));
+//     }
 
+//     public List<TransferEvaluationResult> getEvaluationsForCourse(Long courseId) {
+//         return resultRepo.findBySourceCourseId(courseId);
+//     }
 // }
 package com.example.demo.service.impl;
 
-import java.util.*;
-import com.example.demo.entity.*;
-import com.example.demo.repository.*;
+import java.util.List;
 
-public class TransferEvaluationServiceImpl {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    private CourseRepository courseRepo;
-    private CourseContentTopicRepository topicRepo;
-    private TransferRuleRepository ruleRepo;
-    private TransferEvaluationResultRepository resultRepo;
+import com.example.demo.entity.TransferEvaluationResult;
+import com.example.demo.repository.TransferEvaluationResultRepository;
+import com.example.demo.service.TransferEvaluationService;
 
-    public TransferEvaluationResult evaluateTransfer(Long srcId, Long tgtId) {
+@Service
+public class TransferEvaluationServiceImpl implements TransferEvaluationService {
 
-        Course src = courseRepo.findById(srcId).orElseThrow();
-        Course tgt = courseRepo.findById(tgtId).orElseThrow();
+    @Autowired
+    private TransferEvaluationResultRepository repo;
 
-        if (!src.isActive() || !tgt.isActive())
-            throw new IllegalArgumentException("Course must be active");
+    @Override
+    public TransferEvaluationResult postData4(TransferEvaluationResult result) {
+        return repo.save(result);
+    }
 
-        List<CourseContentTopic> sTopics = topicRepo.findByCourseId(srcId);
-        List<CourseContentTopic> tTopics = topicRepo.findByCourseId(tgtId);
+    @Override
+    public List<TransferEvaluationResult> getAllData4() {
+        return repo.findAll();
+    }
 
-        double overlap = 0;
-        for (CourseContentTopic s : sTopics) {
-            for (CourseContentTopic t : tTopics) {
-                if (s.getTopicName().equalsIgnoreCase(t.getTopicName())) {
-                    overlap += Math.min(
-                        Optional.ofNullable(s.getWeightPercentage()).orElse(0.0),
-                        Optional.ofNullable(t.getWeightPercentage()).orElse(0.0)
-                    );
-                }
-            }
+    @Override
+    public TransferEvaluationResult getById(Long id) {
+        return repo.findById(id).orElse(null);
+    }
+
+    @Override
+    public TransferEvaluationResult updateData4(Long id, TransferEvaluationResult result) {
+        TransferEvaluationResult existing = repo.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setStatus(result.getStatus());
+            return repo.save(existing);
         }
-
-        TransferEvaluationResult res = new TransferEvaluationResult();
-        res.setOverlapPercentage(overlap);
-
-        List<TransferRule> rules =
-                ruleRepo.findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(
-                        src.getUniversity().getId(),
-                        tgt.getUniversity().getId());
-
-        boolean eligible = rules.stream().anyMatch(r ->
-                overlap >= r.getMinimumOverlapPercentage() &&
-                Math.abs(src.getCreditHours() - tgt.getCreditHours())
-                        <= Optional.ofNullable(r.getCreditHourTolerance()).orElse(0)
-        );
-
-        res.setIsEligibleForTransfer(eligible);
-        res.setNotes(eligible ? "Eligible" : "No active rule satisfied");
-
-        return resultRepo.save(res);
+        return null;
     }
 
-    public TransferEvaluationResult getEvaluationById(Long id) {
-        return resultRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Evaluation not found"));
-    }
-
-    public List<TransferEvaluationResult> getEvaluationsForCourse(Long courseId) {
-        return resultRepo.findBySourceCourseId(courseId);
+    @Override
+    public String DeleteData4(Long id) {
+        repo.deleteById(id);
+        return "Transfer Evaluation deleted successfully";
     }
 }

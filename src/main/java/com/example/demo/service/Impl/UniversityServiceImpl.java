@@ -40,43 +40,91 @@
 //     }
    
 // }
+// package com.example.demo.service.impl;
+
+// import java.util.*;
+// import com.example.demo.entity.University;
+// import com.example.demo.repository.UniversityRepository;
+
+// public class UniversityServiceImpl {
+
+//     private UniversityRepository repository;
+
+//     public University createUniversity(University u) {
+//         if (u.getName() == null || u.getName().isBlank())
+//             throw new IllegalArgumentException("Name required");
+
+//         repository.findByName(u.getName()).ifPresent(x -> {
+//             throw new IllegalArgumentException("University already exists");
+//         });
+//         return repository.save(u);
+//     }
+
+//     public University updateUniversity(Long id, University u) {
+//         University existing = repository.findById(id)
+//                 .orElseThrow(() -> new RuntimeException("University not found"));
+//         if (u.getName() != null)
+//             existing.setName(u.getName());
+//         return repository.save(existing);
+//     }
+
+//     public University getUniversityById(Long id) {
+//         return repository.findById(id)
+//                 .orElseThrow(() -> new RuntimeException("University not found"));
+//     }
+
+//     public void deactivateUniversity(Long id) {
+//         University u = repository.findById(id)
+//                 .orElseThrow(() -> new RuntimeException("University not found"));
+//         u.setActive(false);
+//         repository.save(u);
+//     }
+// }
 package com.example.demo.service.impl;
 
-import java.util.*;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.demo.entity.University;
 import com.example.demo.repository.UniversityRepository;
+import com.example.demo.service.UniversityService;
 
-public class UniversityServiceImpl {
+@Service
+public class UniversityServiceImpl implements UniversityService {
 
-    private UniversityRepository repository;
+    @Autowired
+    private UniversityRepository repo;
 
-    public University createUniversity(University u) {
-        if (u.getName() == null || u.getName().isBlank())
-            throw new IllegalArgumentException("Name required");
-
-        repository.findByName(u.getName()).ifPresent(x -> {
-            throw new IllegalArgumentException("University already exists");
-        });
-        return repository.save(u);
+    @Override
+    public University postData1(University university) {
+        return repo.save(university);
     }
 
-    public University updateUniversity(Long id, University u) {
-        University existing = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("University not found"));
-        if (u.getName() != null)
-            existing.setName(u.getName());
-        return repository.save(existing);
+    @Override
+    public List<University> getAllUniversities() {
+        return repo.findAll();
     }
 
+    @Override
     public University getUniversityById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("University not found"));
+        return repo.findById(id).orElse(null);
     }
 
-    public void deactivateUniversity(Long id) {
-        University u = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("University not found"));
-        u.setActive(false);
-        repository.save(u);
+    @Override
+    public University updateUniversity(Long id, University university) {
+        University existing = repo.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setName(university.getName());
+            return repo.save(existing);
+        }
+        return null;
+    }
+
+    @Override
+    public String DeleteData1(Long id) {
+        repo.deleteById(id);
+        return "University deleted successfully";
     }
 }

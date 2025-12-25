@@ -17,9 +17,13 @@ import com.example.demo.entity.TransferEvaluationResult;
 
 public interface TransferEvaluationService {
 
-    TransferEvaluationResult evaluateTransfer(Long sourceCourseId, Long targetCourseId);
+    TransferEvaluationResult postData4(TransferEvaluationResult result);
 
-    TransferEvaluationResult getEvaluationById(Long id);
+    List<TransferEvaluationResult> getAllData4();
 
-    List<TransferEvaluationResult> getEvaluationsForCourse(Long courseId);
+    TransferEvaluationResult getById(Long id);
+
+    TransferEvaluationResult updateData4(Long id, TransferEvaluationResult result);
+
+    String DeleteData4(Long id);
 }
