@@ -108,49 +108,106 @@
 // }
 package com.example.demo.service.impl;
 
-import java.util.List;
-
+import com.example.demo.entity.*;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.*;
+import com.example.demo.service.TransferEvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.example.demo.entity.TransferEvaluationResult;
-import com.example.demo.repository.TransferEvaluationResultRepository;
-import com.example.demo.service.TransferEvaluationService;
+import java.util.List;
 
 @Service
 public class TransferEvaluationServiceImpl implements TransferEvaluationService {
 
     @Autowired
-    private TransferEvaluationResultRepository repo;
+    private CourseRepository courseRepo;
+
+    @Autowired
+    private CourseContentTopicRepository topicRepo;
+
+    @Autowired
+    private TransferRuleRepository ruleRepo;
+
+    @Autowired
+    private TransferEvaluationResultRepository resultRepo;
 
     @Override
-    public TransferEvaluationResult postData4(TransferEvaluationResult result) {
-        return repo.save(result);
-    }
+    public TransferEvaluationResult evaluateTransfer(Long sourceCourseId, Long targetCourseId) {
+        Course source = courseRepo.findById(sourceCourseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Source course not found"));
+        Course target = courseRepo.findById(targetCourseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Target course not found"));
 
-    @Override
-    public List<TransferEvaluationResult> getAllData4() {
-        return repo.findAll();
+        if (!source.isActive() || !target.isActive()) {
+            throw new IllegalArgumentException("Both courses must be active");
+        }
+
+        List<CourseContentTopic> sourceTopics = topicRepo.findByCourseId(sourceCourseId);
+        List<CourseContentTopic> targetTopics = topicRepo.findByCourseId(targetCourseId);
+
+        double overlap = 0.0;
+        double totalSourceWeight = sourceTopics.stream()
+                .mapToDouble(CourseContentTopic::getWeightPercentage)
+                .sum();
+        if (totalSourceWeight == 0) totalSourceWeight = 100.0;
+
+        for (CourseContentTopic st : sourceTopics) {
+            targetTopics.stream()
+                    .filter(tt -> tt.getTopicName().equalsIgnoreCase(st.getTopicName()))
+                    .findFirst()
+                    .ifPresent(tt -> overlap += Math.min(st.getWeightPercentage(), tt.getWeightPercentage()));
+        }
+
+        double overlapPercentage = (overlap / totalSourceWeight) * 100;
+
+        List<TransferRule> rules = ruleRepo.findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(
+                source.getUniversity().getId(), target.getUniversity().getId());
+
+        TransferEvaluationResult result = new TransferEvaluationResult();
+        result.setSourceCourse(source);
+        result.setTargetCourse(target);
+        result.setOverlapPercentage(overlapPercentage);
+
+        boolean eligible = false;
+        StringBuilder notes = new StringBuilder();
+
+        if (rules.isEmpty()) {
+            notes.append("No active transfer rule found between universities.");
+        } else {
+            for (TransferRule rule : rules) {
+                boolean creditOk = Math.abs(source.getCreditHours() - target.getCreditHours()) <= rule.getCreditHourTolerance();
+                boolean overlapOk = overlapPercentage >= rule.getMinimumOverlapPercentage();
+                if (creditOk && overlapOk) {
+                    eligible = true;
+                    break;
+                } else {
+                    notes.append("Rule not satisfied: requires ")
+                            .append(rule.getMinimumOverlapPercentage())
+                            .append("% overlap and ±")
+                            .append(rule.getCreditHourTolerance())
+                            .append(" credit hours. ");
+                }
+            }
+        }
+
+        if (!eligible && notes.length() == 0) {
+            notes.append("No active rule satisfied.");
+        }
+
+        result.setIsEligibleForTransfer(eligible);
+        result.setNotes(notes.toString());
+
+        return resultRepo.save(result);
     }
 
     @Override
     public TransferEvaluationResult getEvaluationById(Long id) {
-        return repo.findById(id).orElse(null);
+        return resultRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Evaluation result not found"));
     }
 
     @Override
-    public TransferEvaluationResult updateData4(Long id, TransferEvaluationResult result) {
-        // ✅ SAFE update: just ensure ID exists, then save
-        if (repo.existsById(id)) {
-            result.setId(id);
-            return repo.save(result);
-        }
-        return null;
-    }
-
-    @Override
-    public String DeleteData4(Long id) {
-        repo.deleteById(id);
-        return "Transfer evaluation deleted successfully";
+    public List<TransferEvaluationResult> getEvaluationsForCourse(Long courseId) {
+        return resultRepo.findBySourceCourseId(courseId);
     }
 }

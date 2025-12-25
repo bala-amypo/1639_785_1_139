@@ -82,49 +82,53 @@
 // }
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.University;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UniversityRepository;
 import com.example.demo.service.UniversityService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
 
     @Autowired
-    private UniversityRepository repo;
+    private UniversityRepository repository;
 
     @Override
     public University createUniversity(University university) {
-        return repo.save(university);
-    }
-
-    @Override
-    public List<University> getAllUniversities() {
-        return repo.findAll();
-    }
-
-    @Override
-    public University getUniversityById(Long id) {
-        return repo.findById(id).orElse(null);
+        if (university.getName() == null || university.getName().isBlank()) {
+            throw new IllegalArgumentException("Name is required");
+        }
+        repository.findByName(university.getName()).ifPresent(u -> {
+            throw new IllegalArgumentException("University with this name already exists");
+        });
+        return repository.save(university);
     }
 
     @Override
     public University updateUniversity(Long id, University university) {
-        University existing = repo.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setName(university.getName());
-            return repo.save(existing);
-        }
-        return null;
+        University existing = getUniversityById(id);
+        existing.setName(university.getName());
+        return repository.save(existing);
     }
 
     @Override
-    public String DeleteData1(Long id) {
-        repo.deleteById(id);
-        return "University deleted successfully";
+    public University getUniversityById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("University not found with id: " + id));
+    }
+
+    @Override
+    public void deactivateUniversity(Long id) {
+        University u = getUniversityById(id);
+        u.setActive(false);
+        repository.save(u);
+    }
+
+    @Override
+    public List<University> getAllUniversities() {
+        return repository.findAll();
     }
 }

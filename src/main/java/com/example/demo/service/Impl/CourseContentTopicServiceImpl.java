@@ -129,61 +129,56 @@
 // }
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
-import com.example.demo.entity.Course;
 import com.example.demo.entity.CourseContentTopic;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.CourseContentTopicRepository;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.service.CourseContentTopicService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class CourseContentTopicServiceImpl implements CourseContentTopicService {
 
-    private final CourseContentTopicRepository topicRepo;
-    private final CourseRepository courseRepo;
+    @Autowired
+    private CourseContentTopicRepository repo;
 
-    public CourseContentTopicServiceImpl(
-            CourseContentTopicRepository topicRepo,
-            CourseRepository courseRepo) {
-        this.topicRepo = topicRepo;
-        this.courseRepo = courseRepo;
-    }
+    @Autowired
+    private CourseRepository courseRepo;
 
     @Override
-    public CourseContentTopic create(Long courseId, CourseContentTopic topic) {
-        Course course = courseRepo.findById(courseId)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Course not found"));
-
-        topic.setCourse(course);
-        return topicRepo.save(topic);
-    }
-
-    @Override
-    public List<CourseContentTopic> getByCourse(Long courseId) {
-        return topicRepo.findByCourseId(courseId);
-    }
-
-    @Override
-    public CourseContentTopic update(Long id, CourseContentTopic topic) {
-        CourseContentTopic existing = topicRepo.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Topic not found"));
-
-        // ✅ FIXED: correct getter
-        existing.setTitle(topic.getTitle());
-
-        return topicRepo.save(existing);
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!topicRepo.existsById(id)) {
-            throw new ResponseStatusException(NOT_FOUND, "Topic not found");
+    public CourseContentTopic createTopic(CourseContentTopic topic) {
+        if (topic.getTopicName() == null || topic.getTopicName().isBlank()) {
+            throw new IllegalArgumentException("Topic name is required");
         }
-        topicRepo.deleteById(id);
+        if (topic.getWeightPercentage() < 0 || topic.getWeightPercentage() > 100) {
+            throw new IllegalArgumentException("Weight percentage must be between 0 and 100");
+        }
+        courseRepo.findById(topic.getCourse().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+        return repo.save(topic);
+    }
+
+    @Override
+    public CourseContentTopic updateTopic(Long id, CourseContentTopic topic) {
+        CourseContentTopic existing = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Topic not found"));
+        existing.setTopicName(topic.getTopicName());
+        existing.setWeightPercentage(topic.getWeightPercentage());
+        return repo.save(existing);
+    }
+
+    @Override
+    public CourseContentTopic getTopicById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Topic not found"));
+    }
+
+    @Override
+    public List<CourseContentTopic> getTopicsForCourse(Long courseId) {
+        courseRepo.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+        return repo.findByCourseId(courseId);
     }
 }
