@@ -134,10 +134,10 @@ public class TransferRuleServiceImpl implements TransferRuleService {
 
     @Override
     public TransferRule updateRule(Long id, TransferRule rule) {
-        TransferRule existing = repo.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setDescription(rule.getDescription()); // ✅ valid field
-            return repo.save(existing);
+        // ✅ SAFE update: overwrite existing record
+        if (repo.existsById(id)) {
+            rule.setId(id);
+            return repo.save(rule);
         }
         return null;
     }

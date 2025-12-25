@@ -140,10 +140,10 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService 
 
     @Override
     public TransferEvaluationResult updateData4(Long id, TransferEvaluationResult result) {
-        TransferEvaluationResult existing = repo.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setResult(result.getResult()); // ✅ valid field
-            return repo.save(existing);
+        // ✅ SAFE update: just ensure ID exists, then save
+        if (repo.existsById(id)) {
+            result.setId(id);
+            return repo.save(result);
         }
         return null;
     }
