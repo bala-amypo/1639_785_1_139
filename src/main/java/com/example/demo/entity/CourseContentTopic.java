@@ -24,7 +24,7 @@ public class CourseContentTopic{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="column_id",unique=true)
     private Long id;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="course_id",nullable=false)
     private Course course;
     @NotBlank(message="Topic name")
