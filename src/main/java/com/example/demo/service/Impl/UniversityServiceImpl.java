@@ -88,7 +88,6 @@ import com.example.demo.repository.UniversityRepository;
 import com.example.demo.service.UniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -110,8 +109,7 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Override
     public University updateUniversity(Long id, University university) {
-        University existing = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("University", id));
+        University existing = getUniversityById(id);
         existing.setName(university.getName());
         return repository.save(existing);
     }
@@ -119,13 +117,12 @@ public class UniversityServiceImpl implements UniversityService {
     @Override
     public University getUniversityById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("University", id));
+                .orElseThrow(() -> new ResourceNotFoundException("University not found with id: " + id));
     }
 
     @Override
     public void deactivateUniversity(Long id) {
-        University u = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("University", id));
+        University u = getUniversityById(id);
         u.setActive(false);
         repository.save(u);
     }

@@ -136,7 +136,6 @@ import com.example.demo.repository.CourseRepository;
 import com.example.demo.service.CourseContentTopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -157,14 +156,14 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService 
             throw new IllegalArgumentException("Weight percentage must be between 0 and 100");
         }
         courseRepo.findById(topic.getCourse().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Course", topic.getCourse().getId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
         return repo.save(topic);
     }
 
     @Override
     public CourseContentTopic updateTopic(Long id, CourseContentTopic topic) {
         CourseContentTopic existing = repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Topic", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Topic not found"));
         existing.setTopicName(topic.getTopicName());
         existing.setWeightPercentage(topic.getWeightPercentage());
         return repo.save(existing);
@@ -173,13 +172,13 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService 
     @Override
     public CourseContentTopic getTopicById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Topic", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Topic not found"));
     }
 
     @Override
     public List<CourseContentTopic> getTopicsForCourse(Long courseId) {
         courseRepo.findById(courseId)
-                .orElseThrow(() -> new ResourceNotFoundException("Course", courseId));
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
         return repo.findByCourseId(courseId);
     }
 }

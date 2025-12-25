@@ -12,11 +12,18 @@
 // }
 package com.example.demo.service;
 
-import com.example.demo.entity.TransferEvaluationResult;
 import java.util.List;
+import com.example.demo.entity.TransferEvaluationResult;
 
 public interface TransferEvaluationService {
-    TransferEvaluationResult evaluateTransfer(Long sourceCourseId, Long targetCourseId);
+
+    TransferEvaluationResult postData4(TransferEvaluationResult result);
+
+    List<TransferEvaluationResult> getAllData4();
+
     TransferEvaluationResult getEvaluationById(Long id);
-    List<TransferEvaluationResult> getEvaluationsForCourse(Long courseId);
+
+    TransferEvaluationResult updateData4(Long id, TransferEvaluationResult result);
+
+    String DeleteData4(Long id);
 }
