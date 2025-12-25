@@ -17,14 +17,13 @@ import com.example.demo.entity.TransferRule;
 
 public interface TransferRuleService {
 
-    TransferRule postData5(TransferRule rule);
+    TransferRule createRule(TransferRule rule);
 
     List<TransferRule> getAllData5();
 
-    TransferRule getById(Long id);
+    TransferRule getRuleById(Long id);
 
-    TransferRule updateData5(Long id, TransferRule rule);
+    TransferRule updateRule(Long id, TransferRule rule);
 
     String DeleteData5(Long id);
 }
-

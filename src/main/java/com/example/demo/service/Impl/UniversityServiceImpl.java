@@ -98,7 +98,7 @@ public class UniversityServiceImpl implements UniversityService {
     private UniversityRepository repo;
 
     @Override
-    public University postData1(University university) {
+    public University createUniversity(University university) {
         return repo.save(university);
     }
 

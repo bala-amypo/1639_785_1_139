@@ -17,7 +17,7 @@ import com.example.demo.entity.Course;
 
 public interface CourseService {
 
-    Course postData3(Course course);
+    Course createCourse(Course course);
 
     List<Course> getAllData3();
 

@@ -17,7 +17,7 @@ import com.example.demo.entity.University;
 
 public interface UniversityService {
 
-    University postData1(University university);
+    University createUniversity(University university);
 
     List<University> getAllUniversities();
 
@@ -27,4 +27,5 @@ public interface UniversityService {
 
     String DeleteData1(Long id);
 }
+
 

@@ -17,13 +17,13 @@ import com.example.demo.entity.CourseContentTopic;
 
 public interface CourseContentTopicService {
 
-    CourseContentTopic postData2(CourseContentTopic topic);
+    CourseContentTopic createTopic(CourseContentTopic topic);
 
     List<CourseContentTopic> getAllData2();
 
-    CourseContentTopic getById(Long id);
+    CourseContentTopic getTopicById(Long id);
 
-    CourseContentTopic updateData2(Long id, CourseContentTopic topic);
+    CourseContentTopic updateTopic(Long id, CourseContentTopic topic);
 
     String DeleteData2(Long id);
 }

@@ -103,7 +103,7 @@ public class CourseServiceImpl implements CourseService {
     private CourseRepository repo;
 
     @Override
-    public Course postData3(Course course) {
+    public Course createCourse(Course course) {
         return repo.save(course);
     }
 

@@ -21,7 +21,7 @@ public interface TransferEvaluationService {
 
     List<TransferEvaluationResult> getAllData4();
 
-    TransferEvaluationResult getById(Long id);
+    TransferEvaluationResult getEvaluationById(Long id);
 
     TransferEvaluationResult updateData4(Long id, TransferEvaluationResult result);
 
