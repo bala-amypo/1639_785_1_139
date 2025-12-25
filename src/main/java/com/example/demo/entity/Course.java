@@ -111,21 +111,19 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "course")
 public class Course {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;          // Use getName() in services
-    private String description;   // Use getDescription() in services
+    @Column(nullable = false)
+    private String name;          // ✅ NOT courseName
 
-    @ManyToOne
-    @JoinColumn(name = "university_id")
-    private University university;
+    private String description;
 }
