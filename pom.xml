@@ -30,6 +30,12 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
+    <dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <optional>true</optional>
+</dependency>
 	<!-- MYSQL -->
 	<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
 <dependency>
