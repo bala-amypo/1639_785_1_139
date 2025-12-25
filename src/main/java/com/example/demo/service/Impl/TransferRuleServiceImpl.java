@@ -69,10 +69,10 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     private TransferRuleRepository repo;
 
     @Override
-    public TransferRule createRule(TransferRule rule) {
+    public TransferRule createRule(TransferRule rule){
         return repo.save(rule);
     }
-
+    
     @Override
     public TransferRule updateRule(Long id, TransferRule rule) {
         TransferRule existingRule = repo.findById(id)
