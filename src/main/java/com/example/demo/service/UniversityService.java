@@ -12,15 +12,19 @@
 // }
 package com.example.demo.service;
 
+import java.util.List;
 import com.example.demo.entity.University;
 
 public interface UniversityService {
 
-    University createUniversity(University university);
+    University postData1(University university);
 
-    University updateUniversity(Long id, University university);
+    List<University> getAllUniversities();
 
     University getUniversityById(Long id);
 
-    void deactivateUniversity(Long id);
+    University updateUniversity(Long id, University university);
+
+    String DeleteData1(Long id);
 }
+

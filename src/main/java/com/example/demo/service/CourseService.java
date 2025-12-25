@@ -17,13 +17,13 @@ import com.example.demo.entity.Course;
 
 public interface CourseService {
 
-    Course createCourse(Course course);
+    Course postData3(Course course);
 
-    Course updateCourse(Long id, Course course);
+    List<Course> getAllData3();
 
     Course getCourseById(Long id);
 
-    void deactivateCourse(Long id);
+    Course updateCourse(Long id, Course course);
 
-    List<Course> getCoursesByUniversity(Long universityId);
+    String DeleteData3(Long id);
 }
