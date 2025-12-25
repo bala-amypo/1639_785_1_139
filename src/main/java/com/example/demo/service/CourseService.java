@@ -1,14 +1,31 @@
+// // package com.example.demo.service;
+
+// // import java.util.List;
+// // import com.example.demo.entity.Course;
+
+// // public interface CourseService{
+// //     Course createCourse(Course course);
+// //     Course updateCourse(Long id,Course course);
+// //     Course getCourseById(Long id);
+// //     List<Course>getAllData3();
+// //     String  DeleteData3(Long id);                                      
+// // }
 // package com.example.demo.service;
 
 // import java.util.List;
 // import com.example.demo.entity.Course;
 
-// public interface CourseService{
+// public interface CourseService {
+
 //     Course createCourse(Course course);
-//     Course updateCourse(Long id,Course course);
+
+//     List<Course> getAllData3();
+
 //     Course getCourseById(Long id);
-//     List<Course>getAllData3();
-//     String  DeleteData3(Long id);                                      
+
+//     Course updateCourse(Long id, Course course);
+
+//     String DeleteData3(Long id);
 // }
 package com.example.demo.service;
 
@@ -19,11 +36,11 @@ public interface CourseService {
 
     Course createCourse(Course course);
 
-    List<Course> getAllData3();
-
     Course getCourseById(Long id);
+
+    List<Course> getAllCourses();
 
     Course updateCourse(Long id, Course course);
 
-    String DeleteData3(Long id);
+    void deleteCourse(Long id);
 }
