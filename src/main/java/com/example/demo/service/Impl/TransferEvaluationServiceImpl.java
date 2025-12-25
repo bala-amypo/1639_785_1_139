@@ -114,6 +114,7 @@ import com.example.demo.repository.*;
 import com.example.demo.service.TransferEvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -134,9 +135,10 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService 
     @Override
     public TransferEvaluationResult evaluateTransfer(Long sourceCourseId, Long targetCourseId) {
         Course source = courseRepo.findById(sourceCourseId)
-                .orElseThrow(() -> new ResourceNotFoundException("Source course not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Source course", sourceCourseId));
+
         Course target = courseRepo.findById(targetCourseId)
-                .orElseThrow(() -> new ResourceNotFoundException("Target course not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Target course", targetCourseId));
 
         if (!source.isActive() || !target.isActive()) {
             throw new IllegalArgumentException("Both courses must be active");
@@ -203,7 +205,7 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService 
     @Override
     public TransferEvaluationResult getEvaluationById(Long id) {
         return resultRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Evaluation result not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Evaluation result", id));
     }
 
     @Override

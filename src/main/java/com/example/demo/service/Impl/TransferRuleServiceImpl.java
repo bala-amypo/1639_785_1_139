@@ -109,6 +109,7 @@ import com.example.demo.repository.UniversityRepository;
 import com.example.demo.service.TransferRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -129,15 +130,16 @@ public class TransferRuleServiceImpl implements TransferRuleService {
             throw new IllegalArgumentException("Credit hour tolerance must be >= 0");
         }
         univRepo.findById(rule.getSourceUniversity().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Source university not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Source university", rule.getSourceUniversity().getId()));
         univRepo.findById(rule.getTargetUniversity().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Target university not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Target university", rule.getTargetUniversity().getId()));
         return repo.save(rule);
     }
 
     @Override
     public TransferRule updateRule(Long id, TransferRule rule) {
-        TransferRule existing = getRuleById(id);
+        TransferRule existing = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rule", id));
         existing.setMinimumOverlapPercentage(rule.getMinimumOverlapPercentage());
         existing.setCreditHourTolerance(rule.getCreditHourTolerance());
         return repo.save(existing);
@@ -146,12 +148,13 @@ public class TransferRuleServiceImpl implements TransferRuleService {
     @Override
     public TransferRule getRuleById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Rule", id));
     }
 
     @Override
     public void deactivateRule(Long id) {
-        TransferRule r = getRuleById(id);
+        TransferRule r = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rule", id));
         r.setActive(false);
         repo.save(r);
     }

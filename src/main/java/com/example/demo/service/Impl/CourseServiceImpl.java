@@ -239,6 +239,7 @@ import com.example.demo.repository.UniversityRepository;
 import com.example.demo.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -256,7 +257,7 @@ public class CourseServiceImpl implements CourseService {
             throw new IllegalArgumentException("Credit hours must be > 0");
         }
         univRepo.findById(course.getUniversity().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("University not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("University", course.getUniversity().getId()));
 
         repo.findByUniversityIdAndCourseCode(course.getUniversity().getId(), course.getCourseCode())
                 .ifPresent(c -> {
@@ -268,7 +269,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course updateCourse(Long id, Course course) {
-        Course existing = getCourseById(id);
+        Course existing = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Course", id));
         existing.setCourseName(course.getCourseName());
         existing.setCreditHours(course.getCreditHours());
         existing.setCourseCode(course.getCourseCode());
@@ -278,12 +280,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course getCourseById(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Course", id));
     }
 
     @Override
     public void deactivateCourse(Long id) {
-        Course c = getCourseById(id);
+        Course c = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Course", id));
         c.setActive(false);
         repo.save(c);
     }
