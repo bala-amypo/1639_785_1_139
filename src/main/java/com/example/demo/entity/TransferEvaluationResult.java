@@ -86,27 +86,22 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class TransferEvaluationResult {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String result;
-
     @ManyToOne
-    @JoinColumn(name = "source_course_id")
     private Course sourceCourse;
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @ManyToOne
+    private Course targetCourse;
 
-    public String getResult() { return result; }
-    public void setResult(String result) { this.result = result; }
-
-    public Course getSourceCourse() { return sourceCourse; }
-    public void setSourceCourse(Course sourceCourse) { this.sourceCourse = sourceCourse; }
+    private Double overlapPercentage;
+    private boolean isEligibleForTransfer;
+    private String notes;
 }

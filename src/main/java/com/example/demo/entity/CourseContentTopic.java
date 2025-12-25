@@ -32,77 +32,7 @@
 // // //     @Size(min=0,max=100,message="0-100")
 // // //     private Double weightPercentage;
 // // // }
-// // package com.example.demo.entity;
 
-// // public class CourseContentTopic {
-// //     private Long id;
-// //     private String topicName;
-// //     private Double weightPercentage;
-// //     private Course course;
-
-// //     public Long getId() { return id; }
-// //     public void setId(Long id) { this.id = id; }
-
-// //     public String getTopicName() { return topicName; }
-// //     public void setTopicName(String topicName) { this.topicName = topicName; }
-
-// //     public Double getWeightPercentage() { return weightPercentage; }
-// //     public void setWeightPercentage(Double weightPercentage) { this.weightPercentage = weightPercentage; }
-
-// //     public Course getCourse() { return course; }
-// //     public void setCourse(Course course) { this.course = course; }
-// // }
-// package com.example.demo.entity;
-
-// import jakarta.persistence.Entity;
-// import jakarta.persistence.GeneratedValue;
-// import jakarta.persistence.GenerationType;
-// import jakarta.persistence.Id;
-// import jakarta.persistence.Table;
-// import jakarta.persistence.Column;
-
-// @Entity
-// @Table(name = "course_content_topic")
-// public class CourseContentTopic {
-
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
-
-//     @Column(nullable = false)
-//     private String topicName;
-
-//     private String description;
-
-//     // ✅ REQUIRED: no-args constructor
-//     public CourseContentTopic() {
-//     }
-
-//     // getters & setters
-//     public Long getId() {
-//         return id;
-//     }
-
-//     public void setId(Long id) {
-//         this.id = id;
-//     }
-
-//     public String getTopicName() {
-//         return topicName;
-//     }
-
-//     public void setTopicName(String topicName) {
-//         this.topicName = topicName;
-//     }
-
-//     public String getDescription() {
-//         return description;
-//     }
-
-//     public void setDescription(String description) {
-//         this.description = description;
-//     }
-// }
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
@@ -110,17 +40,15 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "course_content_topic")
 public class CourseContentTopic {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;          // ✅ NOT topicName
+    private String topicName;
+    private double weightPercentage;
 
-    @ManyToOne
-    @JoinColumn(name = "course_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
     private Course course;
 }

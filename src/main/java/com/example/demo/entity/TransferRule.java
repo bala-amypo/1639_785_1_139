@@ -65,25 +65,24 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class TransferRule {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String ruleName;
+    private double minimumOverlapPercentage;
+    private int creditHourTolerance = 0;
+    private boolean active = true;
 
-    private String description;
+    @ManyToOne
+    @JoinColumn(name = "source_university_id")
+    private University sourceUniversity;
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getRuleName() { return ruleName; }
-    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    @ManyToOne
+    @JoinColumn(name = "target_university_id")
+    private University targetUniversity;
 }
