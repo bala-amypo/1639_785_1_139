@@ -89,3 +89,56 @@
 //         return Set.copyOf(claims.get("roles", Set.class));
 //     }
 // }
+
+
+
+
+
+
+package com.example.demo.security;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Date;
+import java.util.Set;
+
+public class JwtTokenProvider {
+
+    private static final String SECRET = "demo-secret-key";
+    private static final long EXPIRATION = 86400000L;
+
+    public String createToken(Long userId, String email, Set<String> roles) {
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("userId", userId)
+                .claim("roles", roles)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .signWith(SignatureAlgorithm.HS256, SECRET)
+                .compact();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getEmail(String token) {
+        return Jwts.parser().setSigningKey(SECRET)
+                .parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public Long getUserId(String token) {
+        return Jwts.parser().setSigningKey(SECRET)
+                .parseClaimsJws(token).getBody().get("userId", Long.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Set<String> getRoles(String token) {
+        return (Set<String>) Jwts.parser().setSigningKey(SECRET)
+                .parseClaimsJws(token).getBody().get("roles", Set.class);
+    }
+}
