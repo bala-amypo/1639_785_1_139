@@ -14,7 +14,7 @@ public class SpringbootApplication {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-		if (encoder.matches(1234, 6b7461d6-94bd-4330-b38d-52cd96fbff77)) {
+		if (encoder.matches("1234","6b7461d6-94bd-4330-b38d-52cd96fbff77")) {
 			System.err.println("Password Matched");
 		} else {
 			System.out.println("No Match ");
