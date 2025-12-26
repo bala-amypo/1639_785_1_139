@@ -26,10 +26,10 @@ public class CourseContentTopicController{
     public List<CourseContentTopic> getval(){
         return ser.getAllData2();
     }
-    @DeleteMapping("/delete/{id}")
-    public String del(@PathVariable Long id){
-        return ser.DeleteData2(id);
-    }
+    // @DeleteMapping("/delete/{id}")
+    // public String del(@PathVariable Long id){
+    //     return ser.DeleteData2(id);
+    // }
     @GetMapping("/find/{id}")
     public CourseContentTopic find(@PathVariable Long id){
         return ser.getTopicById(id);
