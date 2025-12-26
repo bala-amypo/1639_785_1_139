@@ -95,81 +95,155 @@
 
 
 
+
+
+
+
+// package com.example.demo.security;
+
+// import io.jsonwebtoken.Jwts;
+// import io.jsonwebtoken.SignatureAlgorithm;
+// import io.jsonwebtoken.security.Keys;
+
+// import javax.crypto.SecretKey;
+// import java.nio.charset.StandardCharsets;
+// import java.util.Date;
+// import java.util.HashSet;
+// import java.util.List;
+// import java.util.Set;
+
+// public class JwtTokenProvider {
+
+//     private static final String SECRET = "my-demo-secret-key-for-jwt-1234567890";
+//     private static final long EXPIRATION = 86400000L; 
+
+//     private SecretKey getSigningKey() {
+//         return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+//     }
+
+//     public String createToken(Long userId, String email, Set<String> roles) {
+//         Date now = new Date();
+//         Date expiry = new Date(now.getTime() + EXPIRATION);
+
+//         return Jwts.builder()
+//                 .setSubject(email)
+//                 .claim("userId", userId)
+//                 .claim("roles", roles)
+//                 .setIssuedAt(now)
+//                 .setExpiration(expiry)
+//                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+//                 .compact();
+//     }
+
+//     public boolean validateToken(String token) {
+//         try {
+//             Jwts.parserBuilder()
+//                     .setSigningKey(getSigningKey())
+//                     .build()
+//                     .parseClaimsJws(token);
+//             return true;
+//         } catch (Exception ex) {
+//             return false;
+//         }
+//     }
+
+//     public String getEmail(String token) {
+//         return Jwts.parserBuilder()
+//                 .setSigningKey(getSigningKey())
+//                 .build()
+//                 .parseClaimsJws(token)
+//                 .getBody()
+//                 .getSubject();
+//     }
+
+//     public Long getUserId(String token) {
+//         return Jwts.parserBuilder()
+//                 .setSigningKey(getSigningKey())
+//                 .build()
+//                 .parseClaimsJws(token)
+//                 .getBody()
+//                 .get("userId", Long.class);
+//     }
+
+//     @SuppressWarnings("unchecked")
+//     public Set<String> getRoles(String token) {
+//         // JJWT deserializes the claim as a List, so read it as List first
+//         List<String> list = (List<String>) Jwts.parserBuilder()
+//                 .setSigningKey(getSigningKey())
+//                 .build()
+//                 .parseClaimsJws(token)
+//                 .getBody()
+//                 .get("roles", List.class);
+//         return new HashSet<>(list);
+//     }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
 package com.example.demo.security;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
+@Component  // This makes it a Spring Bean - FIXES THE ERROR
 public class JwtTokenProvider {
 
-    private static final String SECRET = "my-demo-secret-key-for-jwt-1234567890";
-    private static final long EXPIRATION = 86400000L; 
+    @Value("${app.jwt-secret}")
+    private String jwtSecret;
+
+    @Value("${app.jwt-expiration-milliseconds:86400000}")
+    private int jwtExpirationInMs;
 
     private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    public String createToken(Long userId, String email, Set<String> roles) {
+    public String generateToken(Authentication authentication) {
+        String username = authentication.getName();
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + EXPIRATION);
+        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         return Jwts.builder()
-                .setSubject(email)
-                .claim("userId", userId)
-                .claim("roles", roles)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .subject(username)
+                .issuedAt(now)
+                .expiration(expiryDate)
+                .signWith(getSigningKey())
                 .compact();
     }
 
-    public boolean validateToken(String token) {
+    public String getUsernameFromJWT(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claims.getSubject();
+    }
+
+    public boolean validateToken(String authToken) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
+            Jwts.parser()
+                    .verifyWith(getSigningKey())
                     .build()
-                    .parseClaimsJws(token);
+                    .parseSignedClaims(authToken);
             return true;
         } catch (Exception ex) {
             return false;
         }
-    }
-
-    public String getEmail(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    public Long getUserId(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("userId", Long.class);
-    }
-
-    @SuppressWarnings("unchecked")
-    public Set<String> getRoles(String token) {
-        // JJWT deserializes the claim as a List, so read it as List first
-        List<String> list = (List<String>) Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("roles", List.class);
-        return new HashSet<>(list);
     }
 }
