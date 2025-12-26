@@ -8,63 +8,63 @@
 
 
 
-package com.example.demo.service.impl;
+// package com.example.demo.service.impl;
 
-import java.util.List;
+// import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.TransferRule;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.TransferRuleRepository;
-import com.example.demo.service.TransferRuleService;
+// import com.example.demo.entity.TransferRule;
+// import com.example.demo.exception.ResourceNotFoundException;
+// import com.example.demo.repository.TransferRuleRepository;
+// import com.example.demo.service.TransferRuleService;
 
-@Service
-public class TransferRuleServiceImpl implements TransferRuleService {
+// @Service
+// public class TransferRuleServiceImpl implements TransferRuleService {
 
-    @Autowired
-    private TransferRuleRepository repo;
+//     @Autowired
+//     private TransferRuleRepository repo;
 
-    @Override
-    public TransferRule createRule(TransferRule rule){
-        return repo.save(rule);
-    }
+//     @Override
+//     public TransferRule createRule(TransferRule rule){
+//         return repo.save(rule);
+//     }
     
-    @Override
-    public TransferRule updateRule(Long id, TransferRule rule) {
-        TransferRule existingRule = repo.findById(id)
-                .orElseThrow(() -> 
-                    new ResourceNotFoundException("TransferRule not found with id " + id)
-                );
+//     @Override
+//     public TransferRule updateRule(Long id, TransferRule rule) {
+//         TransferRule existingRule = repo.findById(id)
+//                 .orElseThrow(() -> 
+//                     new ResourceNotFoundException("TransferRule not found with id " + id)
+//                 );
 
-        rule.setId(existingRule.getId());
-        return repo.save(rule);
-    }
+//         rule.setId(existingRule.getId());
+//         return repo.save(rule);
+//     }
 
-    @Override
-    public TransferRule getRuleById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> 
-                    new ResourceNotFoundException("TransferRule not found with id " + id)
-                );
-    }
+//     @Override
+//     public TransferRule getRuleById(Long id) {
+//         return repo.findById(id)
+//                 .orElseThrow(() -> 
+//                     new ResourceNotFoundException("TransferRule not found with id " + id)
+//                 );
+//     }
 
-    @Override
-    public String DeleteData5(Long id) {
-        if (!repo.existsById(id)) {
-            throw new ResourceNotFoundException(
-                    "TransferRule not found with id " + id);
-        }
-        repo.deleteById(id);
-        return "Deleted successfully";
-    }
+//     @Override
+//     public String DeleteData5(Long id) {
+//         if (!repo.existsById(id)) {
+//             throw new ResourceNotFoundException(
+//                     "TransferRule not found with id " + id);
+//         }
+//         repo.deleteById(id);
+//         return "Deleted successfully";
+//     }
 
-    @Override
-    public List<TransferRule> getAllData5() {
-        return repo.findAll();
-    }
-}
+//     @Override
+//     public List<TransferRule> getAllData5() {
+//         return repo.findAll();
+//     }
+// }
 
 
 

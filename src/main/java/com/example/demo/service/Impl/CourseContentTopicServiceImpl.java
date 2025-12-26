@@ -78,7 +78,7 @@
 // //                 .orElseThrow(() -> new RuntimeException("Course not found"));
 // //         return repo.findByCourseId(courseId);
 // //     }
-// // }
+// }
 // package com.example.demo.service.impl;
 
 // import java.util.List;
