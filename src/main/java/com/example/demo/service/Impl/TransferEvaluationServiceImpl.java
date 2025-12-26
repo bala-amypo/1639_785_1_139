@@ -157,82 +157,32 @@ public class TransferEvaluationServiceImpl implements TransferEvaluationService 
     private TransferRuleRepository ruleRepo;
     private TransferEvaluationResultRepository resultRepo;
 
+    // existing evaluateTransfer, getEvaluationById, getEvaluationsForCourse stay as before
+
     @Override
-    public TransferEvaluationResult evaluateTransfer(Long sourceCourseId, Long targetCourseId) {
-        Course src = courseRepo.findById(sourceCourseId)
-                .orElseThrow(() -> new RuntimeException("not found"));
-        Course tgt = courseRepo.findById(targetCourseId)
-                .orElseThrow(() -> new RuntimeException("not found"));
-
-        if (!Boolean.TRUE.equals(src.isActive()) || !Boolean.TRUE.equals(tgt.isActive())) {
-            throw new IllegalArgumentException("active");
-        }
-
-        List<CourseContentTopic> srcTopics = topicRepo.findByCourseId(sourceCourseId);
-        List<CourseContentTopic> tgtTopics = topicRepo.findByCourseId(targetCourseId);
-
-        double totalSource = srcTopics.stream()
-                .mapToDouble(t -> t.getWeightPercentage() == null ? 0.0 : t.getWeightPercentage())
-                .sum();
-        if (totalSource == 0) {
-            totalSource = 100.0;
-        }
-
-        double matched = 0.0;
-        for (CourseContentTopic s : srcTopics) {
-            for (CourseContentTopic t : tgtTopics) {
-                if (s.getTopicName() != null &&
-                    s.getTopicName().equalsIgnoreCase(t.getTopicName())) {
-                    matched += Math.min(
-                            s.getWeightPercentage() == null ? 0.0 : s.getWeightPercentage(),
-                            t.getWeightPercentage() == null ? 0.0 : t.getWeightPercentage());
-                }
-            }
-        }
-        double overlap = totalSource == 0 ? 0 : (matched / totalSource) * 100.0;
-
-        List<TransferRule> rules =
-                ruleRepo.findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(
-                        src.getUniversity().getId(), tgt.getUniversity().getId());
-
-        boolean eligible;
-        String notes;
-
-        if (rules.isEmpty()) {
-            eligible = false;
-            notes = "No active transfer rule";
-        } else {
-            eligible = false;
-            notes = "No active rule satisfied";
-            for (TransferRule r : rules) {
-                int tol = r.getCreditHourTolerance() == null ? 0 : r.getCreditHourTolerance();
-                boolean creditOk =
-                        Math.abs(src.getCreditHours() - tgt.getCreditHours()) <= tol;
-                if (creditOk && overlap >= r.getMinimumOverlapPercentage()) {
-                    eligible = true;
-                    notes = "Eligible";
-                    break;
-                }
-            }
-        }
-
-        TransferEvaluationResult result = new TransferEvaluationResult();
-        result.setSourceCourse(src);
-        result.setTargetCourse(tgt);
-        result.setOverlapPercentage(overlap);
-        result.setIsEligibleForTransfer(eligible);
-        result.setNotes(notes);
+    public TransferEvaluationResult postData4(TransferEvaluationResult result) {
         return resultRepo.save(result);
     }
 
     @Override
-    public TransferEvaluationResult getEvaluationById(Long id) {
-        return resultRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
+    public java.util.List<TransferEvaluationResult> getAllData4() {
+        return resultRepo.findAll();
     }
 
     @Override
-    public java.util.List<TransferEvaluationResult> getEvaluationsForCourse(Long sourceCourseId) {
-        return resultRepo.findBySourceCourseId(sourceCourseId);
+    public void DeleteData4(Long id) {
+        resultRepo.deleteById(id);
+    }
+
+    @Override
+    public TransferEvaluationResult updateData4(Long id, TransferEvaluationResult result) {
+        TransferEvaluationResult existing = resultRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+        existing.setSourceCourse(result.getSourceCourse());
+        existing.setTargetCourse(result.getTargetCourse());
+        existing.setOverlapPercentage(result.getOverlapPercentage());
+        existing.setIsEligibleForTransfer(result.getIsEligibleForTransfer());
+        existing.setNotes(result.getNotes());
+        return resultRepo.save(existing);
     }
 }

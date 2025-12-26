@@ -28,4 +28,9 @@ public interface TransferRuleService {
 
     java.util.List<TransferRule> getRulesForUniversities(Long sourceUniversityId,
                                                          Long targetUniversityId);
+
+    // used by TransferRuleController
+    java.util.List<TransferRule> getAllData5();
+
+    void DeleteData5(Long id);
 }
