@@ -85,54 +85,54 @@
 // // // //         return repo.findByUniversityIdAndActiveTrue(univId);
 // // // //     }
 // // // // }
-// // // package com.example.demo.service.impl;
+package com.example.demo.service.impl;
 
-// // // import java.util.List;
+import java.util.List;
 
-// // // import org.springframework.beans.factory.annotation.Autowired;
-// // // import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-// // // import com.example.demo.entity.Course;
-// // // import com.example.demo.repository.CourseRepository;
-// // // import com.example.demo.service.CourseService;
+import com.example.demo.entity.Course;
+import com.example.demo.repository.CourseRepository;
+import com.example.demo.service.CourseService;
 
-// // // @Service
-// // // public class CourseServiceImpl implements CourseService {
+@Service
+public class CourseServiceImpl implements CourseService {
 
-// // //     @Autowired
-// // //     private CourseRepository repo;
+    @Autowired
+    private CourseRepository repo;
 
-// // //     @Override
-// // //     public Course createCourse(Course course) {
-// // //         return repo.save(course);
-// // //     }
+    @Override
+    public Course createCourse(Course course) {
+        return repo.save(course);
+    }
 
-// // //     @Override
-// // //     public List<Course> getAllData3() {
-// // //         return repo.findAll();
-// // //     }
+    @Override
+    public List<Course> getAllData3() {
+        return repo.findAll();
+    }
 
-// // //     @Override
-// // //     public Course getCourseById(Long id) {
-// // //         return repo.findById(id).orElse(null);
-// // //     }
+    @Override
+    public Course getCourseById(Long id) {
+        return repo.findById(id).orElse(null);
+    }
 
-// // //     @Override
-// // //     public Course updateCourse(Long id, Course course) {
-// // //         Course existing = repo.findById(id).orElse(null);
-// // //         if (existing != null) {
-// // //             existing.setCourseName(course.getCourseName());
-// // //             return repo.save(existing);
-// // //         }
-// // //         return null;
-// // //     }
+    @Override
+    public Course updateCourse(Long id, Course course) {
+        Course existing = repo.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setCourseName(course.getCourseName());
+            return repo.save(existing);
+        }
+        return null;
+    }
 
-// // //     @Override
-// // //     public String DeleteData3(Long id) {
-// // //         repo.deleteById(id);
-// // //         return "Course deleted successfully";
-// // //     }
-// // // }
+    @Override
+    public String DeleteData3(Long id) {
+        repo.deleteById(id);
+        return "Course deleted successfully";
+    }
+}
 // // package com.example.demo.service.impl;
 
 // // import java.util.List;
