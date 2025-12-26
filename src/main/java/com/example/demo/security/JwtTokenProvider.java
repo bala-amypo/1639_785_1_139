@@ -98,22 +98,23 @@
 package com.example.demo.security;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import javax.crypto.SecretKey;
 
 public class JwtTokenProvider {
 
-    // simple secret string; we convert it to a key properly
+    // secret key string; converted to SecretKey correctly
     private static final String SECRET = "my-demo-secret-key-for-jwt-1234567890";
     private static final long EXPIRATION = 86400000L; // 1 day
 
     private SecretKey getSigningKey() {
-        // use HMAC key based on our secret bytes
         return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -163,11 +164,13 @@ public class JwtTokenProvider {
 
     @SuppressWarnings("unchecked")
     public Set<String> getRoles(String token) {
-        return (Set<String>) Jwts.parserBuilder()
+        // JJWT deserializes the claim as a List, so read it as List first
+        List<String> list = (List<String>) Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get("roles", Set.class);
+                .get("roles", List.class);
+        return new HashSet<>(list);
     }
 }
