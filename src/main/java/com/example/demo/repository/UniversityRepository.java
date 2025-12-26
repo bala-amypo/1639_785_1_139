@@ -1,34 +1,11 @@
-// package com.example.demo.repository;
-// import org.springframework.stereotype.Repository;
-// import org.springframework.data.jpa.repository.JpaRepository;
-// import com.example.demo.entity.University;
-
-
-// @Repository
-// public interface UniversityRepository extends JpaRepository<University,Long>{
-
-// }
-
-// package com.example.demo.repository;
-
-// import org.springframework.stereotype.Repository;
-// import org.springframework.data.jpa.repository.JpaRepository;
-// import java.util.Optional;
-// import com.example.demo.entity.University;
-
-// @Repository
-// public interface UniversityRepository extends JpaRepository<University, Long> {
-
-//     Optional<University> findByName(String name);
-// }
 package com.example.demo.repository;
-
-import java.util.List;
+import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.entity.CourseContentTopic;
+import com.example.demo.entity.University;
 
-public interface CourseContentTopicRepository
-        extends JpaRepository<CourseContentTopic, Long> {
 
-    List<CourseContentTopic> findByCourseId(Long courseId);
+@Repository
+public interface UniversityRepository extends JpaRepository<University,Long>{
+
 }
+
