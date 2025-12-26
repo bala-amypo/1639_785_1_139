@@ -62,6 +62,19 @@
 //     public void setActive(boolean active) { this.active = active; }
 // }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
@@ -86,3 +99,13 @@ public class TransferRule {
     @JoinColumn(name = "target_university_id")
     private University targetUniversity;
 }
+
+
+
+
+
+
+
+
+
+
