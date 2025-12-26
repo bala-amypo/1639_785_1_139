@@ -75,30 +75,30 @@
 
 
 
-package com.example.demo.entity;
+// package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
+// import jakarta.persistence.*;
+// import lombok.Data;
 
-@Entity
-@Data
-public class TransferRule {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+// @Entity
+// @Data
+// public class TransferRule {
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
 
-    private double minimumOverlapPercentage;
-    private int creditHourTolerance = 0;
-    private boolean active = true;
+//     private double minimumOverlapPercentage;
+//     private int creditHourTolerance = 0;
+//     private boolean active = true;
 
-    @ManyToOne
-    @JoinColumn(name = "source_university_id")
-    private University sourceUniversity;
+//     @ManyToOne
+//     @JoinColumn(name = "source_university_id")
+//     private University sourceUniversity;
 
-    @ManyToOne
-    @JoinColumn(name = "target_university_id")
-    private University targetUniversity;
-}
+//     @ManyToOne
+//     @JoinColumn(name = "target_university_id")
+//     private University targetUniversity;
+// }
 
 
 
