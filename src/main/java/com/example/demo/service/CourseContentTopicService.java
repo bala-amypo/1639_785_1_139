@@ -8,7 +8,7 @@ public interface CourseContentTopicService{
     CourseContentTopic getTopicById(Long id); 
     List<CourseContentTopic>getAllData2();
     CourseContentTopic updateTopic(Long id,CourseContentTopic topic);
-    String  DeleteData2(Long id);                                                                
+    // String  DeleteData2(Long id);                                                                
 }
 // package com.example.demo.service;
 
