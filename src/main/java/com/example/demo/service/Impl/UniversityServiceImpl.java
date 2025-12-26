@@ -158,16 +158,19 @@
 
 
 
+
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.University;
 import com.example.demo.repository.UniversityRepository;
 import com.example.demo.service.UniversityService;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
 
+    // injected by tests via reflection
     private UniversityRepository repository;
 
     @Override
@@ -201,5 +204,15 @@ public class UniversityServiceImpl implements UniversityService {
                 .orElseThrow(() -> new RuntimeException("not found"));
         u.setActive(false);
         repository.save(u);
+    }
+
+    @Override
+    public java.util.List<University> getAllUniversities() {
+        return repository.findAll();
+    }
+
+    @Override
+    public void DeleteData1(Long id) {
+        repository.deleteById(id);
     }
 }

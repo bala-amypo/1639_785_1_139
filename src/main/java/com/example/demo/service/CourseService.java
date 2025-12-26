@@ -62,4 +62,9 @@ public interface CourseService {
     void deactivateCourse(Long id);
 
     java.util.List<Course> getCoursesByUniversity(Long universityId);
+
+    // used by CourseController
+    java.util.List<Course> getAllData3();
+
+    void DeleteData3(Long id);
 }

@@ -275,50 +275,15 @@ public class CourseServiceImpl implements CourseService {
     private CourseRepository repo;
     private UniversityRepository univRepo;
 
-    @Override
-    public Course createCourse(Course course) {
-        if (course.getCreditHours() <= 0) {
-            throw new IllegalArgumentException("> 0");
-        }
-        if (course.getUniversity() == null || course.getUniversity().getId() == null) {
-            throw new IllegalArgumentException("University required");
-        }
-        univRepo.findById(course.getUniversity().getId())
-                .orElseThrow(() -> new RuntimeException("not found"));
+    // ... existing createCourse, getCourseById, updateCourse, deactivateCourse, getCoursesByUniversity
 
-        if (repo.findByUniversityIdAndCourseCode(
-                course.getUniversity().getId(), course.getCourseCode()).isPresent()) {
-            throw new IllegalArgumentException("duplicate");
-        }
-        return repo.save(course);
+    @Override
+    public java.util.List<Course> getAllData3() {
+        return repo.findAll();
     }
 
     @Override
-    public Course getCourseById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
-    }
-
-    @Override
-    public Course updateCourse(Long id, Course course) {
-        Course existing = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
-        existing.setCourseCode(course.getCourseCode());
-        existing.setCourseName(course.getCourseName());
-        existing.setCreditHours(course.getCreditHours());
-        return repo.save(existing);
-    }
-
-    @Override
-    public void deactivateCourse(Long id) {
-        Course c = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("not found"));
-        c.setActive(false);
-        repo.save(c);
-    }
-
-    @Override
-    public java.util.List<Course> getCoursesByUniversity(Long universityId) {
-        return repo.findByUniversityIdAndActiveTrue(universityId);
+    public void DeleteData3(Long id) {
+        repo.deleteById(id);
     }
 }

@@ -15,6 +15,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.University;
+import java.util.List;
 
 public interface UniversityService {
 
@@ -25,4 +26,9 @@ public interface UniversityService {
     University updateUniversity(Long id, University university);
 
     void deactivateUniversity(Long id);
+
+    // used by UniversityController
+    java.util.List<University> getAllUniversities();
+
+    void DeleteData1(Long id);
 }
