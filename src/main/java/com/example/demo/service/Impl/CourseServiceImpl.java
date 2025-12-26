@@ -85,54 +85,80 @@
 // // // //         return repo.findByUniversityIdAndActiveTrue(univId);
 // // // //     }
 // // // // }
-package com.example.demo.service.impl;
 
-import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.Course;
-import com.example.demo.repository.CourseRepository;
-import com.example.demo.service.CourseService;
 
-@Service
-public class CourseServiceImpl implements CourseService {
 
-    @Autowired
-    private CourseRepository repo;
 
-    @Override
-    public Course createCourse(Course course) {
-        return repo.save(course);
-    }
 
-    @Override
-    public List<Course> getAllData3() {
-        return repo.findAll();
-    }
 
-    @Override
-    public Course getCourseById(Long id) {
-        return repo.findById(id).orElse(null);
-    }
 
-    @Override
-    public Course updateCourse(Long id, Course course) {
-        Course existing = repo.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setCourseName(course.getCourseName());
-            return repo.save(existing);
-        }
-        return null;
-    }
 
-    @Override
-    public String DeleteData3(Long id) {
-        repo.deleteById(id);
-        return "Course deleted successfully";
-    }
-}
+
+
+
+
+// package com.example.demo.service.impl;
+
+// import java.util.List;
+
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
+
+// import com.example.demo.entity.Course;
+// import com.example.demo.repository.CourseRepository;
+// import com.example.demo.service.CourseService;
+
+// @Service
+// public class CourseServiceImpl implements CourseService {
+
+//     @Autowired
+//     private CourseRepository repo;
+
+//     @Override
+//     public Course createCourse(Course course) {
+//         return repo.save(course);
+//     }
+
+//     @Override
+//     public List<Course> getAllData3() {
+//         return repo.findAll();
+//     }
+
+//     @Override
+//     public Course getCourseById(Long id) {
+//         return repo.findById(id).orElse(null);
+//     }
+
+//     @Override
+//     public Course updateCourse(Long id, Course course) {
+//         Course existing = repo.findById(id).orElse(null);
+//         if (existing != null) {
+//             existing.setCourseName(course.getCourseName());
+//             return repo.save(existing);
+//         }
+//         return null;
+//     }
+
+//     @Override
+//     public String DeleteData3(Long id) {
+//         repo.deleteById(id);
+//         return "Course deleted successfully";
+//     }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
 // // package com.example.demo.service.impl;
 
 // // import java.util.List;
@@ -230,3 +256,69 @@ public class CourseServiceImpl implements CourseService {
 //         repo.deleteById(id);
 //     }
 // }
+
+
+
+
+package com.example.demo.service.impl;
+
+import com.example.demo.entity.Course;
+import com.example.demo.repository.CourseRepository;
+import com.example.demo.repository.UniversityRepository;
+import com.example.demo.service.CourseService;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
+@Service
+public class CourseServiceImpl implements CourseService {
+
+    private CourseRepository repo;
+    private UniversityRepository univRepo;
+
+    @Override
+    public Course createCourse(Course course) {
+        if (course.getCreditHours() <= 0) {
+            throw new IllegalArgumentException("> 0");
+        }
+        if (course.getUniversity() == null || course.getUniversity().getId() == null) {
+            throw new IllegalArgumentException("University required");
+        }
+        univRepo.findById(course.getUniversity().getId())
+                .orElseThrow(() -> new RuntimeException("not found"));
+
+        if (repo.findByUniversityIdAndCourseCode(
+                course.getUniversity().getId(), course.getCourseCode()).isPresent()) {
+            throw new IllegalArgumentException("duplicate");
+        }
+        return repo.save(course);
+    }
+
+    @Override
+    public Course getCourseById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+    }
+
+    @Override
+    public Course updateCourse(Long id, Course course) {
+        Course existing = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+        existing.setCourseCode(course.getCourseCode());
+        existing.setCourseName(course.getCourseName());
+        existing.setCreditHours(course.getCreditHours());
+        return repo.save(existing);
+    }
+
+    @Override
+    public void deactivateCourse(Long id) {
+        Course c = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("not found"));
+        c.setActive(false);
+        repo.save(c);
+    }
+
+    @Override
+    public java.util.List<Course> getCoursesByUniversity(Long universityId) {
+        return repo.findByUniversityIdAndActiveTrue(universityId);
+    }
+}
