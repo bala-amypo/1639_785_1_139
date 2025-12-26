@@ -6,7 +6,7 @@ import com.example.demo.entity.CourseContentTopic;
 public interface CourseContentTopicService{
     CourseContentTopic createTopic(CourseContentTopic topic);
     CourseContentTopic getTopicById(Long id); 
-    List<CourseContentTopic>getAllData2();
+    // List<CourseContentTopic>getAllData2();
     CourseContentTopic updateTopic(Long id,CourseContentTopic topic);
     // String  DeleteData2(Long id);                                                                
 }

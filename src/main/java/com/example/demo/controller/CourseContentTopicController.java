@@ -22,10 +22,10 @@ public class CourseContentTopicController{
     public CourseContentTopic sendData(@RequestBody CourseContentTopic topic){
         return ser.createTopic(topic);
     }
-    @GetMapping("/get")
-    public List<CourseContentTopic> getval(){
-        return ser.getAllData2();
-    }
+    // @GetMapping("/get")
+    // public List<CourseContentTopic> getval(){
+    //     return ser.getAllData2();
+    // }
     // @DeleteMapping("/delete/{id}")
     // public String del(@PathVariable Long id){
     //     return ser.DeleteData2(id);
