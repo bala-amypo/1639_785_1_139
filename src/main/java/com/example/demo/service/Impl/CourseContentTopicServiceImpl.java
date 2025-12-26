@@ -175,10 +175,10 @@ public class CourseContentTopicServiceImpl implements CourseContentTopicService 
                 .orElseThrow(() -> new ResourceNotFoundException("Topic not found"));
     }
 
-    @Override
-    public List<CourseContentTopic> getTopicsForCourse(Long courseId) {
-        courseRepo.findById(courseId)
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
-        return repo.findByCourseId(courseId);
-    }
+    // @Override
+    // public List<CourseContentTopic> getTopicsForCourse(Long courseId) {
+    //     courseRepo.findById(courseId)
+    //             .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+    //     return repo.findByCourseId(courseId);
+    // }
 }
