@@ -98,47 +98,76 @@
 package com.example.demo.security;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Set;
+import javax.crypto.SecretKey;
 
 public class JwtTokenProvider {
 
-    private static final String SECRET = "demo-secret-key";
-    private static final long EXPIRATION = 86400000L;
+    // simple secret string; we convert it to a key properly
+    private static final String SECRET = "my-demo-secret-key-for-jwt-1234567890";
+    private static final long EXPIRATION = 86400000L; // 1 day
+
+    private SecretKey getSigningKey() {
+        // use HMAC key based on our secret bytes
+        return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+    }
 
     public String createToken(Long userId, String email, Set<String> roles) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + EXPIRATION);
+
         return Jwts.builder()
                 .setSubject(email)
                 .claim("userId", userId)
                 .claim("roles", roles)
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(SignatureAlgorithm.HS256, SECRET)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
+        } catch (Exception ex) {
             return false;
         }
     }
 
     public String getEmail(String token) {
-        return Jwts.parser().setSigningKey(SECRET)
-                .parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     public Long getUserId(String token) {
-        return Jwts.parser().setSigningKey(SECRET)
-                .parseClaimsJws(token).getBody().get("userId", Long.class);
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("userId", Long.class);
     }
 
     @SuppressWarnings("unchecked")
     public Set<String> getRoles(String token) {
-        return (Set<String>) Jwts.parser().setSigningKey(SECRET)
-                .parseClaimsJws(token).getBody().get("roles", Set.class);
+        return (Set<String>) Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("roles", Set.class);
     }
 }
