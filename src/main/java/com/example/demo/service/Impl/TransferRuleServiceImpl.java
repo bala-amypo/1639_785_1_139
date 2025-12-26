@@ -1,60 +1,60 @@
-// // package com.example.demo.service.impl;
+package com.example.demo.service.impl;
 
-// // import java.util.List;
+import java.util.List;
 
-// // import org.springframework.beans.factory.annotation.Autowired;
-// // import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-// // import com.example.demo.entity.TransferRule;
-// // import com.example.demo.exception.ResourceNotFoundException;
-// // import com.example.demo.repository.TransferRuleRepository;
-// // import com.example.demo.service.TransferRuleService;
+import com.example.demo.entity.TransferRule;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.TransferRuleRepository;
+import com.example.demo.service.TransferRuleService;
 
-// // @Service
-// // public class TransferRuleServiceImpl implements TransferRuleService {
+@Service
+public class TransferRuleServiceImpl implements TransferRuleService {
 
-// //     @Autowired
-// //     private TransferRuleRepository repo;
+    @Autowired
+    private TransferRuleRepository repo;
 
-// //     @Override
-// //     public TransferRule createRule(TransferRule rule){
-// //         return repo.save(rule);
-// //     }
+    @Override
+    public TransferRule createRule(TransferRule rule){
+        return repo.save(rule);
+    }
     
-// //     @Override
-// //     public TransferRule updateRule(Long id, TransferRule rule) {
-// //         TransferRule existingRule = repo.findById(id)
-// //                 .orElseThrow(() -> 
-// //                     new ResourceNotFoundException("TransferRule not found with id " + id)
-// //                 );
+    @Override
+    public TransferRule updateRule(Long id, TransferRule rule) {
+        TransferRule existingRule = repo.findById(id)
+                .orElseThrow(() -> 
+                    new ResourceNotFoundException("TransferRule not found with id " + id)
+                );
 
-// //         rule.setId(existingRule.getId());
-// //         return repo.save(rule);
-// //     }
+        rule.setId(existingRule.getId());
+        return repo.save(rule);
+    }
 
-// //     @Override
-// //     public TransferRule getRuleById(Long id) {
-// //         return repo.findById(id)
-// //                 .orElseThrow(() -> 
-// //                     new ResourceNotFoundException("TransferRule not found with id " + id)
-// //                 );
-// //     }
+    @Override
+    public TransferRule getRuleById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> 
+                    new ResourceNotFoundException("TransferRule not found with id " + id)
+                );
+    }
 
-// //     @Override
-// //     public String DeleteData5(Long id) {
-// //         if (!repo.existsById(id)) {
-// //             throw new ResourceNotFoundException(
-// //                     "TransferRule not found with id " + id);
-// //         }
-// //         repo.deleteById(id);
-// //         return "Deleted successfully";
-// //     }
+    @Override
+    public String DeleteData5(Long id) {
+        if (!repo.existsById(id)) {
+            throw new ResourceNotFoundException(
+                    "TransferRule not found with id " + id);
+        }
+        repo.deleteById(id);
+        return "Deleted successfully";
+    }
 
-// //     @Override
-// //     public List<TransferRule> getAllData5() {
-// //         return repo.findAll();
-// //     }
-// // }
+    @Override
+    public List<TransferRule> getAllData5() {
+        return repo.findAll();
+    }
+}
 // package com.example.demo.service.impl;
 
 // import java.util.*;
@@ -100,64 +100,3 @@
 //         return repo.save(r);
 //     }
 // }
-package com.example.demo.service.impl;
-
-import com.example.demo.entity.TransferRule;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.TransferRuleRepository;
-import com.example.demo.repository.UniversityRepository;
-import com.example.demo.service.TransferRuleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.List;
-
-@Service
-public class TransferRuleServiceImpl implements TransferRuleService {
-
-    @Autowired
-    private TransferRuleRepository repo;
-
-    @Autowired
-    private UniversityRepository univRepo;
-
-    @Override
-    public TransferRule createRule(TransferRule rule) {
-        if (rule.getMinimumOverlapPercentage() < 0 || rule.getMinimumOverlapPercentage() > 100) {
-            throw new IllegalArgumentException("Minimum overlap must be between 0 and 100");
-        }
-        if (rule.getCreditHourTolerance() < 0) {
-            throw new IllegalArgumentException("Credit hour tolerance must be >= 0");
-        }
-        univRepo.findById(rule.getSourceUniversity().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Source university not found"));
-        univRepo.findById(rule.getTargetUniversity().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Target university not found"));
-        return repo.save(rule);
-    }
-
-    @Override
-    public TransferRule updateRule(Long id, TransferRule rule) {
-        TransferRule existing = getRuleById(id);
-        existing.setMinimumOverlapPercentage(rule.getMinimumOverlapPercentage());
-        existing.setCreditHourTolerance(rule.getCreditHourTolerance());
-        return repo.save(existing);
-    }
-
-    @Override
-    public TransferRule getRuleById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
-    }
-
-    @Override
-    public void deactivateRule(Long id) {
-        TransferRule r = getRuleById(id);
-        r.setActive(false);
-        repo.save(r);
-    }
-
-    @Override
-    public List<TransferRule> getRulesForUniversities(Long sourceUnivId, Long targetUnivId) {
-        return repo.findBySourceUniversityIdAndTargetUniversityIdAndActiveTrue(sourceUnivId, targetUnivId);
-    }
-}
