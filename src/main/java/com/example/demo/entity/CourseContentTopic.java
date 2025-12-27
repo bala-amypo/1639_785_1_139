@@ -61,19 +61,14 @@ public class CourseContentTopic {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    // Default constructor (JPA requirement)
     public CourseContentTopic() {}
 
-    // getters/setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
     public String getTopicName() { return topicName; }
     public void setTopicName(String topicName) { this.topicName = topicName; }
-
     public Double getWeightPercentage() { return weightPercentage; }
     public void setWeightPercentage(Double weightPercentage) { this.weightPercentage = weightPercentage; }
-
     public Course getCourse() { return course; }
     public void setCourse(Course course) { this.course = course; }
 }
