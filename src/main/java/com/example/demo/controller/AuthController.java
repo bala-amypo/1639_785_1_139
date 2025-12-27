@@ -79,7 +79,7 @@
 
 package com.example.demo.controller;
 
-import com.example.demo.model.User;
+import com.example.demo.entity.User;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
