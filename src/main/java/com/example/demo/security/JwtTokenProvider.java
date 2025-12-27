@@ -186,9 +186,6 @@
 
 
 
-
-
-
 package com.example.demo.security;
 
 import io.jsonwebtoken.Claims;
@@ -203,6 +200,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -210,6 +208,18 @@ public class JwtTokenProvider {
 
     private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long JWT_TOKEN_VALIDITY = 10 * 60 * 60 * 1000; // 10 hours
+
+    // ✅ ADDED for tests
+    public String createToken(long userId, String username, Set<String> roles) {
+        return Jwts.builder()
+            .claim("userId", userId)
+            .setSubject(username)
+            .claim("roles", roles)
+            .setIssuedAt(new Date(System.currentTimeMillis()))
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
+            .signWith(secretKey)
+            .compact();
+    }
 
     public String generateToken(String username) {
         return Jwts.builder()
@@ -220,15 +230,23 @@ public class JwtTokenProvider {
             .compact();
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(userDetails.getUsername());
+    // ✅ ADDED for tests
+    public String getEmail(String token) {
+        return extractClaims(token).get("email", String.class);
+    }
+
+    // ✅ ADDED for tests
+    public String getRoles(String token) {
+        return extractClaims(token).get("roles", String.class);
+    }
+
+    // ✅ ADDED for tests
+    public Long getUserId(String token) {
+        Claims claims = extractClaims(token);
+        return claims.get("userId", Long.class);
     }
 
     public String getUsernameFromJWT(String token) {
-        return extractClaims(token).getSubject();
-    }
-
-    public String extractUsername(String token) {
         return extractClaims(token).getSubject();
     }
 
