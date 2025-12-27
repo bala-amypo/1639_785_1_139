@@ -19,25 +19,33 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final JwtTokenProvider jwtTokenProvider;
+    private final CustomUserDetailsService customUserDetailsService;
+
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider, 
+                         CustomUserDetailsService customUserDetailsService) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.customUserDetailsService = customUserDetailsService;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable())  // ✅ CRITICAL for POST requests
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
-                // ✅ COMPLETE SWAGGER/UI PATHS - THIS FIXES 403
-                .requestMatchers("/").permitAll()
+                // ✅ ALL PUBLIC ENDPOINTS
+                .requestMatchers("/auth/**").permitAll()  // Login + Register
                 .requestMatchers("/swagger-ui/**").permitAll()
-                .requestMatchers("/swagger-ui.html").permitAll()
-                .requestMatchers("/swagger-ui/index.html").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
-                .requestMatchers("/v3/api-docs").permitAll()
-                .requestMatchers("/v3/api-docs.yaml").permitAll()
-                .requestMatchers("/swagger-resources/**").permitAll()
+                .requestMatchers("/swagger-ui.html").permitAll()
                 .requestMatchers("/webjars/**").permitAll()
-                .requestMatchers("/auth/**").permitAll()
+                // ✅ PROTECTED ENDPOINTS
                 .anyRequest().authenticated()
-            );
+            )
+            // ✅ JWT FILTER - Add BEFORE basic auth
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService), 
+                           UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
     }
