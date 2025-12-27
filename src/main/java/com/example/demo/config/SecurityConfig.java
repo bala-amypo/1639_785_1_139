@@ -34,10 +34,20 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-                .requestMatchers("/auth/**").permitAll()  // Login endpoint
+                // ✅ ALL SWAGGER PATHS - This fixes 403
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/swagger-ui.html").permitAll()
+                .requestMatchers("/swagger-ui/index.html").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/v3/api-docs").permitAll()
+                .requestMatchers("/swagger-resources/**").permitAll()
+                .requestMatchers("/webjars/**").permitAll()
+                // Login endpoint
+                .requestMatchers("/auth/**").permitAll()
+                // All other endpoints require auth
                 .anyRequest().authenticated()
             )
+            // ✅ Add JWT filter BEFORE UsernamePasswordAuthenticationFilter
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService), 
                            UsernamePasswordAuthenticationFilter.class);
         
