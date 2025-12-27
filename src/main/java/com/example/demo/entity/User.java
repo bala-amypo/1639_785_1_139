@@ -80,10 +80,13 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.util.Set;
+import java.util.HashSet;
 
-@Entity@Entity
+@Entity
 @Table(name = "users")
 public class User {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -100,14 +103,27 @@ public class User {
     @Column(nullable = false, length = 255)
     private String roles = "ROLE_USER";
 
+    // ✅ Default constructor (JPA requirement)
     public User() {}
 
-    // ✅ ADDED for tests
+    // ✅ Test constructor
     public User(String username, String email, Set<String> roles) {
         this.username = username;
         this.email = email;
         this.roles = String.join(",", roles);
     }
 
-    // ... all your existing getters/setters
+    // ✅ ALL GETTERS
+    public Long getId() { return id; }
+    public String getUsername() { return username; }
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
+    public String getRoles() { return roles; }
+
+    // ✅ ALL SETTERS
+    public void setId(Long id) { this.id = id; }
+    public void setUsername(String username) { this.username = username; }
+    public void setEmail(String email) { this.email = email; }
+    public void setPassword(String password) { this.password = password; }
+    public void setRoles(String roles) { this.roles = roles; }
 }
