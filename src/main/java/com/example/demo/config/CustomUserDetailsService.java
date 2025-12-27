@@ -28,18 +28,18 @@
 
 
 
-package com.example.demo.security;
+package com.example.demo.security;  // ✅ CORRECT PACKAGE
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -47,27 +47,20 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
-        // Demo users - Replace with repository.findByUsername(username) in production
         if ("user".equals(username)) {
-            return buildUser("user", "{noop}password", "ROLE_USER");
+            return User.builder()
+                .username("user")
+                .password("{noop}password")
+                .authorities("ROLE_USER")
+                .build();
         } else if ("admin".equals(username)) {
-            return buildUser("admin", "{noop}adminpass", "ROLE_USER", "ROLE_ADMIN");
+            return User.builder()
+                .username("admin")
+                .password("{noop}adminpass")
+                .authorities("ROLE_USER", "ROLE_ADMIN")
+                .build();
         }
         
         throw new UsernameNotFoundException("User not found: " + username);
-    }
-    
-    private org.springframework.security.core.userdetails.User buildUser(
-            String username, String password, String... roles) {
-        
-        List<GrantedAuthority> authorities = Arrays.stream(roles)
-                .map(role -> new SimpleGrantedAuthority(role))
-                .toList();
-        
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(username)
-                .password(password)
-                .authorities(authorities)
-                .build();
     }
 }
