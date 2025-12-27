@@ -19,37 +19,25 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final CustomUserDetailsService customUserDetailsService;
-
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider, 
-                         CustomUserDetailsService customUserDetailsService) {
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.customUserDetailsService = customUserDetailsService;
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
-                // ✅ ALL SWAGGER PATHS - This fixes 403
+                // ✅ COMPLETE SWAGGER/UI PATHS - THIS FIXES 403
+                .requestMatchers("/").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/swagger-ui.html").permitAll()
                 .requestMatchers("/swagger-ui/index.html").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/v3/api-docs").permitAll()
+                .requestMatchers("/v3/api-docs.yaml").permitAll()
                 .requestMatchers("/swagger-resources/**").permitAll()
                 .requestMatchers("/webjars/**").permitAll()
-                // Login endpoint
                 .requestMatchers("/auth/**").permitAll()
-                // All other endpoints require auth
                 .anyRequest().authenticated()
-            )
-            // ✅ Add JWT filter BEFORE UsernamePasswordAuthenticationFilter
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService), 
-                           UsernamePasswordAuthenticationFilter.class);
+            );
         
         return http.build();
     }
