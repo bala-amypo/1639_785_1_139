@@ -196,10 +196,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -213,7 +211,6 @@ public class JwtTokenProvider {
     private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long JWT_TOKEN_VALIDITY = 10 * 60 * 60 * 1000; // 10 hours
 
-    // ✅ FIX: Method required by AuthController
     public String generateToken(String username) {
         return Jwts.builder()
             .setSubject(username)
@@ -228,7 +225,7 @@ public class JwtTokenProvider {
     }
 
     public String getUsernameFromJWT(String token) {
-        return extractUsername(token);
+        return extractClaims(token).getSubject();
     }
 
     public String extractUsername(String token) {
@@ -250,18 +247,6 @@ public class JwtTokenProvider {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    public Authentication getAuthentication(String token) {
-        String username = getUsernameFromJWT(token);
-        CustomUserDetailsService userDetailsService = new CustomUserDetailsService();
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        
-        List<GrantedAuthority> authorities = userDetails.getAuthorities().stream()
-            .map(auth -> new org.springframework.security.core.authority.SimpleGrantedAuthority(auth.getAuthority()))
-            .collect(Collectors.toList());
-            
-        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
     private Claims extractClaims(String token) {

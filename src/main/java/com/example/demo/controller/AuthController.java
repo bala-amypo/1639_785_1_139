@@ -49,17 +49,17 @@
 
 package com.example.demo.controller;
 
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -68,56 +68,54 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     public AuthController(AuthenticationManager authenticationManager, 
                          JwtTokenProvider jwtTokenProvider,
-                         PasswordEncoder passwordEncoder) {
+                         PasswordEncoder passwordEncoder,
+                         UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
-    // ✅ LOGIN - Existing endpoint
     @PostMapping("/auth/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.username, request.password)
         );
-        
         String token = jwtTokenProvider.generateToken(request.username);
-        
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-        response.put("message", "Login successful");
-        
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("token", token, "message", "Login successful"));
     }
 
-    // ✅ NEW REGISTER endpoint
     @PostMapping("/auth/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest request) {
-        // In real app: Save to database with encoded password
-        // For demo: Just encode and return token
+        if (userRepository.findByUsername(request.username).isPresent()) {
+            return ResponseEntity.badRequest()
+                .body(Map.of("error", "User already exists"));
+        }
         
-        String encodedPassword = passwordEncoder.encode(request.password);
+        User user = new User();
+        user.setUsername(request.username);
+        user.setEmail(request.email);
+        user.setPassword(passwordEncoder.encode(request.password));
+        user.setRoles("ROLE_USER");
         
-        Map<String, String> response = new HashMap<>();
-        response.put("token", jwtTokenProvider.generateToken(request.username));
-        response.put("message", "User registered successfully");
-        response.put("encodedPassword", encodedPassword); // Remove in production
+        userRepository.save(user);
         
-        return ResponseEntity.ok(response);
+        String token = jwtTokenProvider.generateToken(request.username);
+        return ResponseEntity.ok(Map.of("token", token, "message", "Registered successfully"));
     }
 
-    // ✅ Login DTO
     static class LoginRequest {
         public String username;
         public String password;
     }
 
-    // ✅ Register DTO
     static class RegisterRequest {
         public String username;
+        public String email;
         public String password;
     }
 }
