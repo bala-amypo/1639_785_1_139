@@ -195,6 +195,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;  // ✅ FIXED: jakarta instead of javax
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -203,7 +204,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -214,7 +214,7 @@ public class JwtTokenProvider {
     private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long JWT_TOKEN_VALIDITY = 10 * 60 * 60 * 1000; // 10 hours
 
-    // **MISSING METHOD - ADD THIS**
+    // ✅ REQUIRED METHOD - Fixes JwtAuthenticationFilter error
     public String getUsernameFromJWT(String token) {
         return extractUsername(token);
     }
@@ -223,7 +223,7 @@ public class JwtTokenProvider {
         return extractClaims(token).getSubject();
     }
 
-    public String resolveToken(HttpServletRequest request) {
+    public String resolveToken(HttpServletRequest request) {  // ✅ Now compiles
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
@@ -245,23 +245,14 @@ public class JwtTokenProvider {
         CustomUserDetailsService userDetailsService = new CustomUserDetailsService();
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        List<GrantedAuthority> authorities = userDetails.getAuthorities().stream()
+                .map(auth -> new SimpleGrantedAuthority(auth.getAuthority()))
+                .collect(Collectors.toList());
+                
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
     private Claims extractClaims(String token) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
