@@ -54,37 +54,69 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class AuthController {
     
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthController(AuthenticationManager authenticationManager, 
-                         JwtTokenProvider jwtTokenProvider) {
+                         JwtTokenProvider jwtTokenProvider,
+                         PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    // ✅ LOGIN - Existing endpoint
     @PostMapping("/auth/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-        // Authenticate user
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.username, request.password)
         );
         
-        // Generate JWT token
-        String token = jwtTokenProvider.generateToken(request.username);  // ✅ Now works!
+        String token = jwtTokenProvider.generateToken(request.username);
         
-        return ResponseEntity.ok(token);
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        response.put("message", "Login successful");
+        
+        return ResponseEntity.ok(response);
     }
 
+    // ✅ NEW REGISTER endpoint
+    @PostMapping("/auth/register")
+    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest request) {
+        // In real app: Save to database with encoded password
+        // For demo: Just encode and return token
+        
+        String encodedPassword = passwordEncoder.encode(request.password);
+        
+        Map<String, String> response = new HashMap<>();
+        response.put("token", jwtTokenProvider.generateToken(request.username));
+        response.put("message", "User registered successfully");
+        response.put("encodedPassword", encodedPassword); // Remove in production
+        
+        return ResponseEntity.ok(response);
+    }
+
+    // ✅ Login DTO
     static class LoginRequest {
+        public String username;
+        public String password;
+    }
+
+    // ✅ Register DTO
+    static class RegisterRequest {
         public String username;
         public String password;
     }
