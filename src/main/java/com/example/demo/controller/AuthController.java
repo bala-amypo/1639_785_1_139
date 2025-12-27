@@ -53,6 +53,8 @@ import com.example.demo.security.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,10 +73,14 @@ public class AuthController {
 
     @PostMapping("/auth/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        // Authenticate user
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.username, request.password)
         );
-        String token = jwtTokenProvider.generateToken(request.username);
+        
+        // Generate JWT token
+        String token = jwtTokenProvider.generateToken(request.username);  // ✅ Now works!
+        
         return ResponseEntity.ok(token);
     }
 

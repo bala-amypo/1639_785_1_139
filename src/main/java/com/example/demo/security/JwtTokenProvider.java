@@ -195,12 +195,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;  // ✅ FIXED: jakarta instead of javax
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -214,7 +213,20 @@ public class JwtTokenProvider {
     private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long JWT_TOKEN_VALIDITY = 10 * 60 * 60 * 1000; // 10 hours
 
-    // ✅ REQUIRED METHOD - Fixes JwtAuthenticationFilter error
+    // ✅ FIX: Method required by AuthController
+    public String generateToken(String username) {
+        return Jwts.builder()
+            .setSubject(username)
+            .setIssuedAt(new Date(System.currentTimeMillis()))
+            .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
+            .signWith(secretKey)
+            .compact();
+    }
+
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(userDetails.getUsername());
+    }
+
     public String getUsernameFromJWT(String token) {
         return extractUsername(token);
     }
@@ -223,7 +235,7 @@ public class JwtTokenProvider {
         return extractClaims(token).getSubject();
     }
 
-    public String resolveToken(HttpServletRequest request) {  // ✅ Now compiles
+    public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
@@ -246,9 +258,9 @@ public class JwtTokenProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         
         List<GrantedAuthority> authorities = userDetails.getAuthorities().stream()
-                .map(auth -> new SimpleGrantedAuthority(auth.getAuthority()))
-                .collect(Collectors.toList());
-                
+            .map(auth -> new org.springframework.security.core.authority.SimpleGrantedAuthority(auth.getAuthority()))
+            .collect(Collectors.toList());
+            
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
