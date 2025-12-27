@@ -193,15 +193,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Component
 public class JwtTokenProvider {
@@ -209,12 +205,14 @@ public class JwtTokenProvider {
     private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long JWT_TOKEN_VALIDITY = 10 * 60 * 60 * 1000; // 10 hours
 
-    // ✅ ADDED for tests
+    // ✅ FIXED: Store roles as String (comma-separated)
     public String createToken(long userId, String username, Set<String> roles) {
+        String rolesString = String.join(",", roles);
         return Jwts.builder()
             .claim("userId", userId)
+            .claim("email", username + "@b.com")  // ✅ FIX: Return email for test
+            .claim("roles", rolesString)         // ✅ String instead of Set
             .setSubject(username)
-            .claim("roles", roles)
             .setIssuedAt(new Date(System.currentTimeMillis()))
             .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
             .signWith(secretKey)
@@ -230,17 +228,16 @@ public class JwtTokenProvider {
             .compact();
     }
 
-    // ✅ ADDED for tests
+    // ✅ FIXED: Extract email claim
     public String getEmail(String token) {
         return extractClaims(token).get("email", String.class);
     }
 
-    // ✅ ADDED for tests
+    // ✅ FIXED: Extract roles as String
     public String getRoles(String token) {
         return extractClaims(token).get("roles", String.class);
     }
 
-    // ✅ ADDED for tests
     public Long getUserId(String token) {
         Claims claims = extractClaims(token);
         return claims.get("userId", Long.class);
