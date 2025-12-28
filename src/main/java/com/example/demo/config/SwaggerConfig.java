@@ -50,12 +50,12 @@ public class SwaggerConfig {
         return new OpenAPI()
                 // 1. Project Name and Description
                 .info(new Info()
-                        .title("Un")
+                        .title("University Course Transfer Validator")
                         .version("1.0")
                         .description("API documentation for Customer Loyalty project"))
                 // 2. Your Specific Server URL (Preserved)
                 .servers(List.of(
-                        new Server().url("https://9202.408procr.amypo.ai/")
+                        new Server().url("https://9164.pro604cr.amypo.ai/")
                 ))
                 // 3. Add Authorize Padlock (Security Requirement)
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
