@@ -107,11 +107,11 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/auth/**").permitAll()
-                // .requestMatchers("/api/universities/**").permitAll()
-                // .requestMatchers("/api/courses/**").permitAll()
-                // .requestMatchers("/CourseContentTopic/**").permitAll()
-                // .requestMatchers("/api/transfer-rules/**").permitAll()
-                // .requestMatchers("/api/transfer-evaluations/**").permitAll()
+                .requestMatchers("/api/universities/**").permitAll()
+                .requestMatchers("/api/courses/**").permitAll()
+                .requestMatchers("/CourseContentTopic/**").permitAll()
+                .requestMatchers("/api/transfer-rules/**").permitAll()
+                .requestMatchers("/api/transfer-evaluations/**").permitAll()
                 .requestMatchers("/error").permitAll()  // 🔥 FIXES 403
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
@@ -121,10 +121,8 @@ public class SecurityConfig {
             )
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService), 
                            UsernamePasswordAuthenticationFilter.class);
-        
         return http.build();
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
