@@ -108,8 +108,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/api/universities/**").permitAll()
+                .requestMatchers("/api/courses/**").permitAll()
+                .requestMatchers("/CourseContentTopic/**").permitAll()
+                .requestMatchers("/api/transfer-rules/**").permitAll()
                 .requestMatchers("/api//**").permitAll()
-                .requestMatchers("/api/universities/**").permitAll()
                 .requestMatchers("/error").permitAll()  // 🔥 FIXES 403
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
