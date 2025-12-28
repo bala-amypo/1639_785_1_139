@@ -65,11 +65,9 @@
 
 
 
-
-
 package com.example.demo.controller;
 
-import com.example.demo.entity.User;  // ✅ ADDED MISSING IMPORT
+import com.example.demo.entity.User;
 import com.example.demo.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -79,13 +77,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.*;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Authentication", description = "User registration and login operations")
 public class AuthController {
 
     @Autowired
@@ -95,28 +91,13 @@ public class AuthController {
     private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
-    @Operation(summary = "Register User", description = "Register a new user account")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "User registered successfully",
-            content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json", 
-                schema = @Schema(implementation = User.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid user data")
-    })
     public ResponseEntity<?> register(@RequestBody User user) {
-        // TODO: Call AuthService for real registration
         return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")
-    @Operation(summary = "User Login", description = "Authenticate user and return JWT token")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Login successful",
-            content = @io.swagger.v3.oas.annotations.media.Content(mediaType = "application/json")),
-        @ApiResponse(responseCode = "401", description = "Invalid credentials")
-    })
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            // 1. Authenticate using Spring Security
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                     loginRequest.getEmail(), 
@@ -124,10 +105,7 @@ public class AuthController {
                 )
             );
             
-            // 2. Set authentication in context
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            
-            // 3. Generate REAL JWT token
             String jwt = jwtTokenProvider.generateToken(authentication.getName());
             
             return ResponseEntity.ok(Map.of("token", jwt));
@@ -141,7 +119,6 @@ public class AuthController {
         }
     }
 
-    // ✅ Inner class for login request - no User dependency
     public static class LoginRequest {
         private String email;
         private String password;
@@ -152,4 +129,3 @@ public class AuthController {
         public void setPassword(String password) { this.password = password; }
     }
 }
-

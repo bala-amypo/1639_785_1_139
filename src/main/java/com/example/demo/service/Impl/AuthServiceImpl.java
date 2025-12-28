@@ -55,10 +55,6 @@
 
 
 
-
-
-
-
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.User;
@@ -81,15 +77,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User register(User user) {
-        // ✅ Encode password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
     public User login(String email, String password) {
-        // Not needed for JWT flow - handled by Spring Security + CustomUserDetailsService
-        return null;
+        return null;  // Handled by Spring Security
     }
 
     @Override
@@ -106,7 +100,6 @@ public class AuthServiceImpl implements AuthService {
     public User updateData6(Long id, User user) {
         if (userRepository.existsById(id)) {
             user.setId(id);
-            // ✅ Re-encode password if updated
             if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
             }
@@ -115,8 +108,9 @@ public class AuthServiceImpl implements AuthService {
         return null;
     }
 
+    // ✅ FIXED: Capital 'D' to match AuthService interface
     @Override
-    public String deleteData6(Long id) {
+    public String DeleteData6(Long id) {
         userRepository.deleteById(id);
         return "Deleted successfully";
     }
