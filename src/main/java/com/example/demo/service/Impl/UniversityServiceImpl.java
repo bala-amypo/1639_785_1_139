@@ -153,24 +153,18 @@
 // }
 
 
-
-
-
-
-
-
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.University;
 import com.example.demo.repository.UniversityRepository;
 import com.example.demo.service.UniversityService;
 import org.springframework.stereotype.Service;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;  // Add this import
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
 
-    // injected by tests via reflection
+    @Autowired  // Add this - enables Spring injection
     private UniversityRepository repository;
 
     @Override
@@ -207,7 +201,7 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public java.util.List<University> getAllUniversities() {
+    public List<University> getAllUniversities() {  // Fix import issue
         return repository.findAll();
     }
 
