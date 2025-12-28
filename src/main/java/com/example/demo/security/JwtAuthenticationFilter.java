@@ -31,9 +31,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                   HttpServletResponse response,
-                                   FilterChain filterChain)
+                                  HttpServletResponse response,
+                                  FilterChain filterChain)
             throws ServletException, IOException {
+
+        // 🔥 FIX 403: Skip JWT check for auth endpoints
+        String path = request.getRequestURI();
+        if (path.startsWith("/auth/login") || path.startsWith("/auth/register")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         try {
             String jwt = getJwtFromRequest(request);
@@ -73,7 +80,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 }
-
 
 
 
