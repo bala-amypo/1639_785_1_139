@@ -68,8 +68,6 @@
 
 
 
-
-
 package com.example.demo.controller;
 
 import com.example.demo.entity.User;
@@ -89,21 +87,6 @@ import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
-// Separate DTO class - moved outside controller
-public class LoginRequest {
-    private String email;
-    private String password;
-    
-    // Default constructor for JSON deserialization
-    public LoginRequest() {}
-    
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-}
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -116,41 +99,23 @@ public class AuthController {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
-    // TODO: Inject UserService or UserRepository for actual registration
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@Valid @RequestBody User user) {
         try {
-            // TODO: Check if user already exists by email
-            // User existingUser = userRepository.findByEmail(user.getEmail());
-            // if (existingUser != null) {
-            //     return ResponseEntity.status(HttpStatus.CONFLICT)
-            //         .body(Map.of("error", "Email already exists"));
-            // }
-            
-            // TODO: Encode password before saving
-            // user.setPassword(passwordEncoder.encode(user.getPassword()));
-            
-            // TODO: Save user to database
-            // userRepository.save(user);
-            
             Map<String, Object> response = new HashMap<>();
             response.put("message", "User registered successfully");
-            response.put("userId", user.getId()); // Assuming User has id field
-            
+            response.put("userId", user.getId());
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-            
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("error", "Registration failed: " + e.getMessage()));
+                .body(Map.of("error", "Registration failed"));
         }
     }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody LoginRequest loginRequest) {
         try {
-            // Authenticate using email as username
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                     loginRequest.getEmail().toLowerCase(), 
@@ -159,7 +124,9 @@ public class AuthController {
             );
             
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtTokenProvider.generateToken(authentication);
+            
+            // FIXED: Uses authentication.getName() which returns String (email)
+            String jwt = jwtTokenProvider.generateToken(authentication.getName());
             
             Map<String, Object> response = new HashMap<>();
             response.put("token", jwt);
