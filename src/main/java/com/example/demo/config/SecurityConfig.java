@@ -112,7 +112,6 @@ public class SecurityConfig {
                 // .requestMatchers("/CourseContentTopic/**").permitAll()
                 // .requestMatchers("/api/transfer-rules/**").permitAll()
                 // .requestMatchers("/api/transfer-evaluations/**").permitAll()
-                .requestMatchers("/error").permitAll()  // 🔥 FIXES 403
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/swagger-ui.html").permitAll()
