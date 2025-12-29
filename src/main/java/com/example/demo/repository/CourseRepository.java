@@ -1,24 +1,32 @@
+
 // package com.example.demo.repository;
-// import org.springframework.stereotype.Repository;
-// import org.springframework.data.jpa.repository.JpaRepository;
+
 // import com.example.demo.entity.Course;
+// import org.springframework.data.jpa.repository.JpaRepository;
+// import java.util.List;
+// import java.util.Optional;
 
+// public interface CourseRepository extends JpaRepository<Course, Long> {
 
-// @Repository
-// public interface CourseRepository extends JpaRepository<Course,Long>{
+//     java.util.Optional<Course> findByUniversityIdAndCourseCode(Long universityId, String courseCode);
 
+//     java.util.List<Course> findByUniversityIdAndActiveTrue(Long universityId);
 // }
+
+
+
 
 package com.example.demo.repository;
 
 import com.example.demo.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-    java.util.Optional<Course> findByUniversityIdAndCourseCode(Long universityId, String courseCode);
+    Optional<Course> findByUniversityIdAndCourseCode(Long universityId, String courseCode);
 
-    java.util.List<Course> findByUniversityIdAndActiveTrue(Long universityId);
+    List<Course> findByUniversityIdAndActiveTrue(Long universityId);
 }

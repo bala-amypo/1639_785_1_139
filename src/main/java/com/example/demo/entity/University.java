@@ -1,37 +1,22 @@
-// // package com.example.demo.entity;
-// // import java.util.*;
 
-// // // import jakarta.persistence.Column;
-// // import jakarta.persistence.Entity;
-// // import jakarta.persistence.Id;
-// // import lombok.AllArgsConstructor;
-// // import lombok.Data;
-// // import lombok.NoArgsConstructor;
-// // import jakarta.persistence.GeneratedValue;
-// // import jakarta.persistence.GenerationType;
-
-// // @Entity
-// // @Data
-// // @NoArgsConstructor
-// // @AllArgsConstructor
-// // public class University{
-// //     @Id
-// //     @GeneratedValue(strategy=GenerationType.IDENTITY)
-// //     // @Column(name="name",unique=true)
-// //     private Long id;
-// //     private String name;
-// //     private String accreditationLevel;
-// //     private Set<String> country;
-// //     private Boolean active=true;
-// // }
 
 // package com.example.demo.entity;
 
+// import jakarta.persistence.*;
+
+// @Entity
 // public class University {
+
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //     private Long id;
+
+//     @Column(unique = true, nullable = false)
 //     private String name;
+
 //     private boolean active = true;
 
+//     // getters/setters
 //     public Long getId() { return id; }
 //     public void setId(Long id) { this.id = id; }
 
@@ -41,29 +26,8 @@
 //     public boolean isActive() { return active; }
 //     public void setActive(boolean active) { this.active = active; }
 // }
+    
 
-
-
-
-
-
-
-// package com.example.demo.entity;
-
-// import jakarta.persistence.*;
-// import lombok.Data;
-
-// @Entity
-// @Data
-// public class University {
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
-
-//     private String name;
-
-//     private boolean active = true;
-// }
 
 
 
@@ -72,25 +36,70 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "universities", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class University {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    private boolean active = true;
+    private String accreditationLevel;
+    private String country;
+    private Boolean active = true;
 
-    // getters/setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public University() {}
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public University(String name, String accreditationLevel, String country) {
+        this.name = name;
+        this.accreditationLevel = accreditationLevel;
+        this.country = country;
+        this.active = true;
+    }
 
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAccreditationLevel() {
+        return accreditationLevel;
+    }
+
+    public void setAccreditationLevel(String accreditationLevel) {
+        this.accreditationLevel = accreditationLevel;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return active != null && active;
+    }
 }
-    
