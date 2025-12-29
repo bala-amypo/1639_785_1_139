@@ -1,42 +1,41 @@
 
-
-
-
-
-
-
 // package com.example.demo.entity;
 
 // import jakarta.persistence.*;
 
 // @Entity
+// @Table(name = "course_content_topic")
 // public class CourseContentTopic {
 
 //     @Id
 //     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //     private Long id;
 
+//     @Column(name = "topic_name", nullable = false)
 //     private String topicName;
 
+//     @Column(name = "weight_percentage", nullable = false)
 //     private Double weightPercentage;
 
-//     @ManyToOne
+//     @ManyToOne(fetch = FetchType.LAZY)
 //     @JoinColumn(name = "course_id")
 //     private Course course;
 
-//     // getters/setters
+//     public CourseContentTopic() {}
+
 //     public Long getId() { return id; }
 //     public void setId(Long id) { this.id = id; }
-
 //     public String getTopicName() { return topicName; }
 //     public void setTopicName(String topicName) { this.topicName = topicName; }
-
 //     public Double getWeightPercentage() { return weightPercentage; }
 //     public void setWeightPercentage(Double weightPercentage) { this.weightPercentage = weightPercentage; }
-
 //     public Course getCourse() { return course; }
 //     public void setCourse(Course course) { this.course = course; }
 // }
+
+
+
+
 
 
 package com.example.demo.entity;
@@ -44,31 +43,59 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "course_content_topic")
+@Table(name = "course_content_topics")
 public class CourseContentTopic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "topic_name", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
+
+    @Column(nullable = false)
     private String topicName;
 
-    @Column(name = "weight_percentage", nullable = false)
     private Double weightPercentage;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id")
-    private Course course;
 
     public CourseContentTopic() {}
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getTopicName() { return topicName; }
-    public void setTopicName(String topicName) { this.topicName = topicName; }
-    public Double getWeightPercentage() { return weightPercentage; }
-    public void setWeightPercentage(Double weightPercentage) { this.weightPercentage = weightPercentage; }
-    public Course getCourse() { return course; }
-    public void setCourse(Course course) { this.course = course; }
+    public CourseContentTopic(Course course, String topicName, Double weightPercentage) {
+        this.course = course;
+        this.topicName = topicName;
+        this.weightPercentage = weightPercentage;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public String getTopicName() {
+        return topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
+    }
+
+    public Double getWeightPercentage() {
+        return weightPercentage;
+    }
+
+    public void setWeightPercentage(Double weightPercentage) {
+        this.weightPercentage = weightPercentage;
+    }
 }
