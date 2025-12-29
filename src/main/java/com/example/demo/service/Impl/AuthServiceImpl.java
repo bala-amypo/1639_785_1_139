@@ -1,46 +1,62 @@
+
+
+
 // package com.example.demo.service.impl;
-// import java.util.*;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Service;
 
 // import com.example.demo.entity.User;
 // import com.example.demo.repository.UserRepository;
 // import com.example.demo.service.AuthService;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.security.crypto.password.PasswordEncoder;
+// import org.springframework.stereotype.Service;
+
+// import java.util.List;
 
 // @Service
 // public class AuthServiceImpl implements AuthService {
 
 //     @Autowired
-//     UserRepository userRepository;
+//     private UserRepository userRepository;
+    
+//     @Autowired
+//     private PasswordEncoder passwordEncoder;
 
 //     @Override
 //     public User register(User user) {
-//         userRepository.save(user);
-//         return null;
+//         user.setPassword(passwordEncoder.encode(user.getPassword()));
+//         return userRepository.save(user);
 //     }
 
 //     @Override
 //     public User login(String email, String password) {
-//         return null;
+//         return null;  // Handled by Spring Security
 //     }
+
 //     @Override
-//     public List<User>getAllData6(){
+//     public List<User> getAllData6() {
 //         return userRepository.findAll();
 //     }
+
 //     @Override
-//     public User getData6(Long id){
-//     return userRepository.findById(id).orElse(null);
+//     public User getData6(Long id) {
+//         return userRepository.findById(id).orElse(null);
 //     }
+
 //     @Override
-//     public User updateData6(Long id,User use){
-//         if(userRepository.existsById(id)){
-//             use.setId(id);
-//             return userRepository.save(use);
-//         } 
+//     public User updateData6(Long id, User user) {
+//         if (userRepository.existsById(id)) {
+//             user.setId(id);
+//             if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
+//                 user.setPassword(passwordEncoder.encode(user.getPassword()));
+//             }
+//             return userRepository.save(user);
+//         }
 //         return null;
 //     }
+
+//     // ✅ FIXED: Capital 'D' to match AuthService interface
 //     @Override
-//     public String DeleteData6(Long id){
+//     public String DeleteData6(Long id) {
 //         userRepository.deleteById(id);
 //         return "Deleted successfully";
 //     }
@@ -53,65 +69,75 @@
 
 
 
-
-
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepo;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final BCryptPasswordEncoder encoder;
 
-    @Override
-    public User register(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+    public AuthServiceImpl(
+            UserRepository userRepo,
+            JwtTokenProvider jwtTokenProvider
+    ) {
+        this.userRepo = userRepo;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.encoder = new BCryptPasswordEncoder();
     }
 
     @Override
-    public User login(String email, String password) {
-        return null;  // Handled by Spring Security
-    }
+    public String register(RegisterRequest request) {
 
-    @Override
-    public List<User> getAllData6() {
-        return userRepository.findAll();
-    }
+        Role role = Role.valueOf(request.getRole().toUpperCase());
 
-    @Override
-    public User getData6(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public User updateData6(Long id, User user) {
-        if (userRepository.existsById(id)) {
-            user.setId(id);
-            if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
-            }
-            return userRepository.save(user);
+        if (userRepo.findByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already registered");
         }
-        return null;
+
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(encoder.encode(request.getPassword()));
+        user.setRoles(Set.of("ROLE_" + role.name()));
+
+        userRepo.save(user);
+        return "User registered successfully";
     }
 
-    // ✅ FIXED: Capital 'D' to match AuthService interface
     @Override
-    public String DeleteData6(Long id) {
-        userRepository.deleteById(id);
-        return "Deleted successfully";
+    public AuthResponse login(AuthRequest request) {
+
+        User user = userRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+        if (!encoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        String token = jwtTokenProvider.createToken(
+                user.getId(),
+                user.getEmail(),
+                user.getRoles()
+        );
+
+        return new AuthResponse(
+                token,
+                user.getEmail(),
+                user.getRoles().iterator().next()
+        );
     }
 }
