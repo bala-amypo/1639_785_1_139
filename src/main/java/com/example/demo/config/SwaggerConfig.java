@@ -52,7 +52,7 @@ public class SwaggerConfig {
                         .title("University Course Transfer Validator API")
                         .version("1.0"))
                 .servers(List.of(
-                        new Server().url("https://9118.32procr.amypo.ai/")
+                        new Server().url("https://9164.pro604cr.amypo.ai/")
                 ))
                 .addSecurityItem(
                         new SecurityRequirement().addList("bearerAuth")
