@@ -1,158 +1,101 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
 // package com.example.demo.controller;
 
-// import java.util.*;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.web.bind.annotation.PostMapping;
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.DeleteMapping;
-// import org.springframework.web.bind.annotation.PutMapping;
-// import org.springframework.web.bind.annotation.RequestBody;
-// import org.springframework.web.bind.annotation.RestController;
-// import org.springframework.web.bind.annotation.RequestMapping;
-// import org.springframework.web.bind.annotation.PathVariable;
 // import com.example.demo.entity.University;
 // import com.example.demo.service.UniversityService;
-// import jakarta.validation.Valid;
-
-// @RequestMapping("/University")
-// @RestController
-// public class UniversityController{
-//     @Autowired  UniversityService ser;
-//     @PostMapping("/register")
-//     public University sendData(@RequestBody University univ){
-//         return ser.createUniversity(univ);
-//     }
-//     @GetMapping("/get")
-//     public List<University> getval(){
-//         return ser.getAllUniversities();
-//     }
-//     @GetMapping("/find/{id}")
-//     public University find(@PathVariable Long id){
-//         return ser.getUniversityById(id);
-//     }
-//     @PutMapping("/put/{id}")
-//     public University putval(@PathVariable Long id,@RequestBody University univ){
-//         return ser.updateUniversity(id,univ);
-//     }
-//     @DeleteMapping("/delete/{id}")
-//     public String del(@PathVariable Long id){
-//         return ser.DeleteData1(id);
-//     }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// package com.example.demo.controller;
-
 // import org.springframework.web.bind.annotation.*;
+
 // import java.util.List;
-// import com.example.demo.entity.University;
-// import com.example.demo.service.UniversityService;
 
 // @RestController
-// @RequestMapping("/universities")
+// @RequestMapping("/api/universities")
 // public class UniversityController {
 
-//     private final UniversityService universityService;
+//     private final UniversityService ser;
 
-//     public UniversityController(UniversityService universityService) {
-//         this.universityService = universityService;
+//     public UniversityController(UniversityService ser) {
+//         this.ser = ser;
 //     }
 
-//     @PostMapping("/create")
+//     @PostMapping
 //     public University create(@RequestBody University university) {
-//         return universityService.createUniversity(university);
+//         return ser.createUniversity(university);
+//     }
+
+//     @GetMapping
+//     public List<University> getAll() {
+//         // matches getAllUniversities() in UniversityService
+//         return ser.getAllUniversities();
 //     }
 
 //     @GetMapping("/{id}")
 //     public University getById(@PathVariable Long id) {
-//         return universityService.getUniversityById(id);
+//         return ser.getUniversityById(id);
 //     }
 
-//     @GetMapping("/all")
-//     public List<University> getAll() {
-//         return universityService.getAllUniversities();
-//     }
-
-//     @PutMapping("/update/{id}")
+//     @PutMapping("/{id}")
 //     public University update(@PathVariable Long id, @RequestBody University university) {
-//         return universityService.updateUniversity(id, university);
+//         return ser.updateUniversity(id, university);
 //     }
 
-//     @DeleteMapping("/delete/{id}")
-//     public String delete(@PathVariable Long id) {
-//         return universityService.deleteData(id);
-    // }
+//     @DeleteMapping("/{id}")
+//     public void delete(@PathVariable Long id) {
+//         // matches DeleteData1(Long) in UniversityService
+//         ser.DeleteData1(id);
+//     }
 // }
+
+
+
+
+
+
+
+
 package com.example.demo.controller;
 
 import com.example.demo.entity.University;
 import com.example.demo.service.UniversityService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/universities")
+@Tag(name = "University")
 public class UniversityController {
 
-    private final UniversityService ser;
+    private final UniversityService service;
 
-    public UniversityController(UniversityService ser) {
-        this.ser = ser;
+    public UniversityController(UniversityService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public University create(@RequestBody University university) {
-        return ser.createUniversity(university);
-    }
-
-    @GetMapping
-    public List<University> getAll() {
-        // matches getAllUniversities() in UniversityService
-        return ser.getAllUniversities();
-    }
-
-    @GetMapping("/{id}")
-    public University getById(@PathVariable Long id) {
-        return ser.getUniversityById(id);
+    public ResponseEntity<University> create(@RequestBody University u) {
+        return ResponseEntity.ok(service.createUniversity(u));
     }
 
     @PutMapping("/{id}")
-    public University update(@PathVariable Long id, @RequestBody University university) {
-        return ser.updateUniversity(id, university);
+    public ResponseEntity<University> update(@PathVariable Long id, @RequestBody University u) {
+        return ResponseEntity.ok(service.updateUniversity(id, u));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<University> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getUniversityById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<University>> getAll() {
+        return ResponseEntity.ok(service.getAllUniversities());
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        // matches DeleteData1(Long) in UniversityService
-        ser.DeleteData1(id);
+    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
+        service.deactivateUniversity(id);
+        return ResponseEntity.noContent().build();
     }
 }
